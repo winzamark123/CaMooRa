@@ -30,8 +30,6 @@ jobs:
         run: npm run lint
 
       - name: Build Next.js app
-        env:
-          MONGODB_URI: ${{ secrets.MONGODB_URI }}
         run: npm run build
 
       - name: Success
