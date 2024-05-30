@@ -1,4 +1,5 @@
 import { UserButton, SignedIn, SignedOut, SignInButton } from '@clerk/nextjs';
+import { ModeToggle } from '../Theme/mode-toggle';
 
 export default function NavBar() {
   return (
@@ -11,6 +12,7 @@ export default function NavBar() {
       <SignedIn>
         <UserButton showName />
       </SignedIn>
+      <ModeToggle />
     </header>
   );
 }
