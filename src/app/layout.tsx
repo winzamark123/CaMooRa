@@ -3,6 +3,7 @@ import './globals.css';
 import { ClerkProvider } from '@clerk/nextjs';
 import NavBar from '../components/NavBar/NavBar';
 import { ThemeProvider } from '@/components/Theme/theme-provider';
+import Provider from '@/app/_trpc/Provider';
 
 export const metadata: Metadata = {
   title: 'FoMoo - Dont Get FOMO for Your Graduation',
@@ -19,17 +20,19 @@ export default function RootLayout({
     <ClerkProvider>
       <html lang="en">
         <body>
-          <ThemeProvider
-            attribute="class"
-            defaultTheme="system"
-            enableSystem
-            disableTransitionOnChange
-          >
-            <NavBar />
-            <div className="flex flex-col items-center justify-center">
-              {children}
-            </div>
-          </ThemeProvider>
+          <Provider>
+            <ThemeProvider
+              attribute="class"
+              defaultTheme="system"
+              enableSystem
+              disableTransitionOnChange
+            >
+              <NavBar />
+              <div className="flex flex-col items-center justify-center">
+                {children}
+              </div>
+            </ThemeProvider>
+          </Provider>
         </body>
       </html>
     </ClerkProvider>
