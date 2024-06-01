@@ -14,17 +14,17 @@ datasource db {
 }
 
 model User {
-  id       String @id @default(cuid())
-  email    String @unique
-  fullName String
+  id    String @id @default(cuid())
+  email String @unique
 
   profile Profile?
 }
 
 model Profile {
-  id     String @id @default(cuid())
-  user   User   @relation(fields: [userId], references: [id])
-  userId String @unique
+  id       String @id @default(cuid())
+  user     User   @relation(fields: [userId], references: [id])
+  userId   String @unique
+  fullName String
 
   discord   String?
   instagram String?
