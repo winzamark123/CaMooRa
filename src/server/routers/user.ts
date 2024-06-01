@@ -1,6 +1,6 @@
-import { router, publicProcedure } from '../trpc';
+import { router, publicProcedure } from '@/lib/trpc/trpc';
 import { z } from 'zod';
-import prisma from '@/lib/prisma';
+import prisma from '@/lib/prisma/prisma';
 
 export const UserRouter = router({
   getUsers: publicProcedure.query(async () => {
