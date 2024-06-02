@@ -1,10 +1,14 @@
 import { router, publicProcedure } from '@/lib/trpc/trpc';
 import { z } from 'zod';
-import prisma from '@/lib/prisma/prisma';
+import prisma from '@prisma/prisma';
 
 export const UserRouter = router({
   getUsers: publicProcedure.query(async () => {
-    return await prisma.user.findMany();
+    return await prisma.user.findMany({
+      include: {
+        profile: true,
+      },
+    });
   }),
 
   addUser: publicProcedure
