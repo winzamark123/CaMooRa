@@ -1,12 +1,12 @@
 'use client';
-import TempUser from './_components/TempUser';
+import MoreTempUser from '@/components/MoreTempUser';
 
-export default function Home() {
+export default function DashBoard() {
   return (
     <main className="flex min-h-screen flex-col items-center justify-between border border-black p-24">
       <div className="h-30 flex w-full flex-col border border-black">
         <h1>HELLO WORLD</h1>
-        <TempUser />
+        <MoreTempUser />
       </div>
     </main>
   );
