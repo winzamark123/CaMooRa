@@ -1,3 +1,5 @@
+// THIS WRAPS ALL REACT COMPONENT TO CALL THE
+// ENDPOINT AND PROVIDE THE DATA FOR ALL COMPONENTS
 'use client';
 import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
 import { httpBatchLink } from '@trpc/client';

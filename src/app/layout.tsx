@@ -3,7 +3,7 @@ import './globals.css';
 import { ClerkProvider } from '@clerk/nextjs';
 import NavBar from '../components/NavBar/NavBar';
 import { ThemeProvider } from '@/components/Theme/theme-provider';
-import Provider from '@/app/_trpc/Provider';
+import Provider from '@/lib/trpc/Provider';
 
 export const metadata: Metadata = {
   title: 'FoMoo - Dont Get FOMO for Your Graduation',
