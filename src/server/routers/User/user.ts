@@ -12,11 +12,11 @@ export const UserRouter = router({
   }),
 
   addUser: publicProcedure
-    .input(z.object({ email: z.string() }))
+    .input(z.object({ clerkId: z.string() }))
     .mutation(async ({ input }) => {
       await prisma.user.create({
         data: {
-          email: input.email,
+          clerkId: input.clerkId,
         },
       });
     }),
