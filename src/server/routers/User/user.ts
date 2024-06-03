@@ -39,10 +39,10 @@ export const user_router = router({
       return true;
     }),
 
-  getUser: publicProcedure
+  getUserProfile: publicProcedure
     .input(z.object({ clerkId: z.string() }))
     .query(async ({ input }) => {
-      const user = await prisma.user.findFirst({
+      const user = await prisma.user.findUnique({
         where: {
           clerkId: input.clerkId,
         },

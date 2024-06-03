@@ -14,8 +14,8 @@ datasource db {
 }
 
 model User {
-  id      String  @id @default(cuid())
-  clerkId String? @unique
+  id      String @id @default(cuid())
+  clerkId String @unique
 
   profile Profile?
   Contact Contact?
