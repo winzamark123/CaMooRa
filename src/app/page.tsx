@@ -1,12 +1,13 @@
 'use client';
 import MoreTempUser from '@/components/MoreTempUser';
+import PhotographersList from '@/components/PhotographersList';
 
-export default function DashBoard() {
+export default function Home() {
   return (
-    <main className="flex min-h-screen flex-col items-center justify-between border border-black p-24">
-      <div className="h-30 flex w-full flex-col border border-black">
-        <h1>HELLO WORLD</h1>
+    <main className="flex flex-col items-center">
+      <div className="h-30 flex w-full flex-col ">
         <MoreTempUser />
+        <PhotographersList />
       </div>
     </main>
   );
