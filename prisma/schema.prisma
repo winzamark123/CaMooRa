@@ -15,20 +15,26 @@ datasource db {
 
 model User {
   id      String  @id @default(cuid())
-  clerkId String? @unique // Make optional
+  clerkId String? @unique
 
   profile Profile?
+  Contact Contact?
 }
 
 model Profile {
-  id         String  @id @default(cuid())
-  user       User    @relation(fields: [userId], references: [id])
-  userId     String  @unique
-  email      String? @unique // Make optional
-  firstName  String? // Make optional
-  lastName   String? // Make optional
-  profilePic String?
+  user   User   @relation(fields: [userId], references: [id])
+  userId String @unique
 
+  firstName     String? // init with firstName from Clerk
+  lastName      String? // init with lastName from Clerk
+  profilePicURL String? // init with imageURL from Clerk
+}
+
+model Contact {
+  user   User   @relation(fields: [userId], references: [id])
+  userId String @unique
+
+  email     String? @unique // init with primaryEmailAddressId from Clerk
   discord   String?
   instagram String?
   phone     String?

@@ -1,6 +1,6 @@
 import { trpc } from '@/lib/trpc/client';
 
 export default function MoreTempUser() {
-  const getUsers = trpc.user.getUsers.useQuery();
-  return <main>{JSON.stringify(getUsers.data)}</main>;
+  const get_users = trpc.user.getAllUsers.useQuery();
+  return <main>{JSON.stringify(get_users.data)}</main>;
 }

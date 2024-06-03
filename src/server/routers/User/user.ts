@@ -2,8 +2,8 @@ import { router, publicProcedure } from '@/lib/trpc/trpc';
 import { z } from 'zod';
 import prisma from '@prisma/prisma';
 
-export const UserRouter = router({
-  getUsers: publicProcedure.query(async () => {
+export const user_router = router({
+  getAllUsers: publicProcedure.query(async () => {
     return await prisma.user.findMany({
       include: {
         profile: true,
@@ -20,6 +20,43 @@ export const UserRouter = router({
         },
       });
     }),
+
+  //this might be redundant since we will be doing 2 request with check and get
+  //maybe checkAndgetUser would be better
+  checkUser: publicProcedure
+    .input(z.object({ clerkId: z.string() }))
+    .query(async ({ input }) => {
+      const user = await prisma.user.findFirst({
+        where: {
+          clerkId: input.clerkId,
+        },
+      });
+
+      if (!user) {
+        return false;
+      }
+
+      return true;
+    }),
+
+  getUser: publicProcedure
+    .input(z.object({ clerkId: z.string() }))
+    .query(async ({ input }) => {
+      const user = await prisma.user.findFirst({
+        where: {
+          clerkId: input.clerkId,
+        },
+        include: {
+          profile: true,
+        },
+      });
+
+      if (!user) {
+        throw new Error(`User with clerkId ${input.clerkId} not found`);
+      }
+
+      return user;
+    }),
 });
 
-export type UserRouter = typeof UserRouter;
+export type UserRouter = typeof user_router;
