@@ -1,6 +1,7 @@
 import { router, publicProcedure } from '@/lib/trpc/trpc';
 import { z } from 'zod';
 import prisma from '@prisma/prisma';
+import { PrismaClientValidationError } from '@prisma/client/runtime/library';
 
 export const user_router = router({
   getAllUsers: publicProcedure.query(async () => {
