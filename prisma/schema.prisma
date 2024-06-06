@@ -38,4 +38,5 @@ model Contact {
   discord   String?
   instagram String?
   phone     String?
+  whatsApp  String?
 }

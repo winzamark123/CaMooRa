@@ -22,10 +22,10 @@ export const user_router = router({
     }),
 
   //this might be redundant since we will be doing 2 request with check and get
-  //maybe checkAndgetUser would be better
   checkUser: publicProcedure
     .input(z.object({ clerkId: z.string() }))
-    .query(async ({ input }) => {
+    .query(async (opts) => {
+      const { input } = opts;
       const user = await prisma.user.findFirst({
         where: {
           clerkId: input.clerkId,
