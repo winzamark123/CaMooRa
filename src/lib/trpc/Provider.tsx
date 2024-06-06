@@ -9,7 +9,7 @@ import { trpc } from './client';
 
 export default function Provider({ children }: { children: React.ReactNode }) {
   const [queryClient] = useState(() => new QueryClient({}));
-  const [trpcClient] = useState(() =>
+  const [trpcClient] = useState(
     trpc.createClient({
       links: [
         httpBatchLink({

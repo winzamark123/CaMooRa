@@ -1,7 +1,6 @@
 import { router, publicProcedure } from '@/lib/trpc/trpc';
 import { z } from 'zod';
 import prisma from '@prisma/prisma';
-import { PrismaClientValidationError } from '@prisma/client/runtime/library';
 
 export const user_router = router({
   getAllUsers: publicProcedure.query(async () => {
@@ -25,7 +24,8 @@ export const user_router = router({
   //this might be redundant since we will be doing 2 request with check and get
   checkUser: publicProcedure
     .input(z.object({ clerkId: z.string() }))
-    .query(async ({ input }) => {
+    .query(async (opts) => {
+      const { input } = opts;
       const user = await prisma.user.findFirst({
         where: {
           clerkId: input.clerkId,
