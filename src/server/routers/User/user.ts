@@ -11,51 +11,25 @@ export const user_router = router({
     });
   }),
 
-  addUser: publicProcedure
-    .input(z.object({ clerkId: z.string() }))
-    .mutation(async ({ input }) => {
-      await prisma.user.create({
-        data: {
-          clerkId: input.clerkId,
-        },
-      });
-    }),
-
-  //this might be redundant since we will be doing 2 request with check and get
-  checkUser: publicProcedure
-    .input(z.object({ clerkId: z.string() }))
-    .query(async (opts) => {
-      const { input } = opts;
-      const user = await prisma.user.findFirst({
-        where: {
-          clerkId: input.clerkId,
-        },
-      });
-
-      if (!user) {
-        return false;
-      }
-
-      return true;
-    }),
-
-  getUserProfile: publicProcedure
+  //create user
+  createUser: publicProcedure
     .input(z.object({ clerkId: z.string() }))
     .query(async ({ input }) => {
+      //check if user exists in db
       const user = await prisma.user.findUnique({
         where: {
           clerkId: input.clerkId,
         },
-        include: {
-          profile: true,
-        },
       });
 
+      // if not create user in db
       if (!user) {
-        throw new Error(`User with clerkId ${input.clerkId} not found`);
+        await prisma.user.create({
+          data: {
+            clerkId: input.clerkId,
+          },
+        });
       }
-
-      return user;
     }),
 });
 

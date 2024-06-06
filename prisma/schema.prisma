@@ -25,8 +25,8 @@ model Profile {
   user   User   @relation(fields: [userId], references: [id])
   userId String @unique
 
-  firstName     String? // init with firstName from Clerk
-  lastName      String? // init with lastName from Clerk
+  firstName     String // init with firstName from Clerk
+  lastName      String // init with lastName from Clerk
   profilePicURL String? // init with imageURL from Clerk
 }
 
@@ -39,4 +39,7 @@ model Contact {
   instagram String?
   phone     String?
   whatsApp  String?
+
+  isPublic Boolean @default(false)
+  isPhotographer Boolean @default(false)
 }

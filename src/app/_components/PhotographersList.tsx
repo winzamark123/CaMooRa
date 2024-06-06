@@ -15,8 +15,8 @@ export default function PhotographersList({ clerkId }: PhotographersListProps) {
     isLoading,
     error,
   } = trpc.user.getAllUsers.useQuery();
-  const checkUser = trpc.user.checkUser.useQuery({ clerkId: clerkId });
-  const addUser = trpc.user.addUser.useMutation();
+  const createUser = trpc.user.createUser.useQuery({ clerkId: clerkId });
+  console.log(createUser);
 
   if (isLoading) {
     return <div>Loading...</div>;
@@ -24,10 +24,6 @@ export default function PhotographersList({ clerkId }: PhotographersListProps) {
 
   if (error) {
     return <div>Error: {error.message}</div>;
-  }
-
-  if (!checkUser.data) {
-    addUser.mutate({ clerkId });
   }
 
   return (
