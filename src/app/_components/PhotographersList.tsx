@@ -24,7 +24,7 @@ export default function PhotographersList() {
     <main>
       {all_users?.map((user) => (
         <div key={user.id} className="">
-          <ProfileCard id={user.clerkId} />
+          <ProfileCard id={user.id} />
         </div>
       ))}
     </main>

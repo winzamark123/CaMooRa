@@ -34,7 +34,7 @@ model Contact {
   user   User   @relation(fields: [userId], references: [id], onDelete: Cascade)
   userId String @unique
 
-  email     String? @unique // init with primaryEmailAddressId from Clerk
+  email     String  @unique // init with primaryEmailAddressId from Clerk
   discord   String?
   instagram String?
   phone     String?
