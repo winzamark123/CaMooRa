@@ -10,7 +10,7 @@ export default function ProfileCard({ id }: ProfileCardProps) {
     data: user_profile,
     isLoading,
     error,
-  } = trpc.user.getUserProfile.useQuery({ clerkId: id });
+  } = trpc.profile.getProfile.useQuery({ userId: id });
 
   if (isLoading) {
     return <div>Loading...</div>;
@@ -20,7 +20,7 @@ export default function ProfileCard({ id }: ProfileCardProps) {
     return <div>Error: {error.message}</div>;
   }
 
-  if (!user_profile || !user_profile.profile) {
+  if (!user_profile) {
     return <div>No Profile Available for this User</div>;
   }
 
@@ -28,9 +28,9 @@ export default function ProfileCard({ id }: ProfileCardProps) {
     <Card className="flex border-black p-8">
       <div className="flex flex-col border-r-2">
         <p>{id}</p>
-        <p>{user_profile.profile.firstName}</p>
-        <p>{user_profile.profile.lastName}</p>
-        <p>{user_profile.profile.profilePicURL}</p>
+        <p>{user_profile.firstName}</p>
+        <p>{user_profile.lastName}</p>
+        <p>{user_profile.profilePicURL}</p>
       </div>
       <div className="flex gap-4 p-8"></div>
     </Card>

@@ -7,10 +7,11 @@ export default async function Home() {
     return <main>Not logged In</main>;
   }
 
+  // Need some TypeScript help (Passing down names becomes repetitive)
   return (
     <main className="flex flex-col items-center">
       <div className="h-30 flex w-full flex-col ">
-        <PhotographersList clerkId={user.id} />
+        <PhotographersList clerkId={user.id} firstName={user.firstName} lastName={user.lastName}/>
       </div>
     </main>
   );

@@ -1,6 +1,9 @@
 import { router, publicProcedure } from '@/lib/trpc/trpc';
 import { z } from 'zod';
 import prisma from '@prisma/prisma';
+import { findOrCreateUser } from '@/utils/userUtils'
+import { User } from '@/types/types';
+import { currentUser } from '@clerk/nextjs/server';
 
 export const user_router = router({
   getAllUsers: publicProcedure.query(async () => {
@@ -11,26 +14,14 @@ export const user_router = router({
     });
   }),
 
-  //create user
-  createUser: publicProcedure
-    .input(z.object({ clerkId: z.string() }))
-    .query(async ({ input }) => {
-      //check if user exists in db
-      const user = await prisma.user.findUnique({
-        where: {
-          clerkId: input.clerkId,
-        },
-      });
-
-      // if not create user in db
-      if (!user) {
-        await prisma.user.create({
-          data: {
-            clerkId: input.clerkId,
-          },
-        });
-      }
-    }),
-});
+  getUser: publicProcedure
+    .input(z.object({ clerkId: z.string(), firstName: z.string(), lastName: z.string() }))
+    .query( async ({input}) => {
+      // finds or creates (User and Profile)
+      const user = await findOrCreateUser(input.clerkId, input.firstName, input.lastName);
+      return user as User;
+    })
+  
+})
 
 export type UserRouter = typeof user_router;

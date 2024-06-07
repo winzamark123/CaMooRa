@@ -3,11 +3,13 @@ import React from 'react';
 import { trpc } from '@/lib/trpc/client';
 import ProfileCard from '@/components/ProfileCard';
 
-interface PhotographersListProps {
+export interface PhotographersListProps {
   clerkId: string;
+  firstName: string;
+  lastName: string;
 }
 
-export default function PhotographersList({ clerkId }: PhotographersListProps) {
+export default function PhotographersList({ clerkId, firstName, lastName }: PhotographersListProps) {
   //trpc handles caching itself
   //uses React Query under the hood (now TanStack Query)
   const {
@@ -15,8 +17,7 @@ export default function PhotographersList({ clerkId }: PhotographersListProps) {
     isLoading,
     error,
   } = trpc.user.getAllUsers.useQuery();
-  const createUser = trpc.user.createUser.useQuery({ clerkId: clerkId });
-  console.log(createUser);
+  const createUser = trpc.user.getUser.useQuery({ clerkId, firstName, lastName });
 
   if (isLoading) {
     return <div>Loading...</div>;
@@ -30,7 +31,7 @@ export default function PhotographersList({ clerkId }: PhotographersListProps) {
     <main>
       {all_users?.map((user) => (
         <div key={user.id} className="">
-          <ProfileCard id={user.clerkId} />
+          <ProfileCard id={user.id} />
         </div>
       ))}
     </main>
