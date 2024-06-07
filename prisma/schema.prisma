@@ -22,7 +22,7 @@ model User {
 }
 
 model Profile {
-  user   User   @relation(fields: [userId], references: [id])
+  user   User   @relation(fields: [userId], references: [id], onDelete: Cascade)
   userId String @unique
 
   firstName     String // init with firstName from Clerk
@@ -31,7 +31,7 @@ model Profile {
 }
 
 model Contact {
-  user   User   @relation(fields: [userId], references: [id])
+  user   User   @relation(fields: [userId], references: [id], onDelete: Cascade)
   userId String @unique
 
   email     String? @unique // init with primaryEmailAddressId from Clerk
@@ -40,6 +40,6 @@ model Contact {
   phone     String?
   whatsApp  String?
 
-  isPublic Boolean @default(false)
+  isContactPublic       Boolean @default(false)
   isPhotographer Boolean @default(false)
 }
