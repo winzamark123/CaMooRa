@@ -5,11 +5,9 @@ import ProfileCard from '@/components/ProfileCard';
 
 export interface PhotographersListProps {
   clerkId: string;
-  firstName: string;
-  lastName: string;
 }
 
-export default function PhotographersList({ clerkId, firstName, lastName }: PhotographersListProps) {
+export default function PhotographersList({ clerkId }: PhotographersListProps) {
   //trpc handles caching itself
   //uses React Query under the hood (now TanStack Query)
   const {
@@ -17,7 +15,6 @@ export default function PhotographersList({ clerkId, firstName, lastName }: Phot
     isLoading,
     error,
   } = trpc.user.getAllUsers.useQuery();
-  const createUser = trpc.user.getUser.useQuery({ clerkId, firstName, lastName });
 
   if (isLoading) {
     return <div>Loading...</div>;

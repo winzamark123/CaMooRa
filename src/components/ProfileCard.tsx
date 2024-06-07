@@ -12,6 +12,9 @@ export default function ProfileCard({ id }: ProfileCardProps) {
     error,
   } = trpc.profile.getProfile.useQuery({ userId: id });
 
+  // For TESTING
+  // const contact = trpc.contact.getContact.useQuery({ userId: id}).data
+
   if (isLoading) {
     return <div>Loading...</div>;
   }
@@ -31,6 +34,7 @@ export default function ProfileCard({ id }: ProfileCardProps) {
         <p>{user_profile.firstName}</p>
         <p>{user_profile.lastName}</p>
         <p>{user_profile.profilePicURL}</p>
+        {/* <p>{contact?.email}</p> */}
       </div>
       <div className="flex gap-4 p-8"></div>
     </Card>
