@@ -22,21 +22,24 @@ model User {
 }
 
 model Profile {
-  user   User   @relation(fields: [userId], references: [id])
+  user   User   @relation(fields: [userId], references: [id], onDelete: Cascade)
   userId String @unique
 
-  firstName     String? // init with firstName from Clerk
-  lastName      String? // init with lastName from Clerk
+  firstName     String // init with firstName from Clerk
+  lastName      String // init with lastName from Clerk
   profilePicURL String? // init with imageURL from Clerk
 }
 
 model Contact {
-  user   User   @relation(fields: [userId], references: [id])
+  user   User   @relation(fields: [userId], references: [id], onDelete: Cascade)
   userId String @unique
 
-  email     String? @unique // init with primaryEmailAddressId from Clerk
+  email     String  @unique // init with primaryEmailAddressId from Clerk
   discord   String?
   instagram String?
   phone     String?
   whatsApp  String?
+
+  isContactPublic       Boolean @default(false)
+  isPhotographer Boolean @default(false)
 }
