@@ -52,6 +52,8 @@ export async function POST(req: Request) {
   // check and create user in the db
   if (evt.type === 'user.created') {
     console.log('clerkId:', evt.data.id);
+    console.log('primary_email', evt.data.email_addresses[0].email_address);
+    console.log('primary_email_address_id:', evt.data.primary_email_address_id);
     const { id, primary_email_address_id, first_name, last_name } = evt.data;
     findOrCreateUser({
       clerkId: id,
