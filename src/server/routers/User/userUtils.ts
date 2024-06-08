@@ -1,40 +1,29 @@
 import prisma from '@prisma/prisma';
-import { User } from '@/types/types';
 
-export async function findOrCreateUser({
+export async function createUser({
   clerkId,
   userFirstName,
   userLastName,
   userEmail,
 }: {
   clerkId: string;
-  userFirstName?: string | null;
-  userLastName?: string | null;
-  userEmail?: string | null;
+  userFirstName: string | null;
+  userLastName: string | null;
+  userEmail: string | null;
 }) {
-  let user = await prisma.user.findUnique({
-    where: { clerkId },
+  const newUser = await prisma.user.create({
+    data: { clerkId },
   });
-
-  // User is not found in our DB
-  if (!user) {
-    user = await prisma.user.create({
-      data: { clerkId },
-    });
-
-    // Ensure userFirstName, userLastName, and userEmail are not null before calling createProfile and CreateContact
-    const validFirstName = userFirstName ?? 'DefaultFirstName';
-    const validLastName = userLastName ?? 'DefaultLastName';
-    const validEmail = userEmail ?? 'DefaultEmail';
-
-    await createProfile({
-      userId: user.id,
-      userFirstName: validFirstName,
-      userLastName: validLastName,
-    });
-    await createContact({ userId: user.id, userEmail: validEmail });
+  if (!clerkId || !userFirstName || !userLastName || !userEmail) {
+    throw new Error('Invalid input values');
   }
-  return user as User;
+
+  await createProfile({
+    userId: newUser.id,
+    userFirstName,
+    userLastName,
+  });
+  await createContact({ userId: newUser.id, userEmail: userEmail });
 }
 
 async function createProfile({
