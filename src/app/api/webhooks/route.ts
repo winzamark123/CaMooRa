@@ -12,7 +12,6 @@ export async function POST(req: Request) {
       'Please add CLERK_WEBHOOK_SECRET from Clerk Dashboard to .env or .env.local'
     );
   }
-
   // Get the headers
   const headerPayload = headers();
   const svix_id = headerPayload.get('svix-id');
@@ -57,12 +56,26 @@ export async function POST(req: Request) {
   if (evt.type === 'user.created') {
     const { id, first_name, last_name } = evt.data;
     const primary_email = evt.data.email_addresses[0].email_address;
-    await createUser({
-      clerkId: id,
-      userFirstName: first_name,
-      userLastName: last_name,
-      userEmail: primary_email,
-    });
+
+    if (!first_name || !last_name || !primary_email) {
+      throw new Error(
+        'Invalid data: first_name, last_name, or primary_email is null'
+      );
+    }
+
+    try {
+      await createUser({
+        clerkId: id,
+        userFirstName: first_name,
+        userLastName: last_name,
+        userEmail: primary_email,
+      });
+    } catch (err) {
+      console.error('Error creating user in db:', err);
+      return new Response('Error creating user in db', {
+        status: 500,
+      });
+    }
 
     console.log('User created Successfully');
   }
