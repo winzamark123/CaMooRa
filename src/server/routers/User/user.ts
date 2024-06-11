@@ -4,31 +4,15 @@ import prisma from '@prisma/prisma';
 import { User } from '@/types/types';
 
 export const user_router = router({
-  // createUser: publicProcedure
-  //   .input(
-  //     z.object({
-  //       clerkId: z.string().nullable(),
-  //       userFirstName: z.string().nullable(),
-  //       userLastName: z.string().nullable(),
-  //       userEmail: z.string().nullable(),
-  //     })
-  //   )
-  //   .mutation(async ({ input }) => {
-  //     const { clerkId, userFirstName, userLastName, userEmail } = input;
-
-  //     // Throw error if any input is null
-  //     if (!clerkId || !userFirstName || !userLastName || !userEmail) {
-  //       throw new Error('Invalid input values');
-  //     }
-
-  //     await createUser({
-  //       clerkId,
-  //       userFirstName,
-  //       userLastName,
-  //       userEmail,
-  //     });
-  //   }),
-
+  getAllPhotographers: publicProcedure.query(async () => {
+    return await prisma.user.findMany({
+      where: {
+        Contact: {
+          isPhotographer: false,
+        },
+      },
+    });
+  }),
   getAllUsers: publicProcedure.query(async () => {
     return await prisma.user.findMany({
       include: {
