@@ -25,17 +25,6 @@ export async function createUser({
   userEmail,
 }: createUserProp) {
   try {
-    const existingUser = await prisma.user.findUnique({
-      where: {
-        clerkId,
-      },
-    });
-
-    if (existingUser) {
-      console.log('User already exists');
-      return;
-    }
-
     const newUser = await prisma.user.create({
       data: { clerkId },
     });
