@@ -4,6 +4,15 @@ import prisma from '@prisma/prisma';
 import { User } from '@/types/types';
 
 export const user_router = router({
+  getAllPhotographers: publicProcedure.query(async () => {
+    return await prisma.user.findMany({
+      where: {
+        Contact: {
+          isPhotographer: false,
+        },
+      },
+    });
+  }),
   getAllUsers: publicProcedure.query(async () => {
     return await prisma.user.findMany({
       include: {

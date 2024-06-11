@@ -1,71 +1,86 @@
 import prisma from '@prisma/prisma';
-import { User } from '@/types/types';
 
-export async function findOrCreateUser({
+interface createUserProp {
+  clerkId: string;
+  userFirstName: string;
+  userLastName: string;
+  userEmail: string;
+}
+
+interface createProfileProp {
+  userId: string;
+  userFirstName: string;
+  userLastName: string;
+}
+
+interface createContactProp {
+  userId: string;
+  userEmail: string;
+}
+
+export async function createUser({
   clerkId,
   userFirstName,
   userLastName,
   userEmail,
-}: {
-  clerkId: string;
-  userFirstName?: string | null;
-  userLastName?: string | null;
-  userEmail?: string | null;
-}) {
-  let user = await prisma.user.findUnique({
-    where: { clerkId },
-  });
+}: createUserProp) {
+  try {
+    const existingUser = await prisma.user.findUnique({
+      where: {
+        clerkId,
+      },
+    });
 
-  // User is not found in our DB
-  if (!user) {
-    user = await prisma.user.create({
+    if (existingUser) {
+      console.log('User already exists');
+      return;
+    }
+
+    const newUser = await prisma.user.create({
       data: { clerkId },
     });
 
-    // Ensure userFirstName, userLastName, and userEmail are not null before calling createProfile and CreateContact
-    const validFirstName = userFirstName ?? 'DefaultFirstName';
-    const validLastName = userLastName ?? 'DefaultLastName';
-    const validEmail = userEmail ?? 'DefaultEmail';
-
     await createProfile({
-      userId: user.id,
-      userFirstName: validFirstName,
-      userLastName: validLastName,
+      userId: newUser.id,
+      userFirstName,
+      userLastName,
     });
-    await createContact({ userId: user.id, userEmail: validEmail });
+    await createContact({ userId: newUser.id, userEmail: userEmail });
+  } catch (err) {
+    console.error('ERROR CREATING USER' + err);
+    throw new Error('ERROR CREATING USER');
   }
-  return user as User;
 }
 
 async function createProfile({
   userId,
   userFirstName,
   userLastName,
-}: {
-  userId: string;
-  userFirstName: string;
-  userLastName: string;
-}) {
-  await prisma.profile.create({
-    data: {
-      userId,
-      firstName: userFirstName,
-      lastName: userLastName,
-    },
-  });
+}: createProfileProp) {
+  try {
+    await prisma.profile.create({
+      data: {
+        userId,
+        firstName: userFirstName,
+        lastName: userLastName,
+      },
+    });
+  } catch (err) {
+    console.error('ERROR CREATING PROFILE' + err);
+    throw new Error('ERROR CREATING PROFILE');
+  }
 }
 
-async function createContact({
-  userId,
-  userEmail,
-}: {
-  userId: string;
-  userEmail: string;
-}) {
-  await prisma.contact.create({
-    data: {
-      userId,
-      email: userEmail,
-    },
-  });
+async function createContact({ userId, userEmail }: createContactProp) {
+  try {
+    await prisma.contact.create({
+      data: {
+        userId,
+        email: userEmail,
+      },
+    });
+  } catch (err) {
+    console.error('ERROR CREATING CONTACT' + err);
+    throw new Error('ERROR CREATING CONTACT');
+  }
 }
