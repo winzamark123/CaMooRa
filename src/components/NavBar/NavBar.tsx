@@ -8,15 +8,16 @@ export default function NavBar() {
     <header className="h-30 flex w-full justify-between p-8">
       <Image src={FoMooLogo} alt="FoMoo Logo" width={100} height={100} />
       <div className="flex items-center justify-between gap-4 border border-white p-4">
-        {/* {user ? <h1>Profile</h1> : <h1></h1>} */}
+        <SignedIn>
+          <h1>Profile</h1>
+        </SignedIn>
         <h1>Feedback</h1>
-        <div className="">
+        <div className="flex">
           <SignedOut>
             <SignInButton />
           </SignedOut>
           <SignedIn>
             <UserButton showName />
-            {/* <SignOutButton /> */}
           </SignedIn>
         </div>
         <ModeToggle />
