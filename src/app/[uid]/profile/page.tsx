@@ -22,6 +22,7 @@ export default function Page() {
       <div className="flex flex-col">
         <h1>{data?.firstName}</h1>
         <h1>{data?.lastName}</h1>
+        <h1>{data?.profilePicURL}</h1>
       </div>
     </main>
   );
