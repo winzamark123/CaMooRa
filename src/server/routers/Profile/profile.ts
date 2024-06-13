@@ -7,13 +7,36 @@ export const profileRouter = router({
     // switched to UserId - because can't search profile with clerkId
     .input(z.object({ userId: z.string() }))
     .query(async ({ input }) => {
-      const profile = await prisma.profile.findUnique({
+      return await prisma.profile.findUnique({
         where: {
           userId: input.userId,
         },
+        select: {
+          firstName: true,
+          lastName: true,
+          profilePicURL: true,
+        },
       });
-      return profile;
     }),
 
+  updateFirstName: publicProcedure
+    .input(
+      z.object({
+        userId: z.string(),
+        firstName: z
+          .string()
+          .min(2, { message: 'First Name must be 2 characters or longer' }),
+      })
+    )
+    .mutation(async ({ input }) => {
+      await prisma.profile.update({
+        where: {
+          userId: input.userId,
+        },
+        data: {
+          firstName: input.firstName,
+        },
+      });
+    }),
   // TODO: Finish rest of Profile routes
 });

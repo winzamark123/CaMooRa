@@ -18,7 +18,7 @@ model User {
   clerkId String @unique
 
   profile Profile?
-  Contact Contact?
+  contact Contact?
 }
 
 model Profile {
@@ -40,6 +40,6 @@ model Contact {
   phone     String?
   whatsApp  String?
 
-  isContactPublic       Boolean @default(false)
-  isPhotographer Boolean @default(false)
+  isContactPublic Boolean @default(false)
+  isPhotographer  Boolean @default(false)
 }

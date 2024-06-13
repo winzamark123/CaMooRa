@@ -1,7 +1,7 @@
 import { router, publicProcedure } from '../../../lib/trpc/trpc';
 import { z } from 'zod';
 import prisma from '../../../../prisma/prisma';
-import { Contact } from '../../../types/types';
+import { Contact } from '@/types/types';
 
 const contact_object = z.object({
   userId: z.string(),
@@ -18,12 +18,20 @@ export const contactRouter = router({
   getContact: publicProcedure
     .input(z.object({ userId: z.string() }))
     .query(async ({ input }) => {
-      const contact = await prisma.contact.findUnique({
+      return await prisma.contact.findUnique({
         where: {
           userId: input.userId,
         },
+        select: {
+          email: true,
+          discord: true,
+          instagram: true,
+          phone: true,
+          whatsApp: true,
+          isContactPublic: true,
+          isPhotographer: true,
+        },
       });
-      return contact as Contact;
     }),
 
   updateContact: publicProcedure

@@ -1,4 +1,4 @@
-import PhotographersList from './_components/PhotographersList';
+import PhotographersList from '../components/Profile/PhotographersList';
 
 export default async function Home() {
   return (
