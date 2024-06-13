@@ -2,6 +2,7 @@
 import React from 'react';
 import { trpc } from '@/lib/trpc/client';
 import ProfileCard from '@/components/ProfileCard';
+import Link from 'next/link';
 
 export default function PhotographersList() {
   //trpc handles caching itself
@@ -24,7 +25,9 @@ export default function PhotographersList() {
     <main>
       {all_users?.map((user) => (
         <div key={user.id} className="">
-          <ProfileCard id={user.id} />
+          <Link href={`/${user.id}/profile`}>
+            <ProfileCard id={user.id} />
+          </Link>
         </div>
       ))}
     </main>
