@@ -7,7 +7,7 @@ export const user_router = router({
   getAllPhotographers: publicProcedure.query(async () => {
     return await prisma.user.findMany({
       where: {
-        Contact: {
+        contact: {
           isPhotographer: false,
         },
       },

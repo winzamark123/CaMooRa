@@ -18,7 +18,7 @@ model User {
   clerkId String @unique
 
   profile Profile?
-  Contact Contact?
+  contact Contact?
 }
 
 model Profile {
