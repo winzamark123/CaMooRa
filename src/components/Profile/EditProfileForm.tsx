@@ -15,7 +15,6 @@ export default function EditProfileForm({
   profile,
   userId,
   refetchProfile,
-  refetchContact,
 }: EditProfileFormProps) {
   const [firstName, setFirstName] = useState<string>(profile.firstName);
   const [lastName, setLastName] = useState<string>(profile.lastName);

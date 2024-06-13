@@ -9,7 +9,7 @@ export interface Profile {
 export interface Contact {
   user: User;
   userId: string;
-  email: string;
+  email?: string;
   discord?: string;
   instagram?: string;
   phone?: string;

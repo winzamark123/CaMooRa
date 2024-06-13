@@ -1,14 +1,31 @@
-import Profile from '@/app/_components/Profile';
+'use client';
+import Profile from '@/components/Profile/Profile';
+import { trpc } from '@/lib/trpc/client';
+import { usePathname } from 'next/navigation';
 
-export default function MainProfile({
-  params,
-}: {
-  params: { userId: string };
-}) {
-  const { userId } = params;
+export default function Page() {
+  const pathname = usePathname();
+  const uid = pathname.split('/').pop() || '';
+
+  const { data, isLoading, error } = trpc.profile.getProfile.useQuery({
+    userId: uid,
+  });
+
+  if (isLoading) {
+    return <div>Loading...</div>;
+  }
+
+  if (error) {
+    return <div>Error: {error.message}</div>;
+  }
   return (
-    <div>
-      <Profile userId={userId} />
-    </div>
+    <main>
+      <div className="flex flex-col">
+        <h1>{data?.firstName}</h1>
+        <h1>{data?.lastName}</h1>
+        <h1>{data?.profilePicURL}</h1>
+      </div>
+      <Profile userId={uid} />
+    </main>
   );
 }

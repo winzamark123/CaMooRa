@@ -23,13 +23,15 @@ export default function PhotographersList() {
 
   return (
     <main>
-      {all_users?.map((user) => (
-        <div key={user.id} className="">
-          <Link href={`/profile/${user.id}`}>
-            <ProfileCard id={user.id} />
-          </Link>
-        </div>
-      ))}
+      <div className="flex flex-col gap-4">
+        {all_users?.map((user) => (
+          <div key={user.id} className="">
+            <Link href={`/profile/${user.id}`}>
+              <ProfileCard id={user.id} />
+            </Link>
+          </div>
+        ))}
+      </div>
     </main>
   );
 }

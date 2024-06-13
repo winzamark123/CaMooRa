@@ -40,6 +40,6 @@ model Contact {
   phone     String?
   whatsApp  String?
 
-  isContactPublic       Boolean @default(false)
-  isPhotographer Boolean @default(false)
+  isContactPublic Boolean @default(false)
+  isPhotographer  Boolean @default(false)
 }
