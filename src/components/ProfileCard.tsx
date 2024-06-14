@@ -11,10 +11,10 @@ export default function ProfileCard({ id }: ProfileCardProps) {
     data: user_profile,
     isLoading,
     error,
-  } = trpc.profile.getProfile.useQuery({ userId: id });
+  } = trpc.profile.getProfile.useQuery({ clerkId: id });
 
   // For TESTING
-  const contact = trpc.contact.getContact.useQuery({ userId: id }).data;
+  const contact = trpc.contact.getContact.useQuery({ clerkId: id }).data;
 
   if (isLoading) {
     return <div>Loading...</div>;

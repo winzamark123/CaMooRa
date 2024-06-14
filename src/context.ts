@@ -1,6 +1,6 @@
-import type { CreateNextContextOptions } from '@trpc/server/adapters/next';
 import { auth, currentUser } from '@clerk/nextjs/server';
 import type { User } from '@clerk/backend';
+// import prisma from '@prisma/prisma';
 
 interface UserProps {
   user: User | null;
@@ -13,10 +13,19 @@ export const createContextInner = async ({ user }: UserProps) => {
  * Creates context for an incoming request
  * @link https://trpc.io/docs/v11/context
  */
-export async function createContext(opts: CreateNextContextOptions) {
+export async function createContext() {
   async function getUser() {
     const { userId } = auth();
+    if (!userId) {
+      return null;
+    }
+    // const user = await prisma.user.findUnique({
+    //   where: {
+    //     id: userId,
+    //   },
+    // });
     const user = userId ? await currentUser() : null;
+    console.log('user', user?.firstName);
     return user;
   }
 

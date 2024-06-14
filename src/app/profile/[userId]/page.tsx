@@ -9,7 +9,7 @@ export default function Page() {
   const uid = pathname.split('/').pop() || '';
 
   const { data, isLoading, error } = trpc.profile.getProfile.useQuery({
-    userId: uid,
+    clerkId: uid,
   });
 
   if (isLoading) {
@@ -26,7 +26,7 @@ export default function Page() {
         <h1>{data?.lastName}</h1>
         <h1>{data?.profilePicURL}</h1>
       </div>
-      <Profile userId={uid} />
+      <Profile clerkId={uid} />
       <UploadingImageButton></UploadingImageButton>
     </main>
   );

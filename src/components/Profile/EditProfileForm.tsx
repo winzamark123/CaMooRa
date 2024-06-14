@@ -5,7 +5,7 @@ import { ContactProps, ProfileProps } from './Profile';
 interface EditProfileFormProps {
   profile: ProfileProps;
   contact: ContactProps;
-  userId: string;
+  clerkId: string;
   refetchProfile: () => void;
   refetchContact: () => void;
 }
@@ -13,7 +13,7 @@ interface EditProfileFormProps {
 export default function EditProfileForm({
   contact,
   profile,
-  userId,
+  clerkId,
   refetchProfile,
 }: EditProfileFormProps) {
   const [firstName, setFirstName] = useState<string>(profile.firstName);
@@ -32,7 +32,7 @@ export default function EditProfileForm({
     e.preventDefault();
     if (firstName !== profile.firstName && firstName.length >= 2) {
       console.log('firstName was changed');
-      firstNameSave.mutate({ userId, firstName });
+      firstNameSave.mutate({ clerkId, firstName });
     } else {
       console.log('firstName was NOT changed or NOT long enough');
     }

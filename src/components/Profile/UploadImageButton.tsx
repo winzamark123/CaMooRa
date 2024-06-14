@@ -19,7 +19,7 @@ export default function UploadImageButton() {
 
       // need to swap in for actual user id with check
       uploadImage.mutate({
-        userId: 'user-id',
+        clerkId: 'temp-user-id',
         image_name: file.name,
       });
     }

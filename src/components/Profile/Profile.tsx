@@ -20,7 +20,7 @@ export interface ProfileProps {
   profilePicURL: string | null;
 }
 
-export default function Profile({ userId }: { userId: string }) {
+export default function Profile({ clerkId }: { clerkId: string }) {
   const [isEditing, setIsEditing] = useState(false); // Will be set to False
 
   const {
@@ -28,14 +28,14 @@ export default function Profile({ userId }: { userId: string }) {
     isLoading: isProfileLoading,
     error: profileError,
     refetch: refetchProfile,
-  } = trpc.profile.getProfile.useQuery({ userId });
+  } = trpc.profile.getProfile.useQuery({ clerkId });
 
   const {
     data: contact,
     isLoading: isContactLoading,
     error: contactError,
     refetch: refetchContact,
-  } = trpc.contact.getContact.useQuery({ userId });
+  } = trpc.contact.getContact.useQuery({ clerkId });
 
   if (isProfileLoading || isContactLoading) {
     return <div>Loading...</div>;
@@ -55,7 +55,7 @@ export default function Profile({ userId }: { userId: string }) {
           <EditProfileForm
             contact={contact as ContactProps}
             profile={profile as ProfileProps}
-            userId={userId}
+            clerkId={clerkId}
             refetchProfile={refetchProfile}
             refetchContact={refetchContact}
           />
@@ -72,7 +72,7 @@ export default function Profile({ userId }: { userId: string }) {
         // ProfileCard just used for testing to see the Profile for now (looks up profile twice right now because of ProfileCard)
         // Will edit it to look different
         <>
-          <ProfileCard id={userId} />
+          <ProfileCard id={clerkId} />
           <button
             className="ml-2 mt-3 inline-block border-2 border-black bg-slate-500 p-4"
             onClick={() => {

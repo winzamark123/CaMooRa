@@ -1,26 +1,3 @@
-export interface Profile {
-  user: User;
-  userId: string;
-  firstName: string;
-  lastName: string;
-  profilePicURL?: string;
-}
-
-export interface Contact {
-  user: User;
-  userId: string;
-  email?: string;
-  discord?: string;
-  instagram?: string;
-  phone?: string;
-  whatsApp?: string;
-  isContactPublic: boolean;
-  isPhotographer: boolean;
-}
-
-export interface User {
-  id: string;
-  clerkId: string;
-  profile?: Profile;
-  contact?: Contact;
-}
+// I removed the types and put it in their local files for easier readability
+// since changing anything on prisma will result in changes in the types
+// so more readable in respective local files
