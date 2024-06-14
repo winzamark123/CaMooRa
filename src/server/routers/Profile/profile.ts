@@ -28,7 +28,10 @@ export const profileRouter = router({
           .min(2, { message: 'First Name must be 2 characters or longer' }),
       })
     )
-    .mutation(async ({ input }) => {
+    .mutation(async ({ input, ctx }) => {
+      if (ctx.user?.id !== input.userId) {
+        throw new Error('You do not have permission to update this profile');
+      }
       await prisma.profile.update({
         where: {
           userId: input.userId,
