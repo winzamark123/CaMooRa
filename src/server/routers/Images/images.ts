@@ -24,6 +24,7 @@ export const images_router = router({
       await prisma.images.create({
         data: {
           clerkId: input.clerkId,
+          imageName: input.image_name,
         },
       });
     }),

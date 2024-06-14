@@ -1,8 +1,21 @@
+'use client';
 import React, { useRef, ChangeEvent } from 'react';
 import { trpc } from '@/lib/trpc/client';
 
-export default function UploadImageButton() {
+interface UploadImageButtonProps {
+  clerkId: string;
+}
+export default function UploadImageButton({ clerkId }: UploadImageButtonProps) {
   const inputFile = useRef<HTMLInputElement>(null);
+
+  const uploadImage = trpc.images.updateImages.useMutation({
+    onSuccess: () => {
+      console.log('Successfully updated Image');
+    },
+    onError: (error) => {
+      console.error('Error updating Image', error.message);
+    },
+  });
 
   const onButtonClick = () => {
     // trigger the click event of the hidden file input
@@ -15,11 +28,11 @@ export default function UploadImageButton() {
     // handle the file upload event
     if (event.target.files) {
       const file = event.target.files[0];
-      const uploadImage = trpc.images.updateImages.useMutation();
 
-      // need to swap in for actual user id with check
+      console.log(file);
+
       uploadImage.mutate({
-        clerkId: 'temp-user-id',
+        clerkId: clerkId,
         image_name: file.name,
       });
     }

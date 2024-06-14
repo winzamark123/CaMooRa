@@ -27,7 +27,7 @@ export default function Page() {
         <h1>{data?.profilePicURL}</h1>
       </div>
       <Profile clerkId={uid} />
-      <UploadingImageButton></UploadingImageButton>
+      <UploadingImageButton clerkId={uid} />
     </main>
   );
 }
