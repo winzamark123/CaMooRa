@@ -2,7 +2,6 @@
 import { useState } from 'react';
 import EditProfileForm from './EditProfileForm';
 import { trpc } from '@/lib/trpc/client';
-import Link from 'next/link';
 import ProfileCard from '@/components/ProfileCard';
 
 export interface ContactProps {
@@ -51,9 +50,6 @@ export default function Profile({ userId }: { userId: string }) {
       <h1 className="mb-4 border-b border-black">
         Profile for {profile?.firstName} {profile?.lastName}
       </h1>
-      <Link href={`/`} className="ml-4 inline-block ">
-        <h1 className="rounded-full border-2 bg-blue-400">Home</h1>
-      </Link>
       {isEditing && (
         <>
           <EditProfileForm
@@ -78,7 +74,7 @@ export default function Profile({ userId }: { userId: string }) {
         <>
           <ProfileCard id={userId} />
           <button
-            className="ml-2 mt-3 inline-block border-2 border-black bg-slate-500"
+            className="ml-2 mt-3 inline-block border-2 border-black bg-slate-500 p-4"
             onClick={() => {
               setIsEditing(!isEditing);
             }}

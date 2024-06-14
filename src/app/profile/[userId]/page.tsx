@@ -2,6 +2,7 @@
 import Profile from '@/components/Profile/Profile';
 import { trpc } from '@/lib/trpc/client';
 import { usePathname } from 'next/navigation';
+import UploadingImageButton from '@/components/Profile/UploadImageButton';
 
 export default function Page() {
   const pathname = usePathname();
@@ -26,6 +27,7 @@ export default function Page() {
         <h1>{data?.profilePicURL}</h1>
       </div>
       <Profile userId={uid} />
+      <UploadingImageButton></UploadingImageButton>
     </main>
   );
 }

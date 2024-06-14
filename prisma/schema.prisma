@@ -19,6 +19,7 @@ model User {
 
   profile Profile?
   contact Contact?
+  Images  Images[]
 }
 
 model Profile {
@@ -42,4 +43,11 @@ model Contact {
 
   isContactPublic Boolean @default(false)
   isPhotographer  Boolean @default(false)
+}
+
+model Images {
+  id        String   @id @default(cuid())
+  user      User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+  userId    String
+  createdAt DateTime @default(now())
 }
