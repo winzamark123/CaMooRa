@@ -17,7 +17,13 @@ const contact_object = z.object({
 export const contactRouter = router({
   getContact: publicProcedure
     .input(z.object({ userId: z.string() }))
-    .query(async ({ input }) => {
+    .query(async ({ input, ctx }) => {
+      if (!ctx.user) {
+        throw new Error(
+          'You need to be logged in to see the contact information'
+        );
+      }
+
       return await prisma.contact.findUnique({
         where: {
           userId: input.userId,
@@ -36,7 +42,10 @@ export const contactRouter = router({
 
   updateContact: publicProcedure
     .input(contact_object)
-    .mutation(async ({ input }) => {
+    .mutation(async ({ input, ctx }) => {
+      if (ctx.user?.id !== input.userId) {
+        throw new Error('You do not have permission to update this contact');
+      }
       const contact = await prisma.contact.update({
         where: {
           userId: input.userId,

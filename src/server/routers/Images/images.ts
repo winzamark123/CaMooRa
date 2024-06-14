@@ -16,7 +16,11 @@ export const images_router = router({
   //need check if user has permission to upload images
   updateImages: publicProcedure
     .input(z.object({ userId: z.string(), image_name: z.string() }))
-    .mutation(async ({ input }) => {
+    .mutation(async ({ input, ctx }) => {
+      if (ctx.user?.id !== input.userId) {
+        throw new Error('You do not have permission to upload images');
+      }
+
       await prisma.images.create({
         data: {
           userId: input.userId,
