@@ -1,4 +1,4 @@
-import { router, publicProcedure } from '../../../lib/trpc/trpc';
+import { router, publicProcedure, protectedProcedure } from '@/lib/trpc/trpc';
 import prisma from '../../../../prisma/prisma';
 import { z } from 'zod';
 
@@ -26,7 +26,7 @@ export const profileRouter = router({
       });
     }),
 
-  updateFirstName: publicProcedure
+  updateFirstName: protectedProcedure
     .input(
       z.object({
         clerkId: z.string(),
@@ -36,8 +36,6 @@ export const profileRouter = router({
       })
     )
     .mutation(async ({ input, ctx }) => {
-      console.log('ctx.user?.id', ctx.user?.id);
-      console.log('input.userId', input.clerkId);
       if (ctx.user?.id !== input.clerkId) {
         throw new Error('You do not have permission to update this profile');
       }
