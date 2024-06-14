@@ -1,4 +1,4 @@
-import { router, publicProcedure } from '../../../lib/trpc/trpc';
+import { router, publicProcedure } from '@/lib/trpc/trpc';
 import { z } from 'zod';
 import prisma from '../../../../prisma/prisma';
 export interface Contact {
