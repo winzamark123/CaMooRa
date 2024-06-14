@@ -2,13 +2,14 @@
 import Profile from '@/components/Profile/Profile';
 import { trpc } from '@/lib/trpc/client';
 import { usePathname } from 'next/navigation';
+import UploadingImageButton from '@/components/Profile/UploadImageButton';
 
 export default function Page() {
   const pathname = usePathname();
   const uid = pathname.split('/').pop() || '';
 
   const { data, isLoading, error } = trpc.profile.getProfile.useQuery({
-    userId: uid,
+    clerkId: uid,
   });
 
   if (isLoading) {
@@ -25,7 +26,8 @@ export default function Page() {
         <h1>{data?.lastName}</h1>
         <h1>{data?.profilePicURL}</h1>
       </div>
-      <Profile userId={uid} />
+      <Profile clerkId={uid} />
+      <UploadingImageButton></UploadingImageButton>
     </main>
   );
 }

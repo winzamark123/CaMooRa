@@ -14,16 +14,16 @@ datasource db {
 }
 
 model User {
-  id      String @id @default(cuid())
-  clerkId String @unique
+  clerkId String @id @unique
 
   profile Profile?
   contact Contact?
+  Images  Images[]
 }
 
 model Profile {
-  user   User   @relation(fields: [userId], references: [id], onDelete: Cascade)
-  userId String @unique
+  user    User   @relation(fields: [clerkId], references: [clerkId], onDelete: Cascade)
+  clerkId String @unique
 
   firstName     String // init with firstName from Clerk
   lastName      String // init with lastName from Clerk
@@ -31,8 +31,8 @@ model Profile {
 }
 
 model Contact {
-  user   User   @relation(fields: [userId], references: [id], onDelete: Cascade)
-  userId String @unique
+  user    User   @relation(fields: [clerkId], references: [clerkId], onDelete: Cascade)
+  clerkId String @unique
 
   email     String  @unique // init with primaryEmailAddressId from Clerk
   discord   String?
@@ -42,4 +42,11 @@ model Contact {
 
   isContactPublic Boolean @default(false)
   isPhotographer  Boolean @default(false)
+}
+
+model Images {
+  id        String   @id @default(cuid())
+  user      User     @relation(fields: [clerkId], references: [clerkId], onDelete: Cascade)
+  clerkId   String
+  createdAt DateTime @default(now())
 }

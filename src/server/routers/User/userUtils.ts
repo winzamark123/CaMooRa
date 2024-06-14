@@ -36,11 +36,11 @@ export async function createUser({
     });
 
     await createProfile({
-      userId: newUser.id,
+      clerkId: newUser.clerkId,
       userFirstName,
       userLastName,
     });
-    await createContact({ userId: newUser.id, userEmail: userEmail });
+    await createContact({ clerkId: newUser.clerkId, userEmail: userEmail });
   } catch (err) {
     console.error('ERROR CREATING USER' + err);
     throw new Error('ERROR CREATING USER');

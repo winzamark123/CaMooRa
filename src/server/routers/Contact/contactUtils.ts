@@ -1,14 +1,14 @@
 import prisma from '@prisma/prisma';
 
 interface createContactProp {
-  userId: string;
+  clerkId: string;
   userEmail: string;
 }
-export async function createContact({ userId, userEmail }: createContactProp) {
+export async function createContact({ clerkId, userEmail }: createContactProp) {
   try {
     await prisma.contact.create({
       data: {
-        userId,
+        clerkId: clerkId,
         email: userEmail,
       },
     });

@@ -25,9 +25,9 @@ export default function PhotographersList() {
     <main>
       <div className="flex flex-col gap-4">
         {all_users?.map((user) => (
-          <div key={user.id} className="">
-            <Link href={`/profile/${user.id}`}>
-              <ProfileCard id={user.id} />
+          <div key={user.clerkId} className="">
+            <Link href={`/profile/${user.clerkId}`}>
+              <ProfileCard id={user.clerkId} />
             </Link>
           </div>
         ))}

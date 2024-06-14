@@ -1,10 +1,18 @@
 import { router, publicProcedure } from '../../../lib/trpc/trpc';
 import { z } from 'zod';
 import prisma from '../../../../prisma/prisma';
-import { Contact } from '@/types/types';
+export interface Contact {
+  email?: string;
+  discord?: string;
+  instagram?: string;
+  phone?: string;
+  whatsApp?: string;
+  isContactPublic: boolean;
+  isPhotographer: boolean;
+}
 
 const contact_object = z.object({
-  userId: z.string(),
+  clerkId: z.string(),
   email: z.string().optional(),
   discord: z.string().optional(),
   instagram: z.string().optional(),
@@ -16,11 +24,12 @@ const contact_object = z.object({
 
 export const contactRouter = router({
   getContact: publicProcedure
-    .input(z.object({ userId: z.string() }))
-    .query(async ({ input }) => {
+    .input(z.object({ clerkId: z.string() }))
+    .query(async ({ input, ctx }) => {
+      console.log(ctx.user?.id);
       return await prisma.contact.findUnique({
         where: {
-          userId: input.userId,
+          clerkId: input.clerkId,
         },
         select: {
           email: true,
@@ -36,10 +45,13 @@ export const contactRouter = router({
 
   updateContact: publicProcedure
     .input(contact_object)
-    .mutation(async ({ input }) => {
+    .mutation(async ({ input, ctx }) => {
+      if (ctx.user?.id !== input.clerkId) {
+        throw new Error('You do not have permission to update this contact');
+      }
       const contact = await prisma.contact.update({
         where: {
-          userId: input.userId,
+          clerkId: input.clerkId,
         },
         data: {
           email: input.email,

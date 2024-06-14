@@ -1,7 +1,14 @@
 import { router, publicProcedure } from '@/lib/trpc/trpc';
 import { z } from 'zod';
 import prisma from '@prisma/prisma';
-import { User } from '@/types/types';
+import type { Profile } from '../Profile/profile';
+import type { Contact } from '../Contact/contact';
+
+interface User {
+  clerkId: string;
+  profile?: Profile;
+  contact?: Contact;
+}
 
 export const user_router = router({
   getAllPhotographers: publicProcedure.query(async () => {

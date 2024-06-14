@@ -1,20 +1,20 @@
 import prisma from '@prisma/prisma';
 
 interface createProfileProp {
-  userId: string;
+  clerkId: string;
   userFirstName: string;
   userLastName: string;
 }
 
 export async function createProfile({
-  userId,
+  clerkId,
   userFirstName,
   userLastName,
 }: createProfileProp) {
   try {
     await prisma.profile.create({
       data: {
-        userId,
+        clerkId: clerkId,
         firstName: userFirstName,
         lastName: userLastName,
       },
