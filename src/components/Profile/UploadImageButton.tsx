@@ -34,6 +34,7 @@ export default function UploadImageButton({ clerkId }: UploadImageButtonProps) {
       uploadImage.mutate({
         clerkId: clerkId,
         image_name: file.name,
+        image_url: 'test',
       });
     }
   };

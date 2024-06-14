@@ -15,7 +15,13 @@ export const images_router = router({
 
   //need check if user has permission to upload images
   updateImages: publicProcedure
-    .input(z.object({ clerkId: z.string(), image_name: z.string() }))
+    .input(
+      z.object({
+        clerkId: z.string(),
+        image_name: z.string(),
+        image_url: z.string(),
+      })
+    )
     .mutation(async ({ input, ctx }) => {
       if (ctx.user?.id !== input.clerkId) {
         throw new Error('You do not have permission to upload images');

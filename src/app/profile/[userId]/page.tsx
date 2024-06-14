@@ -3,6 +3,7 @@ import Profile from '@/components/Profile/Profile';
 import { trpc } from '@/lib/trpc/client';
 import { usePathname } from 'next/navigation';
 import UploadingImageButton from '@/components/Profile/UploadImageButton';
+import CreatePostForm from '@/components/Profile/CreatePostForm';
 
 export default function Page() {
   const pathname = usePathname();
@@ -28,6 +29,7 @@ export default function Page() {
       </div>
       <Profile clerkId={uid} />
       <UploadingImageButton clerkId={uid} />
+      <CreatePostForm />
     </main>
   );
 }
