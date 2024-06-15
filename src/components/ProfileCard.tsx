@@ -1,7 +1,7 @@
 import React from 'react';
 import { Card } from '@/components/ui/card';
 import { trpc } from '@/lib/trpc/client';
-// import { trpc } from '@/lib/trpc/client';
+
 interface ProfileCardProps {
   id: string;
 }
@@ -13,7 +13,6 @@ export default function ProfileCard({ id }: ProfileCardProps) {
     error,
   } = trpc.profile.getProfile.useQuery({ clerkId: id });
 
-  // Maybe put isContactPublic and isPhotographer fields in Profile Model (we can check if contact not public no need to make extra call for contact) ?
   const contact = trpc.contact.getContact.useQuery({ clerkId: id }).data;
 
   if (isLoading) {

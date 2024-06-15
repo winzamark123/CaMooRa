@@ -11,7 +11,6 @@ export interface Contact {
   isPhotographer: boolean;
 }
 
-// TODO : Add validation for URLS ?
 const contact_object = z.object({
   clerkId: z.string(),
   email: z.string().optional(),
