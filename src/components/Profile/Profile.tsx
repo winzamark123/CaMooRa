@@ -8,10 +8,10 @@ import UploadingImageButton from '@/components/Profile/UploadImageButton';
 
 export interface ContactProps {
   email: string;
-  discord: string | null;
-  instagram: string | null;
-  phone: string | null;
-  whatsApp: string | null;
+  discord: string | '';
+  instagram: string | '';
+  phone: string | '';
+  whatsApp: string | '';
   isContactPublic: boolean;
   isPhotographer: boolean;
 }

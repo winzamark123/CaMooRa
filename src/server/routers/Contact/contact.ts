@@ -11,6 +11,7 @@ export interface Contact {
   isPhotographer: boolean;
 }
 
+// TODO : Add validation for URLS ?
 const contact_object = z.object({
   clerkId: z.string(),
   email: z.string().optional(),
@@ -18,8 +19,12 @@ const contact_object = z.object({
   instagram: z.string().optional(),
   phone: z.string().optional(),
   whatsApp: z.string().optional(),
-  isContactPublic: z.boolean().optional(),
-  isPhotographer: z.boolean().optional(),
+  isContactPublic: z
+    .boolean({ invalid_type_error: 'isContactPublic must be a boolean' })
+    .optional(),
+  isPhotographer: z
+    .boolean({ invalid_type_error: 'isPhotographer must be a boolean' })
+    .optional(),
 });
 
 export const contactRouter = router({
@@ -49,7 +54,8 @@ export const contactRouter = router({
       if (ctx.user?.id !== input.clerkId) {
         throw new Error('You do not have permission to update this contact');
       }
-      const contact = await prisma.contact.update({
+      console.log(input);
+      await prisma.contact.update({
         where: {
           clerkId: input.clerkId,
         },
@@ -63,6 +69,5 @@ export const contactRouter = router({
           isPhotographer: input.isPhotographer,
         },
       });
-      return contact as Contact;
     }),
 });

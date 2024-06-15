@@ -1,6 +1,7 @@
 import { trpc } from '@/lib/trpc/client';
 import { FormEvent, useState } from 'react';
 import { ContactProps, ProfileProps } from './Profile';
+import { validateProfile } from '@/utils/validation';
 
 interface EditProfileFormProps {
   profile: ProfileProps;
@@ -10,15 +11,18 @@ interface EditProfileFormProps {
   refetchContact: () => void;
 }
 
-interface UpdateProfileProps {
+interface UpdateProfileVariableProps {
   clerkId: string;
   firstName?: string;
   lastName?: string;
-  email?: string;
-  discord?: string;
-  instagram?: string;
-  phone?: string;
-  whatsApp?: string;
+}
+
+interface UpdateContactVariableProps {
+  clerkId: string;
+  discord?: string | '';
+  instagram?: string | '';
+  phone?: string | '';
+  whatsApp?: string | '';
   isContactPublic?: boolean;
   isPhotographer?: boolean;
 }
@@ -28,9 +32,18 @@ export default function EditProfileForm({
   profile,
   clerkId,
   refetchProfile,
+  refetchContact,
 }: EditProfileFormProps) {
+  // Declaring State Variables
   const [firstName, setFirstName] = useState<string>(profile.firstName);
   const [lastName, setLastName] = useState<string>(profile.lastName);
+  const [discord, setDiscord] = useState<string | ''>(contact.discord);
+  const [instagram, setInstagram] = useState<string | ''>(contact.instagram);
+  const [phone, setPhone] = useState<string | ''>(contact.phone);
+  const [whatsApp, setWhatsApp] = useState<string | ''>(contact.whatsApp);
+  const [isPhotographer, setIsPhotographer] = useState<boolean>(
+    contact.isPhotographer
+  );
   const [isContactPublic, setIsContactPublic] = useState<boolean>(
     contact.isContactPublic
   );
@@ -39,76 +52,71 @@ export default function EditProfileForm({
     lastName?: string;
   }>({});
 
+  // Calling TRPC update procedures
   const updateProfile = trpc.profile.updateProfile.useMutation({
     onSuccess: () => {
-      console.log('Profile name updated successfully');
+      console.log('Profile fields updated successfully');
       refetchProfile();
     },
     onError: (err) => {
-      console.error('Error updating Profile', err);
+      console.error('Error updating Profile fields ', err);
     },
   });
 
-  /**
-   * Validates first and last names
-   * @param {string} name
-   * @param {string} fieldName
-   * @returns {string} error
-   */
-  function validateName(name: string, fieldName: string) {
-    // Pattern to ensure the string does not contain any numbers or punctuation
-    const noNumberOrPunctuationPattern = /^[a-zA-Z\s]*$/;
-
-    if (!noNumberOrPunctuationPattern.test(name)) {
-      return `${fieldName} should not contain numbers or punctuation`;
-    }
-
-    if (name.length <= 2) {
-      return `${fieldName} must be 2 characters or longer`;
-    }
-    return '';
-  }
-
-  /**
-   * Returns validation errors for Profile model fields
-   * @param {string} firstName
-   * @param {string} lastName
-   * @returns {object}
-   */
-  function validateProfile(firstName: string, lastName: string) {
-    const errors: { firstName?: string; lastName?: string } = {};
-
-    // Cut white spaces off inputs
-    const trimmedFirstName = firstName.trim();
-    const trimmedLastName = lastName.trim();
-
-    if (trimmedFirstName !== profile.firstName) {
-      const firstNameError = validateName(firstName, 'First Name');
-      if (trimmedFirstName) errors.firstName = firstNameError;
-    }
-    if (trimmedLastName !== profile.lastName) {
-      const lastNameError = validateName(lastName, 'Last Name');
-      if (trimmedLastName) errors.lastName = lastNameError;
-    }
-
-    // Validation errors for First and Last Name
-    return errors;
-  }
+  const updateContact = trpc.contact.updateContact.useMutation({
+    onSuccess: () => {
+      console.log('Contact fields updated successfully');
+      refetchContact();
+    },
+    onError: (err) => {
+      console.error('Error updating Contact fields', err);
+    },
+  });
 
   function handleSave(e: FormEvent<HTMLFormElement>) {
     e.preventDefault();
 
+    // Cut white spaces off inputs (state variables)
+    const trimmedFirstName: string = firstName.trim();
+    const trimmedLastName: string = lastName.trim();
+
     // Validate Profile model fields
-    const profileValidationErrors = validateProfile(firstName, lastName);
+    const profileValidationErrors = validateProfile(
+      trimmedFirstName,
+      trimmedLastName
+    );
+
     if (Object.keys(profileValidationErrors).length > 0) {
       setErrors(profileValidationErrors);
+      return;
     }
 
-    const updatedProfileData: UpdateProfileProps = { clerkId };
-    if (firstName) updatedProfileData.firstName = firstName;
-    if (lastName) updatedProfileData.lastName = lastName;
+    // Update Profile fields (checks if state variable doesn't equal saved variable in db)
+    const updatedProfileData: UpdateProfileVariableProps = { clerkId };
+    if (trimmedFirstName !== profile.firstName)
+      updatedProfileData.firstName = trimmedFirstName;
+    if (trimmedLastName !== profile.lastName)
+      updatedProfileData.lastName = trimmedLastName;
 
-    updateProfile.mutate(updatedProfileData);
+    // Update Contact fields (checks if state variable doesn't equal saved variable in db)
+    const updatedContactData: UpdateContactVariableProps = { clerkId };
+    if (isContactPublic !== contact.isContactPublic)
+      updatedContactData.isContactPublic = isContactPublic;
+    if (isPhotographer !== contact.isPhotographer)
+      updatedContactData.isPhotographer = isPhotographer;
+    if (discord !== contact.discord) updatedContactData.discord = discord;
+    if (instagram !== contact.instagram)
+      updatedContactData.instagram = instagram;
+    if (phone !== contact.phone) updatedContactData.phone = phone;
+    if (whatsApp !== contact.whatsApp) updatedContactData.whatsApp = whatsApp;
+
+    if (Object.keys(updatedProfileData).length > 1) {
+      setErrors({});
+      updateProfile.mutate(updatedProfileData);
+    }
+    if (Object.keys(updatedContactData).length > 1) {
+      updateContact.mutate(updatedContactData);
+    }
   }
 
   return (
@@ -125,6 +133,7 @@ export default function EditProfileForm({
           id="firstName"
           placeholder={firstName}
           value={firstName}
+          required
           onChange={(e) => {
             setFirstName(e.target.value);
           }}
@@ -138,8 +147,52 @@ export default function EditProfileForm({
           id="lastName"
           placeholder={lastName}
           value={lastName}
+          required
           onChange={(e) => {
             setLastName(e.target.value);
+          }}
+          className="block border-2 hover:border-gray-600"
+        />
+        <label htmlFor="discord">Discord:</label>
+        <input
+          type="text"
+          id="discord"
+          placeholder={discord}
+          value={discord}
+          onChange={(e) => {
+            setDiscord(e.target.value);
+          }}
+          className="block border-2 hover:border-gray-600"
+        />
+        <label htmlFor="instagram">Instagram:</label>
+        <input
+          type="text"
+          id="instagram"
+          placeholder={instagram}
+          value={instagram}
+          onChange={(e) => {
+            setInstagram(e.target.value);
+          }}
+          className="block border-2 hover:border-gray-600"
+        />
+        <label htmlFor="phone">Phone:</label>
+        <input
+          type="text"
+          id="phone"
+          placeholder={phone}
+          value={phone}
+          onChange={(e) => {
+            setPhone(e.target.value);
+          }}
+          className="block border-2 hover:border-gray-600"
+        />
+        <label htmlFor="whatsApp">WhatsApp:</label>
+        <input
+          type="text"
+          id="whatsApp"
+          value={whatsApp}
+          onChange={(e) => {
+            setWhatsApp(e.target.value);
           }}
           className="block border-2 hover:border-gray-600"
         />
@@ -159,6 +212,16 @@ export default function EditProfileForm({
         />
         <label htmlFor="isContactPublic" className="ml-2">
           Contact Public
+        </label>
+        <input
+          type="checkbox"
+          id="isPhotographer"
+          checked={isPhotographer}
+          onChange={() => setIsPhotographer(!isPhotographer)}
+          className="ml-3 inline-block"
+        />
+        <label htmlFor="isPhotographer" className="ml-2">
+          Photographer
         </label>
         <button
           type="submit"
