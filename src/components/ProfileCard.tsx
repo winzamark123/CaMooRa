@@ -1,7 +1,7 @@
 import React from 'react';
 import { Card } from '@/components/ui/card';
 import { trpc } from '@/lib/trpc/client';
-// import { trpc } from '@/lib/trpc/client';
+
 interface ProfileCardProps {
   id: string;
 }
@@ -13,7 +13,6 @@ export default function ProfileCard({ id }: ProfileCardProps) {
     error,
   } = trpc.profile.getProfile.useQuery({ clerkId: id });
 
-  // For TESTING
   const contact = trpc.contact.getContact.useQuery({ clerkId: id }).data;
 
   if (isLoading) {
@@ -35,7 +34,15 @@ export default function ProfileCard({ id }: ProfileCardProps) {
         <p>{user_profile.firstName}</p>
         <p>{user_profile.lastName}</p>
         <p>{user_profile.profilePicURL}</p>
-        <p>{contact?.email}</p>
+        {contact?.isContactPublic && (
+          <div>
+            <p>{contact.email}</p>
+            <p>{contact?.discord}</p>
+            <p>{contact?.phone}</p>
+            <p>{contact?.whatsApp}</p>
+            <p>{contact?.instagram}</p>
+          </div>
+        )}
       </div>
       <div className="flex gap-4 p-8"></div>
     </Card>
