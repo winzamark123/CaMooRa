@@ -20,7 +20,6 @@ export async function createContext() {
       return null;
     }
     const user = userId ? await currentUser() : null;
-    console.log('user', user?.firstName);
     return user;
   }
 
