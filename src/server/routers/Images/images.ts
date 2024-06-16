@@ -7,11 +7,14 @@ export const images_router = router({
   getAllImages: publicProcedure
     .input(z.object({ clerkId: z.string() }))
     .query(async ({ input }) => {
-      return await prisma.images.findMany({
+      const images = await prisma.images.findMany({
         where: {
           clerkId: input.clerkId,
         },
       });
+
+      const urls = images.map((image) => image.url);
+      return urls;
     }),
 
   uploadImage: protectedProcedure

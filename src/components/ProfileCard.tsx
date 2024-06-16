@@ -1,7 +1,7 @@
 import React from 'react';
 import { Card } from '@/components/ui/card';
 import { trpc } from '@/lib/trpc/client';
-// import { trpc } from '@/lib/trpc/client';
+import Image from 'next/image';
 interface ProfileCardProps {
   id: string;
 }
@@ -13,8 +13,8 @@ export default function ProfileCard({ id }: ProfileCardProps) {
     error,
   } = trpc.profile.getProfile.useQuery({ clerkId: id });
 
-  // For TESTING
-  const contact = trpc.contact.getContact.useQuery({ clerkId: id }).data;
+  const { data: user_images, isLoading: isLoadingImages } =
+    trpc.images.getAllImages.useQuery({ clerkId: id });
 
   if (isLoading) {
     return <div>Loading...</div>;
@@ -31,13 +31,26 @@ export default function ProfileCard({ id }: ProfileCardProps) {
   return (
     <Card className="flex border-black p-8">
       <div className="flex flex-col border-r-2">
-        <p>{id}</p>
         <p>{user_profile.firstName}</p>
         <p>{user_profile.lastName}</p>
         <p>{user_profile.profilePicURL}</p>
-        <p>{contact?.email}</p>
       </div>
-      <div className="flex gap-4 p-8"></div>
+      {isLoadingImages && <div>Loading Images...</div>}
+      <div className="flex gap-4 p-8">
+        {user_images?.map((image) => (
+          <div
+            className="relative aspect-square w-32 border border-black"
+            key={image}
+          >
+            <Image
+              className="h-24 w-24 object-cover"
+              src={image}
+              alt="profile"
+              fill
+            />
+          </div>
+        ))}
+      </div>
     </Card>
   );
 }

@@ -29,7 +29,6 @@ export default function CreatePostForm() {
           size: file.size,
           checksum: await computeSHA256(file),
         });
-        console.log('THIS IS SIGNED URL RESULT:', signedURLResult);
 
         if (signedURLResult.error || !signedURLResult.success) {
           setStatusMessage('error uploading image');
