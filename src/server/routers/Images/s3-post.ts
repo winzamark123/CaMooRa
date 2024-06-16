@@ -1,9 +1,13 @@
-import { S3Client, PutObjectCommand } from '@aws-sdk/client-s3';
+import {
+  S3Client,
+  PutObjectCommand,
+  ListBucketsCommand,
+} from '@aws-sdk/client-s3';
 import { getSignedUrl } from '@aws-sdk/s3-request-presigner';
 import crypto from 'crypto';
 import prisma from '@prisma/prisma';
 
-interface IGetSignedURLProps {
+interface GetSignedURLProps {
   file_type: string;
   size: number;
   checksum: string;
@@ -13,8 +17,8 @@ interface IGetSignedURLProps {
 const s3 = new S3Client({
   region: process.env.AWS_S3_REGION,
   credentials: {
-    accessKeyId: process.env.AWS_ACCESS_KEY_ID as string,
-    secretAccessKey: process.env.AWS_SECRET_ACCESS_KEY as string,
+    accessKeyId: process.env.AWS_S3_ACCESS_KEY_ID as string,
+    secretAccessKey: process.env.AWS_S3_SECRET_ACCESS_KEY as string,
   },
 });
 
@@ -23,14 +27,12 @@ const generateFileName = (bytes = 32) =>
 const maxFileSize = 1024 * 1024 * 10; // 10MB
 const acceptedTypes = ['image/jpeg', 'image/png', 'image/jpg', 'image/svg+xml'];
 
-export async function createPresignedURL() {}
-
-export async function getSignedURL({
+export async function getPresignedURL({
   file_type,
   size,
   checksum,
   clerkId,
-}: IGetSignedURLProps) {
+}: GetSignedURLProps) {
   //check file types
   if (!acceptedTypes.includes(file_type)) {
     console.error('Invalid file type');
@@ -56,12 +58,9 @@ export async function getSignedURL({
     },
   });
 
-  console.log('putObjectCommand:', putObjectCommand);
-
   const signedURL = await getSignedUrl(s3, putObjectCommand, {
     expiresIn: 3600,
   });
-  console.log('Generated Signed URL:', signedURL);
 
   try {
     const images_result = await prisma.images.create({
@@ -77,10 +76,25 @@ export async function getSignedURL({
     return { error: 'Failed to create image record in database' };
   }
 }
-// model Images {
-//   id        String   @id @default(cuid())
-//   user      User     @relation(fields: [clerkId], references: [clerkId], onDelete: Cascade)
-//   clerkId   String
-//   url       String
-//   createdAt DateTime @default(now())
-// }
+
+export async function testAWSCredentials() {
+  try {
+    console.log('Testing AWS Credentials');
+    console.log('AWS_S3_REGION:', process.env.AWS_S3_REGION);
+    console.log('AWS_ACCESS_KEY_ID:', process.env.AWS_ACCESS_KEY_ID);
+    console.log('AWS_SECRET_ACCESS_KEY', process.env.AWS_SECRET_ACCESS_KEY);
+
+    const s3 = new S3Client({
+      region: process.env.AWS_S3_REGION,
+      credentials: {
+        accessKeyId: process.env.AWS_S3_ACCESS_KEY_ID as string,
+        secretAccessKey: process.env.AWS_S3_SECRET_ACCESS_KEY as string,
+      },
+    });
+
+    const result = await s3.send(new ListBucketsCommand({}));
+    console.log('S3 Buckets:', result.Buckets);
+  } catch (error) {
+    console.error('Error accessing S3:', error);
+  }
+}

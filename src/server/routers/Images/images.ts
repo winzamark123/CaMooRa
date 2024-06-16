@@ -1,7 +1,7 @@
 import { router, publicProcedure, protectedProcedure } from '@/lib/trpc/trpc';
 import { z } from 'zod';
 import prisma from '@prisma/prisma';
-import { getSignedURL } from './s3-post';
+import { getPresignedURL } from './s3-post';
 
 export const images_router = router({
   getAllImages: publicProcedure
@@ -23,7 +23,7 @@ export const images_router = router({
       })
     )
     .mutation(async ({ input, ctx }) => {
-      const { success, error } = await getSignedURL({
+      const { success, error } = await getPresignedURL({
         file_type: input.file_type,
         size: input.size,
         checksum: input.checksum,
