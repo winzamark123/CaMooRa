@@ -15,7 +15,7 @@ export const user_router = router({
     return await prisma.user.findMany({
       where: {
         contact: {
-          isPhotographer: false,
+          isPhotographer: false, // switch to true when you make your profile a photographer to see it for now
         },
       },
     });

@@ -1,15 +1,16 @@
 'use client';
 import { useState } from 'react';
-import EditProfileForm from './EditProfileForm';
+import EditProfileForm from '@/components/Profile/EditProfileForm';
 import { trpc } from '@/lib/trpc/client';
 import ProfileCard from '@/components/ProfileCard';
+import { usePathname } from 'next/navigation';
 
 export interface ContactProps {
   email: string;
-  discord: string | null;
-  instagram: string | null;
-  phone: string | null;
-  whatsApp: string | null;
+  discord: string | '';
+  instagram: string | '';
+  phone: string | '';
+  whatsApp: string | '';
   isContactPublic: boolean;
   isPhotographer: boolean;
 }
@@ -20,8 +21,10 @@ export interface ProfileProps {
   profilePicURL: string | null;
 }
 
-export default function Profile({ clerkId }: { clerkId: string }) {
-  const [isEditing, setIsEditing] = useState(false); // Will be set to False
+export default function Profile() {
+  const [isEditing, setIsEditing] = useState(false);
+  const pathname = usePathname();
+  const clerkId = pathname.split('/').pop() || '';
 
   const {
     data: profile,
@@ -51,7 +54,7 @@ export default function Profile({ clerkId }: { clerkId: string }) {
         Profile for {profile?.firstName} {profile?.lastName}
       </h1>
       {isEditing && (
-        <>
+        <div>
           <EditProfileForm
             contact={contact as ContactProps}
             profile={profile as ProfileProps}
@@ -65,13 +68,13 @@ export default function Profile({ clerkId }: { clerkId: string }) {
           >
             Cancel
           </button>
-        </>
+        </div>
       )}
 
       {!isEditing && (
         // ProfileCard just used for testing to see the Profile for now (looks up profile twice right now because of ProfileCard)
         // Will edit it to look different
-        <>
+        <div>
           <ProfileCard id={clerkId} />
           <button
             className="ml-2 mt-3 inline-block border-2 border-black bg-slate-500 p-4"
@@ -81,7 +84,7 @@ export default function Profile({ clerkId }: { clerkId: string }) {
           >
             Edit
           </button>
-        </>
+        </div>
       )}
     </div>
   );
