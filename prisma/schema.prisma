@@ -48,6 +48,6 @@ model Images {
   id        String   @id @default(cuid())
   user      User     @relation(fields: [clerkId], references: [clerkId], onDelete: Cascade)
   clerkId   String
-  imageName String
+  url       String
   createdAt DateTime @default(now())
 }

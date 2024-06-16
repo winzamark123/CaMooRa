@@ -1,20 +1,18 @@
 'use client';
 
-import Image from 'next/image';
 import { useState } from 'react';
-import { twMerge } from 'tailwind-merge';
+import { trpc } from '@/lib/trpc/client';
+import { computeSHA256 } from '@/server/routers/Images/imagesUtils';
+import Image from 'next/image';
 
-export default function CreatePostForm({
-  user,
-}: {
-  user: { name?: string | null; image?: string | null };
-}) {
-  const [content, setContent] = useState('');
+export default function CreatePostForm() {
+  const [file, setFile] = useState<File | null>(null);
+  const [selectedImage, setSelectedImage] = useState<string | null>('');
 
   const [statusMessage, setStatusMessage] = useState('');
   const [loading, setLoading] = useState(false);
 
-  const buttonDisabled = content.length < 1 || loading;
+  const signedURL = trpc.images.uploadImage.useMutation();
 
   const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
@@ -23,9 +21,54 @@ export default function CreatePostForm({
     setLoading(true);
 
     // Do all the image upload and everything
+    try {
+      if (file) {
+        setStatusMessage('uploading image');
+        const signedURLResult = await signedURL.mutateAsync({
+          file_type: file.type,
+          size: file.size,
+          checksum: await computeSHA256(file),
+        });
 
+        if (signedURLResult.error || !signedURLResult.success) {
+          setStatusMessage('error uploading image');
+          setLoading(false);
+          return;
+        }
+
+        const url = signedURLResult.success?.signed_url;
+
+        setStatusMessage('uploading image');
+        await fetch(url, {
+          method: 'PUT',
+          body: file,
+          headers: {
+            'Content-Type': file.type,
+          },
+        });
+      }
+    } catch (error) {
+      setStatusMessage('failed to upload image');
+      setLoading(false);
+      console.error('Failed to upload image', error);
+    } finally {
+      setLoading(false);
+    }
     setStatusMessage('created');
+    console.log(loading);
     setLoading(false);
+  };
+
+  const handleFileChange = (event: React.ChangeEvent<HTMLInputElement>) => {
+    const file = event.target.files?.[0];
+    if (file) {
+      const reader = new FileReader();
+      reader.onloadend = () => {
+        setSelectedImage(reader.result as string);
+      };
+      reader.readAsDataURL(file);
+      setFile(file);
+    }
   };
 
   return (
@@ -41,29 +84,7 @@ export default function CreatePostForm({
         )}
 
         <div className="flex w-full items-start gap-4 pb-4">
-          <div className="relative h-12 w-12 overflow-hidden rounded-full">
-            <Image
-              className="object-cover"
-              src={user.image || 'https://www.gravatar.com/avatar/?d=mp'}
-              alt={user.name || 'user profile picture'}
-              priority={true}
-              fill={true}
-            />
-          </div>
-
           <div className="flex w-full flex-col gap-2">
-            <div>{user.name}</div>
-
-            <label className="w-full">
-              <input
-                className="flex-1 border-none bg-transparent outline-none"
-                type="text"
-                placeholder="Post a thing..."
-                value={content}
-                onChange={(e) => setContent(e.target.value)}
-              />
-            </label>
-
             {/* Preivew File */}
 
             <label className="flex">
@@ -85,25 +106,23 @@ export default function CreatePostForm({
                 name="media"
                 type="file"
                 accept="image/jpeg,image/png,image/webp,image/gif,video/mp4,video/webm"
+                onChange={handleFileChange}
               />
             </label>
           </div>
         </div>
-
-        <div className="mt-5 flex items-center justify-between">
-          <div className="text-neutral-500">Characters: {content.length}</div>
-          <button
-            type="submit"
-            className={twMerge(
-              'disabled rounded-xl border px-4 py-2',
-              buttonDisabled && 'cursor-not-allowed opacity-50'
-            )}
-            disabled={buttonDisabled}
-            aria-disabled={buttonDisabled}
-          >
-            Post
-          </button>
-        </div>
+        {selectedImage && (
+          <Image
+            src={selectedImage}
+            alt="Preview Image"
+            width={300}
+            height={300}
+          />
+        )}
+        <button type="submit" className="bg-slate-300 p-4">
+          {' '}
+          Submit
+        </button>
       </form>
     </>
   );

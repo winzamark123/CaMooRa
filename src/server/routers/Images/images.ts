@@ -1,6 +1,7 @@
-import { router, publicProcedure } from '@/lib/trpc/trpc';
+import { router, publicProcedure, protectedProcedure } from '@/lib/trpc/trpc';
 import { z } from 'zod';
 import prisma from '@prisma/prisma';
+import { getSignedURL } from './s3-post';
 
 export const images_router = router({
   getAllImages: publicProcedure
@@ -13,27 +14,28 @@ export const images_router = router({
       });
     }),
 
-  //need check if user has permission to upload images
-  updateImages: publicProcedure
+  uploadImage: protectedProcedure
     .input(
       z.object({
-        clerkId: z.string(),
-        image_name: z.string(),
-        image_url: z.string(),
+        file_type: z.string(),
+        size: z.number(),
+        checksum: z.string(),
       })
     )
     .mutation(async ({ input, ctx }) => {
-      if (ctx.user?.id !== input.clerkId) {
-        throw new Error('You do not have permission to upload images');
+      const { success, error } = await getSignedURL({
+        file_type: input.file_type,
+        size: input.size,
+        checksum: input.checksum,
+        clerkId: ctx.user.id,
+      });
+
+      if (error) {
+        throw new Error(error);
       }
 
-      await prisma.images.create({
-        data: {
-          clerkId: input.clerkId,
-          imageName: input.image_name,
-        },
-      });
+      return { success, error };
     }),
 });
 
-export type ImagesRouter = typeof images_router;
+export type ImageRouter = typeof images_router;
