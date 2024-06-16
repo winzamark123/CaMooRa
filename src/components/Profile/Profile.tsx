@@ -4,7 +4,6 @@ import EditProfileForm from '@/components/Profile/EditProfileForm';
 import { trpc } from '@/lib/trpc/client';
 import ProfileCard from '@/components/ProfileCard';
 import { usePathname } from 'next/navigation';
-import UploadingImageButton from '@/components/Profile/UploadImageButton';
 
 export interface ContactProps {
   email: string;
@@ -69,7 +68,6 @@ export default function Profile() {
           >
             Cancel
           </button>
-          <UploadingImageButton />
         </div>
       )}
 
