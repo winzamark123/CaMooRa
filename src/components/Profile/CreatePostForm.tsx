@@ -29,6 +29,7 @@ export default function CreatePostForm() {
           size: file.size,
           checksum: await computeSHA256(file),
         });
+        console.log('THIS IS SIGNED URL RESULT:', signedURLResult);
 
         if (signedURLResult.error || !signedURLResult.success) {
           setStatusMessage('error uploading image');
@@ -37,6 +38,7 @@ export default function CreatePostForm() {
         }
 
         const url = signedURLResult.success?.signed_url;
+        console.log('THIS IS URL:', url);
 
         setStatusMessage('uploading image');
         await fetch(url, {
@@ -54,6 +56,7 @@ export default function CreatePostForm() {
     } finally {
       setLoading(false);
     }
+
     setStatusMessage('created');
     console.log(loading);
     setLoading(false);
