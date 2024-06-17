@@ -50,17 +50,22 @@ export default function Profile() {
 
   return (
     <div>
-      <h1 className="mb-4 border-b border-black">
-        Profile for {profile?.firstName} {profile?.lastName}
-      </h1>
       {isEditing && (
         <div>
+          <div className="mb-4 ">
+            <h1 className="font-bold">
+              {profile?.firstName} {profile?.lastName} Profile
+            </h1>
+            <small>* indicates required</small>
+          </div>
+
           <EditProfileForm
             contact={contact as ContactProps}
             profile={profile as ProfileProps}
             clerkId={clerkId}
             refetchProfile={refetchProfile}
             refetchContact={refetchContact}
+            setIsEditing={setIsEditing}
           />
           <button
             className="inline-block border-2 border-red-600"

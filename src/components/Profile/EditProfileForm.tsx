@@ -1,7 +1,20 @@
 import { trpc } from '@/lib/trpc/client';
-import { FormEvent, useState } from 'react';
+import { Dispatch, SetStateAction } from 'react';
 import { ContactProps, ProfileProps } from './Profile';
-import { validateProfile } from '@/utils/validation';
+import { zodResolver } from '@hookform/resolvers/zod';
+import { useForm } from 'react-hook-form';
+import { z } from 'zod';
+import {
+  Form,
+  FormControl,
+  FormField,
+  FormItem,
+  FormLabel,
+  FormMessage,
+} from '@/components/ui/form';
+import { Input } from '../ui/input';
+import { Button } from '../ui/button';
+import { Switch } from '../ui/switch';
 
 interface EditProfileFormProps {
   profile: ProfileProps;
@@ -9,6 +22,7 @@ interface EditProfileFormProps {
   clerkId: string;
   refetchProfile: () => void;
   refetchContact: () => void;
+  setIsEditing: Dispatch<SetStateAction<boolean>>;
 }
 
 interface UpdateProfileVariableProps {
@@ -33,25 +47,8 @@ export default function EditProfileForm({
   clerkId,
   refetchProfile,
   refetchContact,
+  setIsEditing,
 }: EditProfileFormProps) {
-  // Declaring State Variables
-  const [firstName, setFirstName] = useState<string>(profile.firstName);
-  const [lastName, setLastName] = useState<string>(profile.lastName);
-  const [discord, setDiscord] = useState<string | ''>(contact.discord);
-  const [instagram, setInstagram] = useState<string | ''>(contact.instagram);
-  const [phone, setPhone] = useState<string | ''>(contact.phone);
-  const [whatsApp, setWhatsApp] = useState<string | ''>(contact.whatsApp);
-  const [isPhotographer, setIsPhotographer] = useState<boolean>(
-    contact.isPhotographer
-  );
-  const [isContactPublic, setIsContactPublic] = useState<boolean>(
-    contact.isContactPublic
-  );
-  const [errors, setErrors] = useState<{
-    firstName?: string;
-    lastName?: string;
-  }>({});
-
   // Calling TRPC update procedures
   const updateProfile = trpc.profile.updateProfile.useMutation({
     onSuccess: () => {
@@ -73,45 +70,83 @@ export default function EditProfileForm({
     },
   });
 
-  function handleSave(e: FormEvent<HTMLFormElement>) {
-    e.preventDefault();
+  // Form validation
+  const formSchema = z.object({
+    firstName: z
+      .string()
+      .min(1, { message: 'First Name required' })
+      .refine((value) => /^[a-zA-Z\s]*$/.test(value), {
+        message: 'First Name should not contain numbers or punctuation',
+      })
+      .optional(),
+    lastName: z
+      .string()
+      .min(1, { message: 'Last Name required' })
+      .refine((value) => /^[a-zA-Z\s]*$/.test(value), {
+        message: 'Last Name should not contain numbers',
+      })
+      .optional(),
+    email: z.string().optional(),
+    discord: z.string().optional(),
+    instagram: z.string().optional(),
+    phone: z.string().optional(),
+    whatsApp: z.string().optional(),
+    isContactPublic: z
+      .boolean({ invalid_type_error: 'isContactPublic must be a boolean' })
+      .optional(),
+    isPhotographer: z
+      .boolean({ invalid_type_error: 'isPhotographer must be a boolean' })
+      .optional(),
+  });
 
-    // Cut white spaces off inputs (state variables)
-    const trimmedFirstName: string = firstName.trim();
-    const trimmedLastName: string = lastName.trim();
+  const form = useForm<z.infer<typeof formSchema>>({
+    resolver: zodResolver(formSchema),
+    defaultValues: {
+      firstName: profile.firstName,
+      lastName: profile.lastName,
+      email: contact.email,
+      phone: contact.phone || '',
+      whatsApp: contact.whatsApp || '',
+      instagram: contact.instagram || '',
+      discord: contact.discord || '',
+      isContactPublic: contact.isContactPublic,
+      isPhotographer: contact.isPhotographer,
+    },
+  });
 
-    // Validate Profile model fields
-    const profileValidationErrors = validateProfile(
-      trimmedFirstName,
-      trimmedLastName
-    );
+  function onSave(values: z.infer<typeof formSchema>) {
+    console.log('ran');
+    // Cut white spaces off inputs
+    const trimmedFirstName = values.firstName?.trim();
+    const trimmedLastName = values.lastName?.trim();
+    const trimmedDiscordLink = values.discord?.trim();
+    const trimmedInstagramLink = values.instagram?.trim();
+    const trimmedWhatsAppLink = values.whatsApp?.trim();
+    const trimmedPhone = values.phone?.trim();
 
-    if (Object.keys(profileValidationErrors).length > 0) {
-      setErrors(profileValidationErrors);
-      return;
-    }
-
-    // Update Profile fields (checks if state variable doesn't equal saved variable in db)
+    // Checks Profile fields (checks if state variable doesn't equal saved variable in db)
     const updatedProfileData: UpdateProfileVariableProps = { clerkId };
     if (trimmedFirstName !== profile.firstName)
       updatedProfileData.firstName = trimmedFirstName;
     if (trimmedLastName !== profile.lastName)
       updatedProfileData.lastName = trimmedLastName;
 
-    // Update Contact fields (checks if state variable doesn't equal saved variable in db)
+    // Checks Contact fields (checks if state variable doesn't equal saved variable in db)
     const updatedContactData: UpdateContactVariableProps = { clerkId };
-    if (isContactPublic !== contact.isContactPublic)
-      updatedContactData.isContactPublic = isContactPublic;
-    if (isPhotographer !== contact.isPhotographer)
-      updatedContactData.isPhotographer = isPhotographer;
-    if (discord !== contact.discord) updatedContactData.discord = discord;
-    if (instagram !== contact.instagram)
-      updatedContactData.instagram = instagram;
-    if (phone !== contact.phone) updatedContactData.phone = phone;
-    if (whatsApp !== contact.whatsApp) updatedContactData.whatsApp = whatsApp;
+    if (values.isContactPublic !== contact.isContactPublic)
+      updatedContactData.isContactPublic = values.isContactPublic;
+    if (values.isPhotographer !== contact.isPhotographer)
+      updatedContactData.isPhotographer = values.isPhotographer;
+    if (trimmedDiscordLink !== contact.discord)
+      updatedContactData.discord = values.discord;
+    if (trimmedInstagramLink !== contact.instagram)
+      updatedContactData.instagram = values.instagram;
+    if (trimmedPhone !== contact.phone) updatedContactData.phone = values.phone;
+    if (trimmedWhatsAppLink !== contact.whatsApp)
+      updatedContactData.whatsApp = values.whatsApp;
 
+    // Update Profile and Contact fields
     if (Object.keys(updatedProfileData).length > 1) {
-      setErrors({});
       updateProfile.mutate(updatedProfileData);
     }
     if (Object.keys(updatedContactData).length > 1) {
@@ -120,116 +155,171 @@ export default function EditProfileForm({
   }
 
   return (
-    <div>
-      <form
-        onSubmit={(e) => {
-          handleSave(e);
-        }}
-      >
-        <label htmlFor="firstName">First Name:</label>
-        {errors.firstName && <p className="text-red-600">{errors.firstName}</p>}
-        <input
-          type="text"
-          id="firstName"
-          placeholder={firstName}
-          value={firstName}
-          required
-          onChange={(e) => {
-            setFirstName(e.target.value);
-          }}
-          name="First Name"
-          className="block border-2 hover:border-gray-600"
-        />
-        <label htmlFor="lastName">Last Name:</label>
-        {errors.lastName && <p className="text-red-600">{errors.lastName}</p>}
-        <input
-          type="text"
-          id="lastName"
-          placeholder={lastName}
-          value={lastName}
-          required
-          onChange={(e) => {
-            setLastName(e.target.value);
-          }}
-          className="block border-2 hover:border-gray-600"
-        />
-        <label htmlFor="discord">Discord:</label>
-        <input
-          type="text"
-          id="discord"
-          placeholder={discord}
-          value={discord}
-          onChange={(e) => {
-            setDiscord(e.target.value);
-          }}
-          className="block border-2 hover:border-gray-600"
-        />
-        <label htmlFor="instagram">Instagram:</label>
-        <input
-          type="text"
-          id="instagram"
-          placeholder={instagram}
-          value={instagram}
-          onChange={(e) => {
-            setInstagram(e.target.value);
-          }}
-          className="block border-2 hover:border-gray-600"
-        />
-        <label htmlFor="phone">Phone:</label>
-        <input
-          type="text"
-          id="phone"
-          placeholder={phone}
-          value={phone}
-          onChange={(e) => {
-            setPhone(e.target.value);
-          }}
-          className="block border-2 hover:border-gray-600"
-        />
-        <label htmlFor="whatsApp">WhatsApp:</label>
-        <input
-          type="text"
-          id="whatsApp"
-          value={whatsApp}
-          onChange={(e) => {
-            setWhatsApp(e.target.value);
-          }}
-          className="block border-2 hover:border-gray-600"
-        />
-        <label htmlFor="email">Email:</label>
-        <input
-          type="text"
-          id="email"
-          placeholder={contact.email}
-          readOnly
-          className="block cursor-not-allowed border-2"
-        />
-        <input
-          type="checkbox"
-          id="isContactPublic"
-          checked={isContactPublic}
-          onChange={() => setIsContactPublic(!isContactPublic)}
-        />
-        <label htmlFor="isContactPublic" className="ml-2">
-          Contact Public
-        </label>
-        <input
-          type="checkbox"
-          id="isPhotographer"
-          checked={isPhotographer}
-          onChange={() => setIsPhotographer(!isPhotographer)}
-          className="ml-3 inline-block"
-        />
-        <label htmlFor="isPhotographer" className="ml-2">
-          Photographer
-        </label>
-        <button
-          type="submit"
-          className="mt-2 block border-2 border-green-500 hover:border-green-800"
+    <div className="flex flex-row items-center justify-between border-b-2 border-t-2 py-4 ">
+      <Form {...form}>
+        <form
+          onSubmit={form.handleSubmit(onSave)}
+          className="basis-3/4 space-y-3 px-7"
         >
-          Save
-        </button>
-      </form>
+          <div className="grid md:grid-cols-2 md:gap-32">
+            <div className="group relative z-0 mb-5 w-full">
+              <FormField
+                control={form.control}
+                name="firstName"
+                render={({ field }) => (
+                  <FormItem>
+                    <FormLabel>
+                      First Name <span>*</span>
+                    </FormLabel>
+                    <FormControl>
+                      <Input className="border-black" {...field} />
+                    </FormControl>
+                    <FormMessage />
+                  </FormItem>
+                )}
+              />
+            </div>
+            <div className="group relative z-0 mb-5 w-full">
+              <FormField
+                control={form.control}
+                name="lastName"
+                render={({ field }) => (
+                  <FormItem>
+                    <FormLabel>
+                      Last Name <span>*</span>
+                    </FormLabel>
+                    <FormControl>
+                      <Input className="border-black" {...field} />
+                    </FormControl>
+                    <FormMessage />
+                  </FormItem>
+                )}
+              />
+            </div>
+          </div>
+          <div className="grid md:grid-cols-2 md:gap-32">
+            <div className="group relative z-0 mb-5 w-full">
+              <FormField
+                control={form.control}
+                name="email"
+                render={({ field }) => (
+                  <FormItem>
+                    <FormLabel>
+                      Email <span>*</span>
+                    </FormLabel>
+                    <FormControl>
+                      <Input
+                        readOnly
+                        className=" cursor-not-allowed border-black text-gray-400"
+                        {...field}
+                      />
+                    </FormControl>
+                    <FormMessage />
+                  </FormItem>
+                )}
+              />
+            </div>
+            <div className="group relative z-0 mb-5 w-full">
+              <FormField
+                control={form.control}
+                name="phone"
+                render={({ field }) => (
+                  <FormItem>
+                    <FormLabel>Phone</FormLabel>
+                    <FormControl>
+                      <Input className="border-black" {...field} />
+                    </FormControl>
+                    <FormMessage />
+                  </FormItem>
+                )}
+              />
+            </div>
+          </div>
+          <div className="grid md:grid-cols-2 md:gap-32">
+            <div className="group relative z-0 mb-5 w-full">
+              <FormField
+                control={form.control}
+                name="instagram"
+                render={({ field }) => (
+                  <FormItem>
+                    <FormLabel>Instagram</FormLabel>
+                    <FormControl>
+                      <Input className=" border-black " {...field} />
+                    </FormControl>
+                    <FormMessage />
+                  </FormItem>
+                )}
+              />
+            </div>
+            <div className="group relative z-0 mb-5 w-full">
+              <FormField
+                control={form.control}
+                name="whatsApp"
+                render={({ field }) => (
+                  <FormItem>
+                    <FormLabel>WhatsApp</FormLabel>
+                    <FormControl>
+                      <Input className="border-black" {...field} />
+                    </FormControl>
+                    <FormMessage />
+                  </FormItem>
+                )}
+              />
+            </div>
+          </div>
+          <div className="grid md:grid-cols-2 md:gap-32">
+            <div className="group relative z-0 mb-5 w-full">
+              <FormField
+                control={form.control}
+                name="discord"
+                render={({ field }) => (
+                  <FormItem>
+                    <FormLabel>Discord</FormLabel>
+                    <FormControl>
+                      <Input className=" border-black " {...field} />
+                    </FormControl>
+                    <FormMessage />
+                  </FormItem>
+                )}
+              />
+            </div>
+            <div className="group relative z-0 mb-5 w-full">
+              <FormField
+                control={form.control}
+                name="isContactPublic"
+                render={({ field }) => (
+                  <FormItem className="flex flex-row items-center justify-between rounded-lg border border-black p-3">
+                    <FormLabel>Contact Public </FormLabel>
+                    <FormControl>
+                      <Switch
+                        checked={field.value}
+                        onCheckedChange={field.onChange}
+                      />
+                    </FormControl>
+                  </FormItem>
+                )}
+              />
+              <FormField
+                control={form.control}
+                name="isPhotographer"
+                render={({ field }) => (
+                  <FormItem className="mt-2 flex flex-row items-center justify-between rounded-lg border border-black p-3">
+                    <FormLabel>Photographer </FormLabel>
+                    <FormControl>
+                      <Switch
+                        checked={field.value}
+                        onCheckedChange={field.onChange}
+                      />
+                    </FormControl>
+                  </FormItem>
+                )}
+              />
+            </div>
+          </div>
+          <Button type="submit">Save</Button>
+          <Button onClick={() => setIsEditing(false)}>Cancel</Button>
+        </form>
+      </Form>
     </div>
   );
 }
