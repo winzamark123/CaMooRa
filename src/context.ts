@@ -17,6 +17,7 @@ export async function createContext() {
   async function getUser() {
     const { userId } = auth();
     if (!userId) {
+      console.log('Context: No user found');
       return null;
     }
     const user = userId ? await currentUser() : null;
