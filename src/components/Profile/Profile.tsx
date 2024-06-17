@@ -67,12 +67,6 @@ export default function Profile() {
             refetchContact={refetchContact}
             setIsEditing={setIsEditing}
           />
-          <button
-            className="inline-block border-2 border-red-600"
-            onClick={() => setIsEditing(false)}
-          >
-            Cancel
-          </button>
         </div>
       )}
 

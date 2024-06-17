@@ -156,6 +156,7 @@ export default function EditProfileForm({
 
   return (
     <div className="flex flex-row items-center justify-between border-b-2 border-t-2 py-4 ">
+      <div className="basis-1/4">Avatar</div>
       <Form {...form}>
         <form
           onSubmit={form.handleSubmit(onSave)}
