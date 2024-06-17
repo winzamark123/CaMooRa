@@ -1,7 +1,6 @@
 import { trpc } from '@/lib/trpc/client';
 import { Dispatch, SetStateAction } from 'react';
 import { ContactProps, ProfileProps } from './Profile';
-import UploadingImageButton from '@/components/Profile/UploadImageButton';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { useForm } from 'react-hook-form';
 import { z } from 'zod';
@@ -157,9 +156,6 @@ export default function EditProfileForm({
 
   return (
     <div className="flex flex-row items-center justify-between border-b-2 border-t-2 py-4 ">
-      <div className="basis-1/4">
-        <UploadingImageButton />
-      </div>
       <Form {...form}>
         <form
           onSubmit={form.handleSubmit(onSave)}
