@@ -4,12 +4,14 @@ interface createProfileProp {
   clerkId: string;
   userFirstName: string;
   userLastName: string;
+  userProfilePicURL: string;
 }
 
 export async function createProfile({
   clerkId,
   userFirstName,
   userLastName,
+  userProfilePicURL,
 }: createProfileProp) {
   try {
     await prisma.profile.create({
@@ -17,6 +19,7 @@ export async function createProfile({
         clerkId: clerkId,
         firstName: userFirstName,
         lastName: userLastName,
+        profilePicURL: userProfilePicURL,
       },
     });
   } catch (err) {

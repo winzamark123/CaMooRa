@@ -7,6 +7,7 @@ interface createUserProp {
   userFirstName: string;
   userLastName: string;
   userEmail: string;
+  userProfilePicURL: string;
 }
 
 export async function createUser({
@@ -14,6 +15,7 @@ export async function createUser({
   userFirstName,
   userLastName,
   userEmail,
+  userProfilePicURL,
 }: createUserProp) {
   try {
     // Check if user already exists, might not need this in production
@@ -39,6 +41,7 @@ export async function createUser({
       clerkId: newUser.clerkId,
       userFirstName,
       userLastName,
+      userProfilePicURL,
     });
     await createContact({ clerkId: newUser.clerkId, userEmail: userEmail });
   } catch (err) {
