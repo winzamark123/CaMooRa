@@ -33,7 +33,14 @@ export default function ProfileCard({ id }: ProfileCardProps) {
       <div className="flex flex-col border-r-2">
         <p>{user_profile.firstName}</p>
         <p>{user_profile.lastName}</p>
-        <p>{user_profile.profilePicURL}</p>
+        {user_profile.profilePic?.url && (
+          <Image
+            src={user_profile.profilePic?.url}
+            alt="profile"
+            width={100}
+            height={100}
+          />
+        )}
       </div>
       {isLoadingImages && <div>Loading Images...</div>}
       <div className="flex gap-4 p-8">

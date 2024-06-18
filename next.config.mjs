@@ -8,6 +8,12 @@ const nextConfig = {
         port: '',
         pathname: '/**', // Match all paths within the domain
       },
+      {
+        protocol: 'https',
+        hostname: 'img.clerk.com',
+        port: '',
+        pathname: '/**', // Match all paths within the domain
+      },
     ],
   },
 };

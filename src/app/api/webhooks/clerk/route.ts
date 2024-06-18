@@ -54,7 +54,7 @@ export async function POST(req: Request) {
 
   // Create User in the db
   if (evt.type === 'user.created') {
-    const { id, first_name, last_name } = evt.data;
+    const { id, first_name, last_name, image_url } = evt.data;
     const primary_email = evt.data.email_addresses[0].email_address;
 
     if (!first_name || !last_name || !primary_email) {
@@ -69,6 +69,7 @@ export async function POST(req: Request) {
         userFirstName: first_name,
         userLastName: last_name,
         userEmail: primary_email,
+        userProfilePicURL: image_url,
       });
     } catch (err) {
       console.error('Error creating user in db:', err);
