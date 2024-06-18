@@ -25,7 +25,7 @@ const updateProfileObject = z.object({
       message: 'Last Name should not contain numbers',
     })
     .optional(),
-  profilePicURL: z.string().optional(),
+  profilePicId: z.string().optional(),
 });
 
 export const profileRouter = router({
@@ -39,7 +39,7 @@ export const profileRouter = router({
         select: {
           firstName: true,
           lastName: true,
-          profilePicURL: true,
+          profilePic: true,
         },
       });
     }),
@@ -58,7 +58,7 @@ export const profileRouter = router({
         data: {
           firstName: input.firstName,
           lastName: input.lastName,
-          profilePicURL: input.profilePicURL,
+          profilePicId: input.profilePicId,
         },
       });
     }),

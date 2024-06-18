@@ -115,7 +115,6 @@ export default function EditProfileForm({
   });
 
   function onSave(values: z.infer<typeof formSchema>) {
-    console.log('ran');
     // Cut white spaces off inputs
     const trimmedFirstName = values.firstName?.trim();
     const trimmedLastName = values.lastName?.trim();

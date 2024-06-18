@@ -15,10 +15,16 @@ export interface ContactProps {
   isPhotographer: boolean;
 }
 
+interface IProfilePic {
+  clerkId: string;
+  id: string;
+  url: string;
+  createdAt: string;
+}
 export interface ProfileProps {
   firstName: string;
   lastName: string;
-  profilePicURL: string | null;
+  profilePic: IProfilePic;
 }
 
 export default function Profile() {

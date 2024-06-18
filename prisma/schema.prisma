@@ -27,7 +27,8 @@ model Profile {
 
   firstName     String // init with firstName from Clerk
   lastName      String // init with lastName from Clerk
-  profilePicURL String? // init with imageURL from Clerk
+  profilePic    Images? @relation(fields: [profilePicId], references: [id])
+  profilePicId  String 
 }
 
 model Contact {
@@ -45,9 +46,10 @@ model Contact {
 }
 
 model Images {
-  id        String   @id @default(cuid())
-  user      User     @relation(fields: [clerkId], references: [clerkId], onDelete: Cascade)
+  id        String    @id @default(cuid())
+  user      User      @relation(fields: [clerkId], references: [clerkId], onDelete: Cascade)
   clerkId   String
   url       String
-  createdAt DateTime @default(now())
+  createdAt DateTime  @default(now())
+  Profile   Profile[]
 }

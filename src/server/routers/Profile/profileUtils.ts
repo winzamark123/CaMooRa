@@ -14,12 +14,20 @@ export async function createProfile({
   userProfilePicURL,
 }: createProfileProp) {
   try {
+    //create profile pic
+    const profilePicId = await prisma.images.create({
+      data: {
+        clerkId: clerkId,
+        url: userProfilePicURL,
+      },
+    });
+    //create profile
     await prisma.profile.create({
       data: {
         clerkId: clerkId,
         firstName: userFirstName,
         lastName: userLastName,
-        profilePicURL: userProfilePicURL,
+        profilePicId: profilePicId.id,
       },
     });
   } catch (err) {
