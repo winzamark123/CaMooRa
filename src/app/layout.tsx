@@ -20,7 +20,7 @@ export default function RootLayout({
   return (
     <ClerkProvider>
       <html lang="en">
-        <body>
+        <body className="flex min-h-screen flex-col">
           <Provider>
             <ThemeProvider
               attribute="class"
