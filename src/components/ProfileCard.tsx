@@ -29,28 +29,29 @@ export default function ProfileCard({ id }: ProfileCardProps) {
   }
 
   return (
-    <Card className="flex border-black p-8">
-      <div className="flex flex-col border-r-2">
-        <p>{user_profile.firstName}</p>
-        <p>{user_profile.lastName}</p>
-        {user_profile.profilePic?.url && (
-          <Image
-            src={user_profile.profilePic?.url}
-            alt="profile"
-            width={100}
-            height={100}
-          />
-        )}
+    <Card className="flex rounded-2xl border-slate-400 p-4">
+      <div className="border-r-2 border-slate-400 p-4">
+        <div className="flex items-center gap-2 font-bold ">
+          <div className="relative aspect-square h-11 w-11 rounded-full border">
+            {user_profile.profilePic?.url && (
+              <Image
+                src={user_profile.profilePic?.url}
+                alt="profile"
+                fill
+                className="rounded-full"
+              />
+            )}
+          </div>
+          <p>{user_profile.firstName}</p>
+          <p>{user_profile.lastName}</p>
+        </div>
       </div>
       {isLoadingImages && <div>Loading Images...</div>}
-      <div className="flex gap-4 p-8">
-        {user_images?.map((image) => (
-          <div
-            className="relative aspect-square w-32 border border-black"
-            key={image}
-          >
+      <div className="flex gap-4 p-4">
+        {user_images?.map((image, index) => (
+          <div className="relative aspect-square w-36" key={index}>
             <Image
-              className="h-24 w-24 object-cover"
+              className="rounded-xl object-cover"
               src={image}
               alt="profile"
               fill
