@@ -1,4 +1,5 @@
 import { trpc } from '@/lib/trpc/client';
+import Image from 'next/image';
 import { Dispatch, SetStateAction } from 'react';
 import { ContactProps, ProfileProps } from './Profile';
 import { zodResolver } from '@hookform/resolvers/zod';
@@ -155,7 +156,15 @@ export default function EditProfileForm({
 
   return (
     <div className="flex flex-row items-center justify-between border-b-2 border-t-2 py-4 ">
-      <div className="basis-1/4">Avatar</div>
+      <div className="basis-1/4">
+        <Image
+          src={profile.profilePic?.url}
+          alt="profile"
+          width={100}
+          height={100}
+        />
+        Avatar
+      </div>
       <Form {...form}>
         <form
           onSubmit={form.handleSubmit(onSave)}
