@@ -18,7 +18,7 @@ export default async function Home() {
           </SignedIn>
         )}
       </div>
-      <div className="h-30 flex w-full flex-col ">
+      <div className="h-30 flex w-full max-w-5xl flex-col">
         <PhotographersList />
       </div>
     </main>
