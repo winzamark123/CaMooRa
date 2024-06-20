@@ -2,6 +2,8 @@ import React from 'react';
 import { Card } from '@/components/ui/card';
 import { trpc } from '@/lib/trpc/client';
 import Image from 'next/image';
+import UsernameProfilePic from './services/UsernameProfilePic';
+
 interface ProfileCardProps {
   id: string;
 }
@@ -23,34 +25,21 @@ export default function ProfileCard({ id }: ProfileCardProps) {
   if (error) {
     return <div>Error: {error.message}</div>;
   }
-
   if (!user_profile) {
     return <div>No Profile Available for this User</div>;
   }
 
   return (
-    <Card className="flex border-black p-8">
-      <div className="flex flex-col border-r-2">
-        <p>{user_profile.firstName}</p>
-        <p>{user_profile.lastName}</p>
-        {user_profile.profilePic?.url && (
-          <Image
-            src={user_profile.profilePic?.url}
-            alt="profile"
-            width={100}
-            height={100}
-          />
-        )}
+    <Card className="flex rounded-2xl border-slate-400 p-4">
+      <div className="border-r-2 border-slate-400 p-4">
+        <UsernameProfilePic id={id} />
       </div>
       {isLoadingImages && <div>Loading Images...</div>}
-      <div className="flex gap-4 p-8">
-        {user_images?.map((image) => (
-          <div
-            className="relative aspect-square w-32 border border-black"
-            key={image}
-          >
+      <div className="flex gap-4 p-4">
+        {user_images?.map((image, index) => (
+          <div className="relative aspect-square w-36" key={index}>
             <Image
-              className="h-24 w-24 object-cover"
+              className="rounded-xl object-cover"
               src={image}
               alt="profile"
               fill

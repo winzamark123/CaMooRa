@@ -11,7 +11,10 @@ export default function PhotographersList() {
     data: all_users,
     isLoading,
     error,
-  } = trpc.user.getAllPhotographers.useQuery(); // Switched to all Photographers since all Users won't be displayed in the Photographer list since not all are photographers
+  } = trpc.user.getAllPhotographers.useQuery(undefined, {
+    staleTime: 0, // Force the query to be treated as fresh
+    refetchOnMount: true, // Ensure it refetches on mount
+  });
 
   if (isLoading) {
     return <div>Loading...</div>;
