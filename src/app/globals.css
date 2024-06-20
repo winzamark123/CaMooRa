@@ -2,6 +2,13 @@
 @tailwind components;
 @tailwind utilities;
 
+@font-face {
+  font-family: 'Brockman';
+  src: url('/fonts/Brockman/brockmann-medium-webfont.ttf') format('truetype');
+  font-weight: 300;
+  font-style: normal;
+}
+
 @layer base {
   :root {
     --background: 0 0% 100%;
@@ -74,5 +81,9 @@
   body {
     @apply bg-background text-foreground;
     font-family: 'Lucida Sans', 'Lucida Sans Regular', 'Lucida Grande', 'Lucida Sans Unicode', Geneva, Verdana, sans-serif
+  }
+
+  h1 {
+    @apply text-4xl font-mono;
   }
 }
