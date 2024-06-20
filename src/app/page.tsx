@@ -7,7 +7,7 @@ import UsernameProfilePic from '@/components/services/UsernameProfilePic';
 export default async function Home() {
   const { userId } = auth();
   return (
-    <main className="flex w-full flex-col items-center p-10">
+    <main className="flex w-full flex-col items-center gap-4 p-10">
       <div className="">
         <Landing />
       </div>
