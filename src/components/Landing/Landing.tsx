@@ -1,5 +1,3 @@
-import { UserButton, SignedIn, SignedOut, SignInButton } from '@clerk/nextjs';
-
 export default function Landing() {
   return (
     <main className="">

@@ -1,4 +1,4 @@
-import { UserButton, SignedIn, SignedOut, SignInButton } from '@clerk/nextjs';
+import { SignedIn, SignedOut, SignInButton } from '@clerk/nextjs';
 import { ModeToggle } from '../Theme/mode-toggle';
 import Image from 'next/image';
 import FoMooLogo from '@/public/fo-moo-logo.svg';
@@ -23,9 +23,6 @@ export default function NavBar() {
           <SignedOut>
             <SignInButton />
           </SignedOut>
-          <SignedIn>
-            <UserButton showName />
-          </SignedIn>
         </div>
         <ModeToggle />
       </div>
