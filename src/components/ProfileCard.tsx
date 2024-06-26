@@ -2,7 +2,7 @@ import React from 'react';
 import { Card } from '@/components/ui/card';
 import { trpc } from '@/lib/trpc/client';
 import Image from 'next/image';
-import UsernameProfilePic from './services/UsernameProfilePic';
+import UsernameProfilePic from './User/UsernameProfilePic';
 
 interface ProfileCardProps {
   id: string;
@@ -25,6 +25,7 @@ export default function ProfileCard({ id }: ProfileCardProps) {
   if (error) {
     return <div>Error: {error.message}</div>;
   }
+
   if (!user_profile) {
     return <div>No Profile Available for this User</div>;
   }
