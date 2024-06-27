@@ -13,7 +13,8 @@ export default function PhotographersList() {
     error,
   } = trpc.user.getAllPhotographers.useQuery(undefined, {
     staleTime: 0, // Force the query to be treated as fresh
-    refetchOnMount: true, // Ensure it refetches on mount
+    refetchOnMount: 'always', // Ensure it refetches on mount
+    retry: 1,
   });
 
   if (isLoading) {
