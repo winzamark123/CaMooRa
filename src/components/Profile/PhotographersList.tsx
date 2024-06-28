@@ -27,7 +27,7 @@ export default function PhotographersList() {
 
   return (
     <main>
-      <div className="flex flex-col gap-4">
+      <div className="grid grid-cols-3 gap-4">
         {all_users?.map((user) => (
           <div key={user.clerkId} className="">
             <Link href={`/profile/${user.clerkId}`}>

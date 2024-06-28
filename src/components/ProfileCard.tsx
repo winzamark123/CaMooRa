@@ -31,14 +31,12 @@ export default function ProfileCard({ id }: ProfileCardProps) {
   }
 
   return (
-    <Card className="flex rounded-2xl border-slate-400 p-4">
-      <div className="border-r-2 border-slate-400 p-4">
-        <UsernameProfilePic id={id} />
-      </div>
+    <Card className="flex flex-col gap-2 rounded-2xl border-slate-400 p-6">
+      <UsernameProfilePic id={id} />
       {isLoadingImages && <div>Loading Images...</div>}
       <div className="flex gap-4 p-4">
         {user_images?.map((image, index) => (
-          <div className="relative aspect-square w-36" key={index}>
+          <div className="relative h-64 w-full" key={index}>
             <Image
               className="rounded-xl object-cover"
               src={image}
@@ -47,6 +45,9 @@ export default function ProfileCard({ id }: ProfileCardProps) {
             />
           </div>
         ))}
+      </div>
+      <div className="flex justify-end">
+        <p>View More</p>
       </div>
     </Card>
   );
