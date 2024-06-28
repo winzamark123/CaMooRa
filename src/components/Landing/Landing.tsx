@@ -3,10 +3,12 @@ import fomooLogo from '@/public/fo-moo-logo.svg';
 
 export default function Landing() {
   return (
-    <main className="flex w-full flex-col border font-mono">
+    <main className="flex w-full max-w-2xl flex-col font-mono">
       <h1>PHOTOGRAPHER</h1>
-      <h3>CAPTURE</h3>
-      <div className="flex">
+      <div className="px-2">
+        <h4>CAPTURE</h4>
+      </div>
+      <div className="flex justify-end">
         <Image
           src={fomooLogo}
           alt="logo landing page"
@@ -15,7 +17,9 @@ export default function Landing() {
         />
         <h1>SERVICE</h1>
       </div>
-      <h3>YOUR MEMORIES</h3>
+      <div className="flex justify-end px-2">
+        <h4>YOUR MEMORIES</h4>
+      </div>
     </main>
   );
 }
