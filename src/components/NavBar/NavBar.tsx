@@ -34,7 +34,7 @@ export default function NavBar() {
           </SignedOut>
         </div>
       </div>
-      {showSignInPopUp && <SignInPopUp />}
+      {showSignInPopUp && <SignInPopUp onToggle={toggleSignInPopUp} />}
     </main>
   );
 }
