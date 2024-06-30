@@ -2,6 +2,7 @@ import { SignInButton } from '@clerk/nextjs';
 import { Button } from '../ui/button';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faGoogle } from '@fortawesome/free-brands-svg-icons';
+import { motion } from 'framer-motion';
 
 export default function SignInPopUp({ onToggle }: { onToggle: () => void }) {
   return (
@@ -10,9 +11,16 @@ export default function SignInPopUp({ onToggle }: { onToggle: () => void }) {
     items-center justify-center bg-black bg-opacity-50"
       onClick={onToggle}
     >
-      <div
+      <motion.div
+        initial={{ y: '100vh' }}
+        animate={{ y: 0 }}
+        transition={{
+          type: 'spring',
+          damping: 15,
+          duration: 0.5,
+        }}
         className="h-92 left-0 top-1/3 z-30 flex w-9/12 flex-col items-center 
-      justify-center gap-4 bg-sky-900 p-12 text-white"
+      justify-center gap-4 rounded-2xl bg-sky-900 p-12 text-white"
         onClick={(event) => event.stopPropagation()}
       >
         <h4>Welcome to FoMoo!</h4>
@@ -23,7 +31,7 @@ export default function SignInPopUp({ onToggle }: { onToggle: () => void }) {
             Sign In with Google
           </Button>
         </SignInButton>
-      </div>
+      </motion.div>
     </main>
   );
 }
