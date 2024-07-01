@@ -29,6 +29,7 @@ model Profile {
   lastName      String // init with lastName from Clerk
   profilePic    Images? @relation(fields: [profilePicId], references: [id])
   profilePicId  String 
+  bio String?
 }
 
 model Contact {

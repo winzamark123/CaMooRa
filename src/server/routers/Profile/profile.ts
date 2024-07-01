@@ -26,6 +26,10 @@ const updateProfileObject = z.object({
     })
     .optional(),
   profilePicId: z.string().optional(),
+  bio: z
+    .string()
+    .max(150, { message: 'Bio must be 150 characters or less' })
+    .optional(),
 });
 
 export const profileRouter = router({
@@ -40,6 +44,7 @@ export const profileRouter = router({
           firstName: true,
           lastName: true,
           profilePic: true,
+          bio: true,
         },
       });
     }),
@@ -59,6 +64,7 @@ export const profileRouter = router({
           firstName: input.firstName,
           lastName: input.lastName,
           profilePicId: input.profilePicId,
+          bio: input.bio,
         },
       });
     }),
