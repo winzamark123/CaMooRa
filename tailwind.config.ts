@@ -61,6 +61,9 @@ const config: Config = {
           DEFAULT: 'hsl(var(--card))',
           foreground: 'hsl(var(--card-foreground))',
         },
+        activate: '#90AA28',
+        deactivate: '#A02A2A',
+        not_public: '#2F2F2F',
       },
       borderRadius: {
         lg: 'var(--radius)',
