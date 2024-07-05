@@ -8,50 +8,20 @@ import {
   FormMessage,
 } from '../ui/form';
 import { Input } from '../ui/input';
-import { UseFormReturn } from 'react-hook-form';
-import { Button } from '../ui/button';
+import { ProfileSectionProps } from './ProfileSection';
 
-interface ProfileSectionProps {
-  form: UseFormReturn<
-    {
-      email?: string | undefined;
-      discord?: string | undefined;
-      instagram?: string | undefined;
-      phone?: string | undefined;
-      whatsApp?: string | undefined;
-      isContactPublic?: boolean | undefined;
-      isPhotographer?: boolean | undefined;
-      firstName?: string | undefined;
-      lastName?: string | undefined;
-      bio?: string | undefined;
-    },
-    any,
-    undefined
-  >;
-  onSave: (values: {
-    email?: string | undefined;
-    discord?: string | undefined;
-    instagram?: string | undefined;
-    phone?: string | undefined;
-    whatsApp?: string | undefined;
-    isContactPublic?: boolean | undefined;
-    isPhotographer?: boolean | undefined;
-    firstName?: string | undefined;
-    lastName?: string | undefined;
-    bio?: string | undefined;
-  }) => void;
-}
+type LinkAccountSectionProps = Omit<ProfileSectionProps, 'profileUrl'>;
 
 export default function LinkAccountSection({
   form,
   onSave,
-}: ProfileSectionProps) {
+}: LinkAccountSectionProps) {
   return (
     <div className="flex flex-row items-center justify-between">
       <Form {...form}>
         <form
           onSubmit={form.handleSubmit(onSave)}
-          className="w-full space-y-3 px-7"
+          className="w-full basis-11/12 space-y-3"
         >
           {/* First Row */}
           <div className="grid md:grid-cols-2 md:gap-32">
@@ -79,12 +49,12 @@ export default function LinkAccountSection({
             <div className="group relative z-0 mb-5 w-full">
               <FormField
                 control={form.control}
-                name="phone"
+                name="instagram"
                 render={({ field }) => (
                   <FormItem>
-                    <FormLabel>Phone</FormLabel>
+                    <FormLabel>Instagram</FormLabel>
                     <FormControl>
-                      <Input className="border-black" {...field} />
+                      <Input className=" border-black " {...field} />
                     </FormControl>
                     <FormMessage />
                   </FormItem>
@@ -97,10 +67,10 @@ export default function LinkAccountSection({
             <div className="group relative z-0 mb-5 w-full">
               <FormField
                 control={form.control}
-                name="instagram"
+                name="discord"
                 render={({ field }) => (
                   <FormItem>
-                    <FormLabel>Instagram</FormLabel>
+                    <FormLabel>Discord</FormLabel>
                     <FormControl>
                       <Input className=" border-black " {...field} />
                     </FormControl>
@@ -126,14 +96,14 @@ export default function LinkAccountSection({
             </div>
           </div>
           {/* Third Row */}
-          <div className="grid md:grid-cols-2 md:gap-32">
+          {/* <div className="grid md:grid-cols-2 md:gap-32">
             <div className="group relative z-0 mb-5 w-full">
               <FormField
                 control={form.control}
                 name="discord"
                 render={({ field }) => (
                   <FormItem>
-                    <FormLabel>Discord</FormLabel>
+                    <FormLabel>Other Link</FormLabel>
                     <FormControl>
                       <Input className=" border-black " {...field} />
                     </FormControl>
@@ -142,29 +112,7 @@ export default function LinkAccountSection({
                 )}
               />
             </div>
-            <div className="group relative z-0 mb-5 w-full">
-              <FormField
-                control={form.control}
-                name="email"
-                render={({ field }) => (
-                  <FormItem>
-                    <FormLabel>
-                      Email <span>*</span>
-                    </FormLabel>
-                    <FormControl>
-                      <Input
-                        readOnly
-                        className=" cursor-not-allowed border-black text-gray-400"
-                        {...field}
-                      />
-                    </FormControl>
-                    <FormMessage />
-                  </FormItem>
-                )}
-              />
-            </div>
-          </div>
-          <Button type="submit">Save</Button>
+          </div> */}
         </form>
       </Form>
     </div>
