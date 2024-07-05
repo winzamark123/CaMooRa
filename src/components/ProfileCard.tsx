@@ -3,6 +3,7 @@ import { Card } from '@/components/ui/card';
 import { trpc } from '@/lib/trpc/client';
 import Image from 'next/image';
 import UsernameProfilePic from './User/UsernameProfilePic';
+import { useState, useEffect } from 'react';
 
 interface ProfileCardProps {
   id: string;
@@ -18,6 +19,18 @@ export default function ProfileCard({ id }: ProfileCardProps) {
   const { data: user_images, isLoading: isLoadingImages } =
     trpc.images.getAllImages.useQuery({ clerkId: id });
 
+  const [currentImageIndex, setCurrentImageIndex] = useState(0);
+
+  useEffect(() => {
+    const interval = setInterval(() => {
+      setCurrentImageIndex(
+        (prevIndex) => (prevIndex + 1) % (user_images?.length || 1)
+      );
+    }, 3000); // Change image every 3 seconds
+
+    return () => clearInterval(interval); // Clean up on component unmount
+  }, [user_images]);
+
   if (isLoading) {
     return <div>Loading...</div>;
   }
@@ -32,23 +45,18 @@ export default function ProfileCard({ id }: ProfileCardProps) {
 
   return (
     <Card className="flex flex-col gap-2 rounded-2xl border-slate-400 p-6">
-      <UsernameProfilePic id={id} />
       {isLoadingImages && <div>Loading Images...</div>}
-      <div className="flex gap-4 p-4">
-        {user_images?.map((image, index) => (
-          <div className="relative h-64 w-full" key={index}>
-            <Image
-              className="rounded-xl object-cover"
-              src={image}
-              alt="profile"
-              fill
-            />
-          </div>
-        ))}
+      <div className="relative flex h-72 gap-4 p-4">
+        {user_images && user_images.length > 0 && (
+          <Image
+            className="rounded-xl object-cover"
+            src={user_images[currentImageIndex]}
+            alt="profile"
+            fill
+          />
+        )}
       </div>
-      <div className="flex justify-end">
-        <p>View More</p>
-      </div>
+      <UsernameProfilePic id={id} />
     </Card>
   );
 }

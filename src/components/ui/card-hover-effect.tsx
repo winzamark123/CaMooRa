@@ -48,7 +48,7 @@ export const HoverEffect = ({
               />
             )}
           </AnimatePresence>
-          <div className="relative z-30">
+          <div className="relative z-10">
             <ProfileCard id={item.clerkId} />
           </div>
         </Link>
