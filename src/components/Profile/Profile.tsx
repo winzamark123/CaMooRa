@@ -8,6 +8,7 @@ import { Button } from '../ui/button';
 import Image from 'next/image';
 // import { Instagram, Phone, Mail } from 'lucide-react';
 import { Phone } from 'lucide-react';
+import Gallery from './Gallery';
 
 export interface ContactProps {
   email: string;
@@ -143,7 +144,7 @@ export default function Profile() {
       </div>
 
       {/* User's Gallery Section */}
-      <div>Images</div>
+      <Gallery clerkId={clerkId} />
     </div>
   );
 }
