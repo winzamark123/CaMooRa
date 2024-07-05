@@ -203,13 +203,13 @@ export default function EditProfile({
       )}
       <div className="mt-4 flex flex-row-reverse">
         <Button
-          className="bg-profile_button_bg ml-5 w-20 border border-gray-400 text-black hover:bg-sky-950 hover:text-white"
+          className="ml-5 w-20 border border-gray-400 bg-profile_button_bg text-black hover:bg-sky-950 hover:text-white"
           onClick={form.handleSubmit(onSave)}
         >
           Save
         </Button>
         <Button
-          className="bg-profile_button_bg w-20 border border-gray-400 text-black hover:bg-sky-950 hover:text-white"
+          className="w-20 border border-gray-400 bg-profile_button_bg text-black hover:bg-sky-950 hover:text-white"
           onClick={() => setIsEditing(false)}
         >
           Cancel

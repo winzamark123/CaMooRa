@@ -1,5 +1,5 @@
 import Profile from '@/components/Profile/Profile';
-import CreatePostForm from '@/components/Profile/CreatePostForm';
+// import CreatePostForm from '@/components/Profile/CreatePostForm';
 
 export default function Page() {
   return (

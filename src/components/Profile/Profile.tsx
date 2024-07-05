@@ -136,7 +136,7 @@ export default function Profile() {
           {currentUser?.id === clerkId ? (
             <div className="ml-auto">
               <Button
-                className="bg-profile_button_bg w-20 border border-gray-400 text-black hover:bg-sky-950 hover:text-white"
+                className="w-20 border border-gray-400 bg-profile_button_bg text-black hover:bg-sky-950 hover:text-white"
                 onClick={() => {
                   setIsEditing(!isEditing);
                 }}
