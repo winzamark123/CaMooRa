@@ -11,10 +11,9 @@ import {
 import { Input } from '../ui/input';
 import { Switch } from '../ui/switch';
 import { UseFormReturn } from 'react-hook-form';
-import { Button } from '../ui/button';
 import { Textarea } from '../ui/textarea';
 
-interface ProfileSectionProps {
+export interface ProfileSectionProps {
   form: UseFormReturn<
     {
       email?: string | undefined;
@@ -53,7 +52,7 @@ export default function ProfileSection({
 }: ProfileSectionProps) {
   return (
     <div className="flex flex-row items-center justify-between">
-      <div className="basis-1/4">
+      <div className="basis-1/4 items-start self-start">
         {profileUrl && (
           <Image src={profileUrl} alt="profile" width={233} height={289} />
         )}
@@ -61,7 +60,7 @@ export default function ProfileSection({
       <Form {...form}>
         <form
           onSubmit={form.handleSubmit(onSave)}
-          className="basis-3/4 space-y-8 px-7"
+          className="basis-3/4 space-y-8 pl-7"
         >
           {/* 1st Row */}
           <div className="grid md:grid-cols-2 md:gap-32">
@@ -195,7 +194,6 @@ export default function ProfileSection({
               />
             </div>
           </div>
-          <Button type="submit">Save</Button>
         </form>
       </Form>
     </div>

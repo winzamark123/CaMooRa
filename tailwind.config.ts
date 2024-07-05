@@ -64,6 +64,7 @@ const config: Config = {
         activate: '#90AA28',
         deactivate: '#A02A2A',
         not_public: '#2F2F2F',
+        profile_button_bg: '#FBFCF8',
       },
       borderRadius: {
         lg: 'var(--radius)',

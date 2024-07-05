@@ -1,11 +1,12 @@
 import { trpc } from '@/lib/trpc/client';
-import { useState } from 'react';
+import { SetStateAction, useState } from 'react';
 import { ContactProps, ProfileProps } from './Profile';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { useForm } from 'react-hook-form';
 import { z } from 'zod';
 import ProfileSection from './ProfileSection';
 import LinkAccountSection from './LinkAccountSection';
+import { Button } from '../ui/button';
 
 interface UpdateProfileVariableType {
   clerkId: string;
@@ -30,6 +31,7 @@ interface EditProfileProps {
   clerkId: string;
   refetchProfile: () => void;
   refetchContact: () => void;
+  setIsEditing: (value: SetStateAction<boolean>) => void;
 }
 
 type ComponentType = 0 | 1 | 2;
@@ -40,6 +42,7 @@ export default function EditProfile({
   clerkId,
   refetchProfile,
   refetchContact,
+  setIsEditing,
 }: EditProfileProps) {
   // Calling TRPC update procedures
   const updateProfile = trpc.profile.updateProfile.useMutation({
@@ -163,7 +166,7 @@ export default function EditProfile({
   return (
     <div>
       {isProfileUpdateSuccessful && <div className="bg-green-600">Updated</div>}
-      <div className="mb-8 flex flex-col border-b-2">
+      <div className="mb-4 flex flex-col border-b-2 md:mb-8 lg:mb-10">
         <div className="flex flex-col">
           <p className="text-2xl font-bold">Settings</p>
         </div>
@@ -198,6 +201,20 @@ export default function EditProfile({
       {currentComponent === 1 && (
         <LinkAccountSection form={form} onSave={onSave} />
       )}
+      <div className="mt-4 flex flex-row-reverse">
+        <Button
+          className="ml-5 w-20 border border-gray-400 bg-profile_button_bg text-black hover:bg-sky-950 hover:text-white"
+          onClick={form.handleSubmit(onSave)}
+        >
+          Save
+        </Button>
+        <Button
+          className="w-20 border border-gray-400 bg-profile_button_bg text-black hover:bg-sky-950 hover:text-white"
+          onClick={() => setIsEditing(false)}
+        >
+          Cancel
+        </Button>
+      </div>
     </div>
   );
 }

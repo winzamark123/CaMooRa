@@ -79,8 +79,8 @@ export default function Profile() {
           clerkId={clerkId}
           refetchProfile={refetchProfile}
           refetchContact={refetchContact}
+          setIsEditing={setIsEditing}
         />
-        <Button onClick={() => setIsEditing(false)}>Cancel</Button>
       </div>
     );
   }
@@ -88,6 +88,13 @@ export default function Profile() {
   return (
     <div>
       {/* Top Section */}
+      {!isEditing && (
+        <div className="flex flex-col">
+          <div className="flex flex-col" style={{ height: 33 }}></div>
+          <div className="mt-2 flex" style={{ height: 53 }}></div>
+        </div>
+      )}
+
       <div className="flex flex-col">
         <div className="flex flex-row justify-between">
           {/* Profile Picture Section */}
@@ -130,6 +137,7 @@ export default function Profile() {
           {currentUser?.id === clerkId ? (
             <div className="ml-auto">
               <Button
+                className="w-20 border border-gray-400 bg-profile_button_bg text-black hover:bg-sky-950 hover:text-white"
                 onClick={() => {
                   setIsEditing(!isEditing);
                 }}
@@ -138,7 +146,10 @@ export default function Profile() {
               </Button>
             </div>
           ) : (
-            <div className="ml-auto" style={{ height: '36px' }}></div>
+            <div
+              className="ml-auto"
+              style={{ minHeight: '36px', maxHeight: '38px' }}
+            ></div>
           )}
         </div>
       </div>
