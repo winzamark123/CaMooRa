@@ -22,7 +22,7 @@ export default function NavBar() {
       <Link href="/">
         <Image src={FoMooLogo} alt="FoMoo Logo" width={100} height={100} />
       </Link>
-      <div className="flex items-center justify-between gap-4 border border-white p-4">
+      <div className="flex items-center justify-between gap-4 p-4">
         <p>Feedback</p>
         <ModeToggle />
         <SignedIn>{user && <DropDownProfile userId={user.id} />}</SignedIn>
