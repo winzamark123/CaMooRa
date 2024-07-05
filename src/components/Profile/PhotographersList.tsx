@@ -1,8 +1,7 @@
 'use client';
 import React from 'react';
 import { trpc } from '@/lib/trpc/client';
-import ProfileCard from '@/components/ProfileCard';
-import Link from 'next/link';
+import { HoverEffect } from '../ui/card-hover-effect';
 
 export default function PhotographersList() {
   //trpc handles caching itself
@@ -25,17 +24,5 @@ export default function PhotographersList() {
     return <div>Error: {error.message}</div>;
   }
 
-  return (
-    <main>
-      <div className="grid grid-cols-3 gap-4">
-        {all_users?.map((user) => (
-          <div key={user.clerkId} className="">
-            <Link href={`/profile/${user.clerkId}`}>
-              <ProfileCard id={user.clerkId} />
-            </Link>
-          </div>
-        ))}
-      </div>
-    </main>
-  );
+  return <main>{all_users && <HoverEffect items={all_users} />}</main>;
 }
