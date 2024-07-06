@@ -19,6 +19,7 @@ export async function createProfile({
       data: {
         clerkId: clerkId,
         url: userProfilePicURL,
+        key: `${clerkId}/clerkProfilePic`,
       },
     });
     //create profile

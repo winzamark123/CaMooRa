@@ -25,11 +25,11 @@ model Profile {
   user    User   @relation(fields: [clerkId], references: [clerkId], onDelete: Cascade)
   clerkId String @unique
 
-  firstName     String // init with firstName from Clerk
-  lastName      String // init with lastName from Clerk
-  profilePic    Images? @relation(fields: [profilePicId], references: [id])
-  profilePicId  String 
-  bio String?
+  firstName    String // init with firstName from Clerk
+  lastName     String // init with lastName from Clerk
+  profilePic   Images? @relation(fields: [profilePicId], references: [id])
+  profilePicId String
+  bio          String?
 }
 
 model Contact {
@@ -52,5 +52,6 @@ model Images {
   clerkId   String
   url       String
   createdAt DateTime  @default(now())
+  key       String
   Profile   Profile[]
 }

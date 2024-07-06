@@ -67,6 +67,7 @@ export async function getPresignedURL({
       data: {
         clerkId: clerkId,
         url: signedURL.split('?')[0],
+        key: `${clerkId}/${generatedFileName}`,
       },
     });
     console.log('images_result:', images_result);

@@ -1,6 +1,7 @@
 import React from 'react';
 import { trpc } from '@/lib/trpc/client';
 import Image from 'next/image';
+import CreatePostForm from './CreatePostForm';
 
 export default function Gallery({ clerkId }: { clerkId: string }) {
   const { data: user_images, isLoading: isLoadingImages } =
@@ -29,6 +30,7 @@ export default function Gallery({ clerkId }: { clerkId: string }) {
           </div>
         ))}
       </div>
+      <CreatePostForm />
     </main>
   );
 }
