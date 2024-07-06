@@ -1,4 +1,3 @@
-import Image from 'next/image';
 import React from 'react';
 import {
   Form,
@@ -12,6 +11,7 @@ import { Input } from '../ui/input';
 import { Switch } from '../ui/switch';
 import { UseFormReturn } from 'react-hook-form';
 import { Textarea } from '../ui/textarea';
+import UpdateProfilePicForm from './UpdateProfilePicForm';
 
 export interface ProfileSectionProps {
   form: UseFormReturn<
@@ -53,9 +53,15 @@ export default function ProfileSection({
   return (
     <div className="flex flex-row items-center justify-between">
       <div className="basis-1/4 items-start self-start">
-        {profileUrl && (
-          <Image src={profileUrl} alt="profile" width={233} height={289} />
-        )}
+        <div className="flex w-[233px] flex-col">
+          <button className="mb-2 w-[50px] self-end text-xs underline hover:text-gray-400">
+            Delete
+          </button>
+          <UpdateProfilePicForm profilePicUrl={profileUrl} />
+          <small className="text-xs text-gray-400">
+            Upload Your Profile Picture
+          </small>{' '}
+        </div>
       </div>
       <Form {...form}>
         <form
