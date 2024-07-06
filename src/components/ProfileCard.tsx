@@ -50,7 +50,7 @@ export default function ProfileCard({ id }: ProfileCardProps) {
         {user_images && user_images.length > 0 && (
           <Image
             className="rounded-xl object-cover"
-            src={user_images[currentImageIndex]}
+            src={user_images[currentImageIndex].url}
             alt="profile"
             fill
           />
