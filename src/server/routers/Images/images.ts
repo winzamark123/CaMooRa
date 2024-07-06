@@ -18,8 +18,11 @@ export const images_router = router({
         },
       });
 
-      const urls = images.map((image) => image.url);
-      return urls;
+      const imageDetails = images.map((image) => ({
+        url: image.url,
+        id: image.id,
+      }));
+      return imageDetails;
     }),
 
   updateProfilePic: protectedProcedure

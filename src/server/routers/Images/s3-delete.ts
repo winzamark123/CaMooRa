@@ -1,4 +1,5 @@
 import { S3Client, DeleteObjectCommand } from '@aws-sdk/client-s3';
+import prisma from '@prisma/prisma';
 
 interface deletePhotoProps {
   key: string;
@@ -20,6 +21,11 @@ export async function deletePhotoCommand({ key }: deletePhotoProps) {
 
   try {
     await s3.send(deleteObjectCommand);
+    await prisma.images.deleteMany({
+      where: {
+        key: key,
+      },
+    });
     return { success: 'Photo deleted', error: '' };
   } catch (error) {
     console.error('Error deleting photo', error);
