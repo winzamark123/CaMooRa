@@ -10,7 +10,10 @@ import {
 import { Input } from '../ui/input';
 import { ProfileSectionProps } from './ProfileSection';
 
-type LinkAccountSectionProps = Omit<ProfileSectionProps, 'profileUrl'>;
+type LinkAccountSectionProps = Omit<
+  ProfileSectionProps,
+  'profileUrl' | 'profilePicId'
+>;
 
 export default function LinkAccountSection({
   form,

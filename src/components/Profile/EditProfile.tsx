@@ -196,6 +196,7 @@ export default function EditProfile({
           form={form}
           onSave={onSave}
           profileUrl={profile?.profilePic.url}
+          profilePicId={profile?.profilePic.id}
         />
       )}
       {currentComponent === 1 && (

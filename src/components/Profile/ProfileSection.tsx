@@ -43,12 +43,14 @@ export interface ProfileSectionProps {
     bio?: string | undefined;
   }) => void;
   profileUrl: string | undefined;
+  profilePicId: string;
 }
 
 export default function ProfileSection({
   form,
   onSave,
   profileUrl,
+  profilePicId,
 }: ProfileSectionProps) {
   return (
     <div className="flex flex-row items-center justify-between">
@@ -57,7 +59,10 @@ export default function ProfileSection({
           <button className="mb-2 w-[50px] self-end text-xs underline hover:text-gray-400">
             Delete
           </button>
-          <UpdateProfilePicForm profilePicUrl={profileUrl} />
+          <UpdateProfilePicForm
+            profilePicUrl={profileUrl}
+            profilePicId={profilePicId}
+          />
           <small className="text-xs text-gray-400">
             Upload Your Profile Picture
           </small>{' '}
