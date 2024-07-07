@@ -161,7 +161,7 @@ export default function Profile() {
                 <div className="flex flex-col space-y-3">
                   {/* Print Full Email and Phone */}
                   {userLinks.map((link, index) => {
-                    const IconComponent = IconComponents[link.type];
+                    const IconComponent = IconComponents[link?.type];
                     return (
                       IconComponent && (
                         <div
