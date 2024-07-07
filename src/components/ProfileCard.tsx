@@ -2,7 +2,6 @@ import React from 'react';
 import { Card } from '@/components/ui/card';
 import { trpc } from '@/lib/trpc/client';
 import Image from 'next/image';
-import UsernameProfilePic from './User/UsernameProfilePic';
 import { useState, useEffect } from 'react';
 
 interface ProfileCardProps {
@@ -26,7 +25,7 @@ export default function ProfileCard({ id }: ProfileCardProps) {
       setCurrentImageIndex(
         (prevIndex) => (prevIndex + 1) % (user_images?.length || 1)
       );
-    }, 3000); // Change image every 3 seconds
+    }, 15000); // Change image every 15 seconds
 
     return () => clearInterval(interval); // Clean up on component unmount
   }, [user_images]);
@@ -46,17 +45,23 @@ export default function ProfileCard({ id }: ProfileCardProps) {
   return (
     <Card className="flex flex-col gap-2 rounded-2xl border-slate-400 p-6">
       {isLoadingImages && <div>Loading Images...</div>}
-      <div className="relative flex h-72 gap-4 p-4">
+      <div className="flex h-72">
         {user_images && user_images.length > 0 && (
           <Image
             className="rounded-xl object-cover"
             src={user_images[currentImageIndex].url}
             alt="profile"
             fill
+            style={{
+              filter: 'brightness(0.65)',
+            }}
           />
         )}
       </div>
-      <UsernameProfilePic id={id} />
+      <div className="z-10 flex gap-2  text-white">
+        <p>{user_profile.firstName}</p>
+        <p>{user_profile.lastName}</p>
+      </div>
     </Card>
   );
 }

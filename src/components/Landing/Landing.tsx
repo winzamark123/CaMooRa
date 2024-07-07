@@ -8,7 +8,7 @@ export default function Landing() {
       <div className="px-2">
         <h4>CAPTURE</h4>
       </div>
-      <div className="flex justify-end">
+      <div className="flex items-center justify-end gap-12">
         <Image
           src={fomooLogo}
           alt="logo landing page"
