@@ -5,11 +5,15 @@ import { trpc } from '@/lib/trpc/client';
 import { computeSHA256 } from '@/server/routers/Images/imagesUtils';
 import Image from 'next/image';
 
+interface UpdateProfilePicFormProps {
+  profilePicUrl: string | undefined;
+  profilePicId: string;
+}
+
 export default function UpdateProfilePicForm({
   profilePicUrl,
-}: {
-  profilePicUrl: string | undefined;
-}) {
+  profilePicId,
+}: UpdateProfilePicFormProps) {
   const [file, setFile] = useState<File | null>(null);
   const [selectedImage, setSelectedImage] = useState<string | null>('');
 
@@ -17,6 +21,7 @@ export default function UpdateProfilePicForm({
   const [loading, setLoading] = useState(false);
 
   const signedURL = trpc.images.updateProfilePic.useMutation();
+  const deleteImage = trpc.images.deleteImage.useMutation();
 
   const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
@@ -28,10 +33,17 @@ export default function UpdateProfilePicForm({
     try {
       if (file) {
         setStatusMessage('updating image');
+        // Updating Profile Pic
         const signedURLResult = await signedURL.mutateAsync({
           file_type: file.type,
           size: file.size,
           checksum: await computeSHA256(file),
+        });
+
+        // Deleting Profile Pic
+        setStatusMessage('deleting image');
+        deleteImage.mutate({
+          imageId: profilePicId,
         });
 
         if (signedURLResult.error || !signedURLResult.success) {

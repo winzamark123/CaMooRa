@@ -45,21 +45,7 @@ export const images_router = router({
         throw new Error(error);
       }
 
-      // const image = await prisma.images.findUnique({
-      //   where: { id: success?.image_id as string },
-      // });
-
-      // const { success: del_success, error: del_error } =
-      //   await deletePhotoCommand({
-      //     key: image?.key as string,
-      //   });
-
-      // if (del_error) {
-      //   throw new Error(del_error);
-      // } else if (del_success) {
-      //   console.log('Deleted old profile pic');
-      // }
-
+      // Update the profile to remove the reference to the previous profile picture
       await prisma.profile.update({
         where: { clerkId: ctx.user.id },
         data: { profilePicId: success?.image_id },
