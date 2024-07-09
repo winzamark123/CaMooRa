@@ -116,34 +116,30 @@ export default function Profile() {
     );
   }
 
+  const showContactButton =
+    (!isSignedIn && !contact?.isContactPublic) ||
+    (isSignedIn && currentUser?.id !== clerkId);
+
   return (
     <div>
       {/* Top Section */}
-      {!isEditing && (
-        <div className="flex flex-col">
-          <div className="flex flex-col" style={{ height: 33 }}></div>
-          <div className="mt-2 flex" style={{ height: 53 }}></div>
-        </div>
-      )}
-
       <div className="flex flex-col">
-        <div className="flex flex-row justify-between">
+        <div className="flex flex-col space-y-4 md:flex-row md:justify-between md:space-y-0">
           {/* Profile Picture Section */}
-          <div className="basis-1/4">
+          <div className="relative h-[200px] w-[160px] basis-1/4 sm:h-[240px] sm:w-[200px] md:h-[289px] md:w-[233px]">
             {profile?.profilePic?.url && (
               <Image
                 src={profile.profilePic.url}
-                // Some image responsive (TODO: configure responsiveness better)
-                className="h-[289px] w-[233px] sm:h-[250px] sm:w-[200px] md:h-[289px] md:w-[233px]"
                 alt="profile"
-                width={233}
-                height={289}
+                layout="fill"
+                objectFit="cover"
+                className="rounded-sm border border-black"
               />
             )}
           </div>
           {/* First and Last Name and Bio Section */}
-          <div className="mr-32 flex basis-1/2 flex-col space-y-5">
-            <p className="text-xl font-semibold">
+          <div className="lg:ml-15 flex flex-col space-y-2 sm:space-y-4 md:ml-10 md:mr-32 md:basis-1/2 md:space-y-5">
+            <p className="text-lg font-semibold sm:text-xl md:text-xl">
               {profile?.firstName} {profile?.lastName}
             </p>
             {profile?.bio ? (
@@ -155,35 +151,44 @@ export default function Profile() {
             )}
           </div>
           {/* Contact Section */}
-          <div className="flex basis-1/4 flex-col">
+          <div className="flex flex-col space-y-2 sm:space-y-4 md:basis-1/4 md:space-y-5">
+            {showContactButton && (
+              // TODO : Add functionality to button
+              <Button className="mt-auto w-20 self-end border border-gray-400 bg-profile_button_bg text-black hover:bg-sky-950 hover:text-white">
+                Contact
+              </Button>
+            )}
             {isSignedIn && contact?.isContactPublic && (
-              <div className="flex flex-col space-y-5">
-                <div className="flex flex-col space-y-3">
-                  {/* Print Full Email and Phone */}
-                  {userLinks.map((link, index) => {
-                    if (!link) return null;
+              <div className="flex flex-grow flex-col space-y-2 sm:space-y-3 md:space-y-5">
+                {userLinks.map((link, index) => {
+                  if (!link) return null;
 
-                    const IconComponent = IconComponents[link.type];
-                    return (
-                      IconComponent && (
-                        <div
-                          key={index}
-                          className="flex items-center space-x-2"
-                        >
-                          {IconComponent}
-                          {/* Add parentheses to render the component */}
-                          <span>{link.data}</span>
-                        </div>
-                      )
-                    );
-                  })}
-                </div>
+                  const IconComponent = IconComponents[link.type];
+                  return (
+                    IconComponent && (
+                      <div key={index} className="flex items-center space-x-2">
+                        {IconComponent}
+                        <span>{link.data}</span>
+                      </div>
+                    )
+                  );
+                })}
               </div>
             )}
-            <button className="content-end">button</button>
+            {currentUser?.id === clerkId && (
+              <Button
+                className="mt-auto w-20 self-end border border-gray-400 bg-profile_button_bg text-black hover:bg-sky-950 hover:text-white"
+                onClick={() => {
+                  setIsEditing(!isEditing);
+                }}
+              >
+                Edit
+              </Button>
+            )}
           </div>
         </div>
-        <div className="flex">
+
+        {/* <div className="flex">
           {currentUser?.id === clerkId ? (
             <div className="ml-auto">
               <Button
@@ -201,7 +206,7 @@ export default function Profile() {
               style={{ minHeight: '36px', maxHeight: '38px' }}
             ></div>
           )}
-        </div>
+        </div> */}
       </div>
 
       {/* User's Gallery Section */}

@@ -6,6 +6,7 @@ import { useForm } from 'react-hook-form';
 import { z } from 'zod';
 import ProfileSection from './ProfileSection';
 import LinkAccountSection from './LinkAccountSection';
+import ProjectSection from './ProjectSection';
 import { Button } from '../ui/button';
 
 interface UpdateProfileVariableType {
@@ -33,8 +34,6 @@ interface EditProfileProps {
   refetchContact: () => void;
   setIsEditing: (value: SetStateAction<boolean>) => void;
 }
-
-type ComponentType = 0 | 1 | 2;
 
 export default function EditProfile({
   contact,
@@ -68,8 +67,7 @@ export default function EditProfile({
       setIsProfileUpdateSuccessful(false);
     },
   });
-  // Holds the state of which component is shown in this Component(EditProfile) (numbers: 0-2)
-  const [currentComponent, setCurrentComponent] = useState<ComponentType>(0);
+
   const [isProfileUpdateSuccessful, setIsProfileUpdateSuccessful] =
     useState<boolean>(false);
 
@@ -164,44 +162,16 @@ export default function EditProfile({
   }
 
   return (
-    <div>
+    <div className="flex flex-col space-y-16">
       {isProfileUpdateSuccessful && <div className="bg-green-600">Updated</div>}
-      <div className="mb-4 flex flex-col border-b-2 md:mb-8 lg:mb-10">
-        <div className="flex flex-col">
-          <p className="text-2xl font-bold">Settings</p>
-        </div>
-        <div className="mt-2 flex">
-          <button
-            className={`mr-5 p-3 transition-all duration-500 ${currentComponent === 0 ? 'border-b-4 border-sky-950' : 'border-b-4 border-transparent'}`}
-            onClick={() => setCurrentComponent(0)}
-          >
-            Profile
-          </button>
-          <button
-            className={`mr-5 p-3 transition-all duration-500 ${currentComponent === 1 ? 'border-b-4 border-sky-950' : 'border-b-4 border-transparent'}`}
-            onClick={() => setCurrentComponent(1)}
-          >
-            Link Account
-          </button>
-          <button
-            className={`mr-5 p-3 transition-all duration-500 ${currentComponent === 2 ? 'border-b-4 border-sky-950' : 'border-b-4 border-transparent'}`}
-            onClick={() => setCurrentComponent(2)}
-          >
-            Pictures
-          </button>
-        </div>
-      </div>
-      {currentComponent === 0 && (
-        <ProfileSection
-          form={form}
-          onSave={onSave}
-          profileUrl={profile?.profilePic.url}
-          profilePicId={profile?.profilePic.id}
-        />
-      )}
-      {currentComponent === 1 && (
-        <LinkAccountSection form={form} onSave={onSave} />
-      )}
+      <ProfileSection
+        form={form}
+        onSave={onSave}
+        profileUrl={profile?.profilePic.url}
+        profilePicId={profile?.profilePic.id}
+      />
+      <LinkAccountSection form={form} onSave={onSave} />
+      <ProjectSection clerkId={clerkId} />
       <div className="mt-4 flex flex-row-reverse">
         <Button
           className="ml-5 w-20 border border-gray-400 bg-profile_button_bg text-black hover:bg-sky-950 hover:text-white"
