@@ -53,160 +53,164 @@ export default function ProfileSection({
   profilePicId,
 }: ProfileSectionProps) {
   return (
-    <div className="flex flex-row items-center justify-between">
-      <div className="basis-1/4 items-start self-start">
-        <div className="flex w-[233px] flex-col">
-          <button className="mb-2 w-[50px] self-end text-xs underline hover:text-gray-400">
-            Delete
-          </button>
-          <UpdateProfilePicForm
-            profilePicUrl={profileUrl}
-            profilePicId={profilePicId}
-          />
-          <small className="text-xs text-gray-400">
-            Upload Your Profile Picture
-          </small>{' '}
+    <div>
+      <h4 className="border-b-2 pb-4 font-mono font-bold">Profile</h4>
+      <p className="my-5 text-xs">*Indicates Required</p>
+      <div className="flex flex-row items-center justify-between">
+        <div className="basis-1/4 items-start self-start">
+          <div className="flex w-[233px] flex-col">
+            <button className="mb-2 w-[50px] self-end text-xs underline hover:text-gray-400">
+              Delete
+            </button>
+            <UpdateProfilePicForm
+              profilePicUrl={profileUrl}
+              profilePicId={profilePicId}
+            />
+            <small className="text-xs text-gray-400">
+              Upload Your Profile Picture
+            </small>{' '}
+          </div>
         </div>
+        <Form {...form}>
+          <form
+            onSubmit={form.handleSubmit(onSave)}
+            className="basis-3/4 space-y-8 pl-7"
+          >
+            {/* 1st Row */}
+            <div className="grid md:grid-cols-2 md:gap-32">
+              <div className="group relative z-0 w-full">
+                <FormField
+                  control={form.control}
+                  name="firstName"
+                  render={({ field }) => (
+                    <FormItem>
+                      <FormLabel>
+                        First Name <span>*</span>
+                      </FormLabel>
+                      <FormControl>
+                        <Input className="border-black" {...field} />
+                      </FormControl>
+                      <FormMessage />
+                    </FormItem>
+                  )}
+                />
+              </div>
+              <div className="group relative z-0 w-full">
+                <FormField
+                  control={form.control}
+                  name="phone"
+                  render={({ field }) => (
+                    <FormItem>
+                      <FormLabel>Phone</FormLabel>
+                      <FormControl>
+                        <Input className="border-black" {...field} />
+                      </FormControl>
+                      <FormMessage />
+                    </FormItem>
+                  )}
+                />
+              </div>
+            </div>
+            {/* 2nd Row */}
+            <div className="grid md:grid-cols-2 md:gap-32">
+              <div className="group relative z-0 flex w-full flex-col justify-between space-y-5">
+                <FormField
+                  control={form.control}
+                  name="lastName"
+                  render={({ field }) => (
+                    <FormItem>
+                      <FormLabel>
+                        Last Name <span>*</span>
+                      </FormLabel>
+                      <FormControl>
+                        <Input className="border-black" {...field} />
+                      </FormControl>
+                      <FormMessage />
+                    </FormItem>
+                  )}
+                />
+                <FormField
+                  control={form.control}
+                  name="instagram"
+                  render={({ field }) => (
+                    <FormItem>
+                      <FormLabel>Instagram</FormLabel>
+                      <FormControl>
+                        <Input className=" border-black " {...field} />
+                      </FormControl>
+                      <FormMessage />
+                    </FormItem>
+                  )}
+                />
+              </div>
+              <div className="group relative z-0 w-full">
+                <FormField
+                  control={form.control}
+                  name="bio"
+                  render={({ field }) => (
+                    <FormItem>
+                      <FormLabel>Bio</FormLabel>
+                      <FormControl>
+                        <Textarea
+                          placeholder="Your Bio"
+                          className="resize-none border-black"
+                          {...field}
+                        />
+                      </FormControl>
+                      <FormMessage />
+                    </FormItem>
+                  )}
+                />
+              </div>
+            </div>
+            {/* 3rd Row */}
+            <div className="grid md:grid-cols-2 md:gap-32">
+              <div className="group relative z-0 mb-5 w-full">
+                <FormField
+                  control={form.control}
+                  name="isContactPublic"
+                  render={({ field }) => (
+                    <FormItem className="flex flex-col space-y-3">
+                      <FormLabel>Personal Information Public</FormLabel>
+                      <FormControl>
+                        <Switch
+                          checked={field.value}
+                          onCheckedChange={field.onChange}
+                          isPublic={true}
+                        />
+                      </FormControl>
+                      <small className="text-xs text-gray-400">
+                        By clicking this your information will not be restricted
+                        for only UC Davis Student.
+                      </small>
+                    </FormItem>
+                  )}
+                />
+              </div>
+              <div className="group relative z-0 mb-5 w-full">
+                <FormField
+                  control={form.control}
+                  name="isPhotographer"
+                  render={({ field }) => (
+                    <FormItem className="flex flex-col space-y-3">
+                      <FormLabel>Activate Photographer’s Account</FormLabel>
+                      <FormControl>
+                        <Switch
+                          checked={field.value}
+                          onCheckedChange={field.onChange}
+                        />
+                      </FormControl>
+                      <small className="text-xs text-gray-400">
+                        Deactivate to return to student account.
+                      </small>
+                    </FormItem>
+                  )}
+                />
+              </div>
+            </div>
+          </form>
+        </Form>
       </div>
-      <Form {...form}>
-        <form
-          onSubmit={form.handleSubmit(onSave)}
-          className="basis-3/4 space-y-8 pl-7"
-        >
-          {/* 1st Row */}
-          <div className="grid md:grid-cols-2 md:gap-32">
-            <div className="group relative z-0 w-full">
-              <FormField
-                control={form.control}
-                name="firstName"
-                render={({ field }) => (
-                  <FormItem>
-                    <FormLabel>
-                      First Name <span>*</span>
-                    </FormLabel>
-                    <FormControl>
-                      <Input className="border-black" {...field} />
-                    </FormControl>
-                    <FormMessage />
-                  </FormItem>
-                )}
-              />
-            </div>
-            <div className="group relative z-0 w-full">
-              <FormField
-                control={form.control}
-                name="phone"
-                render={({ field }) => (
-                  <FormItem>
-                    <FormLabel>Phone</FormLabel>
-                    <FormControl>
-                      <Input className="border-black" {...field} />
-                    </FormControl>
-                    <FormMessage />
-                  </FormItem>
-                )}
-              />
-            </div>
-          </div>
-          {/* 2nd Row */}
-          <div className="grid md:grid-cols-2 md:gap-32">
-            <div className="group relative z-0 flex w-full flex-col justify-between space-y-5">
-              <FormField
-                control={form.control}
-                name="lastName"
-                render={({ field }) => (
-                  <FormItem>
-                    <FormLabel>
-                      Last Name <span>*</span>
-                    </FormLabel>
-                    <FormControl>
-                      <Input className="border-black" {...field} />
-                    </FormControl>
-                    <FormMessage />
-                  </FormItem>
-                )}
-              />
-              <FormField
-                control={form.control}
-                name="instagram"
-                render={({ field }) => (
-                  <FormItem>
-                    <FormLabel>Instagram</FormLabel>
-                    <FormControl>
-                      <Input className=" border-black " {...field} />
-                    </FormControl>
-                    <FormMessage />
-                  </FormItem>
-                )}
-              />
-            </div>
-            <div className="group relative z-0 w-full">
-              <FormField
-                control={form.control}
-                name="bio"
-                render={({ field }) => (
-                  <FormItem>
-                    <FormLabel>Bio</FormLabel>
-                    <FormControl>
-                      <Textarea
-                        placeholder="Your Bio"
-                        className="resize-none border-black"
-                        {...field}
-                      />
-                    </FormControl>
-                    <FormMessage />
-                  </FormItem>
-                )}
-              />
-            </div>
-          </div>
-          {/* 3rd Row */}
-          <div className="grid md:grid-cols-2 md:gap-32">
-            <div className="group relative z-0 mb-5 w-full">
-              <FormField
-                control={form.control}
-                name="isContactPublic"
-                render={({ field }) => (
-                  <FormItem className="flex flex-col space-y-3">
-                    <FormLabel>Personal Information Public</FormLabel>
-                    <FormControl>
-                      <Switch
-                        checked={field.value}
-                        onCheckedChange={field.onChange}
-                        isPublic={true}
-                      />
-                    </FormControl>
-                    <small className="text-xs text-gray-400">
-                      By clicking this your information will not be restricted
-                      for only UC Davis Student.
-                    </small>
-                  </FormItem>
-                )}
-              />
-            </div>
-            <div className="group relative z-0 mb-5 w-full">
-              <FormField
-                control={form.control}
-                name="isPhotographer"
-                render={({ field }) => (
-                  <FormItem className="flex flex-col space-y-3">
-                    <FormLabel>Activate Photographer’s Account</FormLabel>
-                    <FormControl>
-                      <Switch
-                        checked={field.value}
-                        onCheckedChange={field.onChange}
-                      />
-                    </FormControl>
-                    <small className="text-xs text-gray-400">
-                      Deactivate to return to student account.
-                    </small>
-                  </FormItem>
-                )}
-              />
-            </div>
-          </div>
-        </form>
-      </Form>
     </div>
   );
 }
