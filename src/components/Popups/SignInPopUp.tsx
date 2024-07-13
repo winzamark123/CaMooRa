@@ -21,7 +21,7 @@ export default function SignInPopUp({ onToggle }: { onToggle: () => void }) {
           damping: 15,
           duration: 0.5,
         }}
-        className="left-0 top-1/3 z-30 flex h-80 w-9/12 justify-end 
+        className="left-0 top-1/3 z-30 flex h-80 w-9/12 max-w-4xl justify-end 
       rounded-2xl bg-sky-900 px-16 text-white"
         onClick={(event) => event.stopPropagation()}
       >
