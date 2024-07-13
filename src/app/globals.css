@@ -71,12 +71,44 @@
     --input: 217.2 32.6% 17.5%;
     --ring: 212.7 26.8% 83.9%;
   }
+
+  .inverse-theme {
+    --background: var(--foreground);
+    --foreground: var(--background);
+
+    --card: var(--card-foreground);
+    --card-foreground: var(--card);
+
+    --popover: var(--popover-foreground);
+    --popover-foreground: var(--popover);
+
+    --primary: var(--primary-foreground);
+    --primary-foreground: var(--primary);
+
+    --secondary: var(--secondary-foreground);
+    --secondary-foreground: var(--secondary);
+
+    --muted: var(--muted-foreground);
+    --muted-foreground: var(--muted);
+
+    --accent: var(--accent-foreground);
+    --accent-foreground: var(--accent);
+
+    --destructive: var(--destructive-foreground);
+    --destructive-foreground: var(--destructive);
+
+    --border: var(--border);
+    --input: var(--input);
+    --ring: var(--ring);
+  }
+
 }
 
 @layer base {
   * {
     @apply border-border;
   }
+
 
   body {
     @apply bg-background text-foreground;
@@ -96,6 +128,6 @@
   }
 
   h4 {
-    @apply text-xl;
+    @apply text-xl font-bold;
   }
 }

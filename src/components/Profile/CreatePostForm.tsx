@@ -4,12 +4,12 @@ import { useState } from 'react';
 import { trpc } from '@/lib/trpc/client';
 import { computeSHA256 } from '@/server/routers/Images/imagesUtils';
 import Image from 'next/image';
+import Loader from '@/components/ui/Loader';
 
 export default function CreatePostForm() {
   const [file, setFile] = useState<File | null>(null);
   const [selectedImage, setSelectedImage] = useState<string | null>('');
 
-  const [statusMessage, setStatusMessage] = useState('');
   const [loading, setLoading] = useState(false);
 
   const signedURL = trpc.images.uploadImage.useMutation();
@@ -17,13 +17,11 @@ export default function CreatePostForm() {
   const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
 
-    setStatusMessage('creating');
     setLoading(true);
 
     // Do all the image upload and everything
     try {
       if (file) {
-        setStatusMessage('uploading image');
         const signedURLResult = await signedURL.mutateAsync({
           file_type: file.type,
           size: file.size,
@@ -31,7 +29,6 @@ export default function CreatePostForm() {
         });
 
         if (signedURLResult.error || !signedURLResult.success) {
-          setStatusMessage('error uploading image');
           setLoading(false);
           return;
         }
@@ -39,7 +36,6 @@ export default function CreatePostForm() {
         const url = signedURLResult.success?.signed_url;
         console.log('THIS IS URL:', url);
 
-        setStatusMessage('uploading image');
         await fetch(url, {
           method: 'PUT',
           body: file,
@@ -49,14 +45,12 @@ export default function CreatePostForm() {
         });
       }
     } catch (error) {
-      setStatusMessage('failed to upload image');
       setLoading(false);
       console.error('Failed to upload image', error);
     } finally {
       setLoading(false);
     }
 
-    setStatusMessage('created');
     console.log(loading);
     setLoading(false);
   };
@@ -76,11 +70,7 @@ export default function CreatePostForm() {
   return (
     <>
       <form onSubmit={handleSubmit} className="h-full w-full">
-        {statusMessage && (
-          <p className="relative mb-4 rounded border border-yellow-400 bg-yellow-100 px-4 py-3 text-yellow-700">
-            {statusMessage}
-          </p>
-        )}
+        {loading && <Loader />}
 
         {/* Preview File */}
         <label className="block h-full w-full">
