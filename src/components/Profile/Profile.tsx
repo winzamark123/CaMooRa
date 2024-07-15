@@ -145,7 +145,7 @@ export default function Profile() {
           <div className="mt-auto flex items-end justify-end space-x-2 lg:hidden">
             {currentUser?.id === clerkId && (
               <Button
-                className="hover:bg-primary_blue active:bg-primary_blue w-16 flex-shrink-0 border border-gray-400 bg-profile_button_bg text-xs text-black hover:text-white active:text-white"
+                className="w-16 flex-shrink-0 border border-gray-400 bg-profile_button_bg text-xs text-black hover:bg-primary_blue hover:text-white active:bg-primary_blue active:text-white"
                 aria-label="Edit your Profile"
                 onClick={() => {
                   setIsEditing(!isEditing);
@@ -156,7 +156,7 @@ export default function Profile() {
             )}
             {showContactButton && (
               <Button
-                className="hover:bg-primary_blue active:bg-primary_blue w-16 flex-shrink-0 border border-gray-400 bg-profile_button_bg text-xs text-black hover:text-white active:text-white"
+                className="w-16 flex-shrink-0 border border-gray-400 bg-profile_button_bg text-xs text-black hover:bg-primary_blue hover:text-white active:bg-primary_blue active:text-white"
                 aria-label={`Contact ${usersFullName}`}
               >
                 Contact
@@ -183,7 +183,7 @@ export default function Profile() {
                           <a
                             aria-label={`Email ${usersFullName} at ${link.data}`}
                             href={link.data}
-                            className="hover:border-primary_blue flex items-center space-x-3 border-b-2 border-transparent transition-colors duration-300 hover:cursor-pointer"
+                            className="flex items-center space-x-3 border-b-2 border-transparent transition-colors duration-300 hover:cursor-pointer hover:border-primary_blue"
                           >
                             {IconComponent}
                             <span className="text-sm">{link.data}</span>
@@ -212,7 +212,7 @@ export default function Profile() {
                       link.type !== 'email' && (
                         <a
                           aria-label={`${usersFullName}'s ${link.type} link`}
-                          className="hover:border-primary_blue flex items-center space-x-3 border-b-2 border-transparent transition-colors duration-300 hover:cursor-pointer"
+                          className="flex items-center space-x-3 border-b-2 border-transparent transition-colors duration-300 hover:cursor-pointer hover:border-primary_blue"
                           href={link.data}
                           key={index}
                         >
@@ -228,7 +228,7 @@ export default function Profile() {
           <div className="mt-auto flex items-end justify-end">
             {currentUser?.id === clerkId && (
               <Button
-                className="hover:bg-primary_blue active:bg-primary_blue w-20 border border-gray-400 bg-profile_button_bg text-xs text-black hover:text-white active:text-white"
+                className="w-20 border border-gray-400 bg-profile_button_bg text-xs text-black hover:bg-primary_blue hover:text-white active:bg-primary_blue active:text-white"
                 aria-label="Edit your Profile"
                 onClick={() => {
                   setIsEditing(!isEditing);
@@ -238,7 +238,7 @@ export default function Profile() {
               </Button>
             )}
             {showContactButton && (
-              <Button className="hover:bg-primary_blue active:bg-primary_blue w-20 border border-gray-400 bg-profile_button_bg text-xs text-black hover:text-white active:text-white">
+              <Button className="w-20 border border-gray-400 bg-profile_button_bg text-xs text-black hover:bg-primary_blue hover:text-white active:bg-primary_blue active:text-white">
                 Contact
               </Button>
             )}

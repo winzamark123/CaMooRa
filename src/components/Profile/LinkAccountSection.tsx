@@ -21,21 +21,21 @@ export default function LinkAccountSection({
 }: LinkAccountSectionProps) {
   return (
     <div>
-      <h4 className="mb-5 border-b-2 pb-4 font-mono font-bold">Link Account</h4>
+      <h4 className="mb-5 border-b-2 pb-4 font-bold">Link Account</h4>
       <div className="flex flex-row items-center justify-between">
         <Form {...form}>
           <form
             onSubmit={form.handleSubmit(onSave)}
-            className="w-full basis-11/12 space-y-3"
+            className="w-full basis-11/12 md:space-y-3"
           >
             {/* First Row */}
-            <div className="grid md:grid-cols-2 md:gap-32">
-              <div className="group relative z-0 mb-5 w-full">
+            <div className="grid md:grid-cols-2 md:gap-16 lg:gap-32">
+              <div className="group relative z-0 w-full">
                 <FormField
                   control={form.control}
                   name="email"
                   render={({ field }) => (
-                    <FormItem>
+                    <FormItem className="mb-4">
                       <FormLabel>
                         Email <span>*</span>
                       </FormLabel>
@@ -51,12 +51,12 @@ export default function LinkAccountSection({
                   )}
                 />
               </div>
-              <div className="group relative z-0 mb-5 w-full">
+              <div className="group relative z-0 w-full">
                 <FormField
                   control={form.control}
                   name="instagram"
                   render={({ field }) => (
-                    <FormItem>
+                    <FormItem className="mb-4">
                       <FormLabel>Instagram</FormLabel>
                       <FormControl>
                         <Input className=" border-black " {...field} />
@@ -68,13 +68,13 @@ export default function LinkAccountSection({
               </div>
             </div>
             {/* Second Row */}
-            <div className="grid md:grid-cols-2 md:gap-32">
-              <div className="group relative z-0 mb-5 w-full">
+            <div className="grid md:grid-cols-2 md:gap-16 lg:gap-32">
+              <div className="group relative z-0 w-full">
                 <FormField
                   control={form.control}
                   name="discord"
                   render={({ field }) => (
-                    <FormItem>
+                    <FormItem className="mb-4">
                       <FormLabel>Discord</FormLabel>
                       <FormControl>
                         <Input className=" border-black " {...field} />
@@ -84,12 +84,12 @@ export default function LinkAccountSection({
                   )}
                 />
               </div>
-              <div className="group relative z-0 mb-5 w-full">
+              <div className="group relative z-0 w-full">
                 <FormField
                   control={form.control}
                   name="whatsApp"
                   render={({ field }) => (
-                    <FormItem>
+                    <FormItem className="mb-4">
                       <FormLabel>WhatsApp</FormLabel>
                       <FormControl>
                         <Input className="border-black" {...field} />

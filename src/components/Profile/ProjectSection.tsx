@@ -6,7 +6,7 @@ interface ProjectSectionProps {
 export default function ProjectSection({ clerkId }: ProjectSectionProps) {
   return (
     <div>
-      <h4 className="mb-5 border-b-2 pb-4 font-mono font-bold">
+      <h4 className="mb-5 border-b-2 pb-4 font-bold">
         Your Projects{' '}
         <span className="text-xs font-normal">
           (Please Add a Minimum of 3 Photos)

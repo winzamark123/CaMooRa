@@ -162,7 +162,7 @@ export default function EditProfile({
   }
 
   return (
-    <div className="flex flex-col space-y-16">
+    <div className="xl-space-y-16 flex flex-col space-y-5 md:space-y-10">
       {isProfileUpdateSuccessful && <div className="bg-green-600">Updated</div>}
       <ProfileSection
         form={form}
