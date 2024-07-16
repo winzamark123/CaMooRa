@@ -26,7 +26,7 @@ export default function LinkAccountSection({
         <Form {...form}>
           <form
             onSubmit={form.handleSubmit(onSave)}
-            className="w-full basis-11/12 md:space-y-3"
+            className="w-full basis-full sm:basis-11/12 md:space-y-3"
           >
             {/* First Row */}
             <div className="grid md:grid-cols-2 md:gap-16 lg:gap-32">

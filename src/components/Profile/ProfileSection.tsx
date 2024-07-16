@@ -91,172 +91,18 @@ export default function ProfileSection({
             Upload Your Profile Picture
           </button>
         </div>
-        <div className="flex basis-3/4">
-          <Form {...form}>
-            <form
-              onSubmit={form.handleSubmit(onSave)}
-              className="mt-5 basis-11/12 sm:mt-0 sm:basis-full sm:pl-7 md:space-y-8 lg:pl-0"
-            >
-              <div className="grid md:grid-cols-2 md:gap-16 lg:gap-32">
-                <div className="group relative z-0 w-full">
-                  <FormField
-                    control={form.control}
-                    name="firstName"
-                    render={({ field }) => (
-                      <FormItem className="mb-4 md:mb-0">
-                        <FormLabel>
-                          First Name <span>*</span>
-                        </FormLabel>
-                        <FormControl>
-                          <Input className="border-black" {...field} />
-                        </FormControl>
-                        <FormMessage />
-                      </FormItem>
-                    )}
-                  />
-                </div>
-                <div className="group relative z-0 w-full">
-                  <FormField
-                    control={form.control}
-                    name="phone"
-                    render={({ field }) => (
-                      <FormItem className="mb-4 md:mb-0">
-                        <FormLabel>Phone</FormLabel>
-                        <FormControl>
-                          <Input className="border-black" {...field} />
-                        </FormControl>
-                        <FormMessage />
-                      </FormItem>
-                    )}
-                  />
-                </div>
-              </div>
-              <div className="grid md:grid-cols-2 md:gap-16 lg:gap-32">
-                <div className="group relative z-0 flex w-full flex-col justify-between md:space-y-8">
-                  <FormField
-                    control={form.control}
-                    name="lastName"
-                    render={({ field }) => (
-                      <FormItem className="mb-4 md:mb-0">
-                        <FormLabel>
-                          Last Name <span>*</span>
-                        </FormLabel>
-                        <FormControl>
-                          <Input className="border-black" {...field} />
-                        </FormControl>
-                        <FormMessage />
-                      </FormItem>
-                    )}
-                  />
-                  <FormField
-                    control={form.control}
-                    name="instagram"
-                    render={({ field }) => (
-                      <FormItem className="mb-4 md:mb-0">
-                        <FormLabel>Instagram</FormLabel>
-                        <FormControl>
-                          <Input className=" border-black " {...field} />
-                        </FormControl>
-                        <FormMessage />
-                      </FormItem>
-                    )}
-                  />
-                </div>
-                <div className="group relative z-0 w-full">
-                  <FormField
-                    control={form.control}
-                    name="bio"
-                    render={({ field }) => (
-                      <FormItem className="mb-4 md:mb-0">
-                        <FormLabel>Bio</FormLabel>
-                        <FormControl>
-                          <Textarea
-                            placeholder="Your Bio"
-                            className="resize-none border-black"
-                            {...field}
-                          />
-                        </FormControl>
-                        <FormMessage />
-                      </FormItem>
-                    )}
-                  />
-                </div>
-              </div>
-              <div className="grid md:grid-cols-2 md:gap-16 lg:gap-32">
-                <div className="group relative z-0 w-full">
-                  <FormField
-                    control={form.control}
-                    name="isContactPublic"
-                    render={({ field }) => (
-                      <FormItem className="mb-4 flex flex-col space-y-3">
-                        <FormLabel>Personal Information Public</FormLabel>
-                        <FormControl>
-                          <Switch
-                            checked={field.value}
-                            onCheckedChange={field.onChange}
-                            isPublic={true}
-                          />
-                        </FormControl>
-                        <small className="text-xs text-gray-400">
-                          By clicking this your information will not be
-                          restricted for only UC Davis Student.
-                        </small>
-                      </FormItem>
-                    )}
-                  />
-                </div>
-                <div className="group relative z-0 w-full">
-                  <FormField
-                    control={form.control}
-                    name="isPhotographer"
-                    render={({ field }) => (
-                      <FormItem className="mb-4 flex flex-col space-y-3">
-                        <FormLabel>Activate Photographer’s Account</FormLabel>
-                        <FormControl>
-                          <Switch
-                            checked={field.value}
-                            onCheckedChange={field.onChange}
-                          />
-                        </FormControl>
-                        <small className="text-xs text-gray-400">
-                          Deactivate to return to student account.
-                        </small>
-                      </FormItem>
-                    )}
-                  />
-                </div>
-              </div>
-            </form>
-          </Form>
-        </div>
-      </div>
-      {/* <div className="flex flex-col items-center justify-between">
-        <div className="basis-1/4 items-start self-start">
-          <div className="flex w-[233px] flex-col">
-            <button className="mb-2 w-[50px] self-end text-xs underline hover:text-gray-400">
-              Delete
-            </button>
-            <UpdateProfilePicForm
-              profilePicUrl={profileUrl}
-              profilePicId={profilePicId}
-            />
-            <small className="text-xs text-gray-400">
-              Upload Your Profile Picture
-            </small>{' '}
-          </div>
-        </div>
         <Form {...form}>
           <form
             onSubmit={form.handleSubmit(onSave)}
-            className="basis-3/4 space-y-8 pl-7"
+            className="mt-5 basis-3/4 sm:mt-0 sm:basis-full sm:pl-10 md:space-y-8"
           >
-            <div className="grid md:grid-cols-2 md:gap-32">
+            <div className="grid md:grid-cols-2 md:gap-16 lg:gap-32">
               <div className="group relative z-0 w-full">
                 <FormField
                   control={form.control}
                   name="firstName"
                   render={({ field }) => (
-                    <FormItem>
+                    <FormItem className="mb-4 md:mb-0">
                       <FormLabel>
                         First Name <span>*</span>
                       </FormLabel>
@@ -273,7 +119,7 @@ export default function ProfileSection({
                   control={form.control}
                   name="phone"
                   render={({ field }) => (
-                    <FormItem>
+                    <FormItem className="mb-4 md:mb-0">
                       <FormLabel>Phone</FormLabel>
                       <FormControl>
                         <Input className="border-black" {...field} />
@@ -284,13 +130,13 @@ export default function ProfileSection({
                 />
               </div>
             </div>
-            <div className="grid md:grid-cols-2 md:gap-32">
-              <div className="group relative z-0 flex w-full flex-col justify-between space-y-5">
+            <div className="grid md:grid-cols-2 md:gap-16 lg:gap-32">
+              <div className="group relative z-0 flex w-full flex-col justify-between md:space-y-8">
                 <FormField
                   control={form.control}
                   name="lastName"
                   render={({ field }) => (
-                    <FormItem>
+                    <FormItem className="mb-4 md:mb-0">
                       <FormLabel>
                         Last Name <span>*</span>
                       </FormLabel>
@@ -305,7 +151,7 @@ export default function ProfileSection({
                   control={form.control}
                   name="instagram"
                   render={({ field }) => (
-                    <FormItem>
+                    <FormItem className="mb-4 md:mb-0">
                       <FormLabel>Instagram</FormLabel>
                       <FormControl>
                         <Input className=" border-black " {...field} />
@@ -320,7 +166,7 @@ export default function ProfileSection({
                   control={form.control}
                   name="bio"
                   render={({ field }) => (
-                    <FormItem>
+                    <FormItem className="mb-4 md:mb-0">
                       <FormLabel>Bio</FormLabel>
                       <FormControl>
                         <Textarea
@@ -335,13 +181,13 @@ export default function ProfileSection({
                 />
               </div>
             </div>
-            <div className="grid md:grid-cols-2 md:gap-32">
-              <div className="group relative z-0 mb-5 w-full">
+            <div className="grid md:grid-cols-2 md:gap-16 lg:gap-32">
+              <div className="group relative z-0 w-full">
                 <FormField
                   control={form.control}
                   name="isContactPublic"
                   render={({ field }) => (
-                    <FormItem className="flex flex-col space-y-3">
+                    <FormItem className="mb-4 flex flex-col space-y-3">
                       <FormLabel>Personal Information Public</FormLabel>
                       <FormControl>
                         <Switch
@@ -358,12 +204,12 @@ export default function ProfileSection({
                   )}
                 />
               </div>
-              <div className="group relative z-0 mb-5 w-full">
+              <div className="group relative z-0 w-full">
                 <FormField
                   control={form.control}
                   name="isPhotographer"
                   render={({ field }) => (
-                    <FormItem className="flex flex-col space-y-3">
+                    <FormItem className="mb-4 flex flex-col space-y-3">
                       <FormLabel>Activate Photographer’s Account</FormLabel>
                       <FormControl>
                         <Switch
@@ -381,7 +227,7 @@ export default function ProfileSection({
             </div>
           </form>
         </Form>
-      </div> */}
+      </div>
     </div>
   );
 }

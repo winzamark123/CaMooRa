@@ -98,14 +98,13 @@ export default function UpdateProfilePicForm({
 
           <label>
             <div className="mb-2 flex flex-row-reverse">
-              <button
+              <span
                 aria-label="Clear Profile Picture"
-                type="button"
                 className="text-xs underline hover:text-gray-400"
                 onClick={() => setIsImageCleared(true)}
               >
                 Clear
-              </button>
+              </span>
             </div>
             {isImageCleared ? (
               <div className="relative h-36 w-28 bg-gray-200 sm:h-40 sm:w-32 md:h-44 md:w-36 lg:h-48 lg:w-40 xl:h-52 xl:w-44">
@@ -114,12 +113,12 @@ export default function UpdateProfilePicForm({
                   tabIndex={0}
                   role="button"
                   aria-label="Change Profile Picture"
-                  onKeyDown={(e) => {
-                    if (e.key === 'Enter' || e.key === ' ') {
-                      // Trigger the file input click
-                      document.getElementsByName('media')[0].click();
-                    }
-                  }}
+                  // onKeyDown={(e) => {
+                  //   if (e.key === 'Enter' || e.key === ' ') {
+                  //     // Trigger the file input click
+                  //     document.getElementsByName('media')[0].click();
+                  //   }
+                  // }}
                 ></div>
               </div>
             ) : profilePicUrl && !selectedImage ? (
@@ -136,12 +135,12 @@ export default function UpdateProfilePicForm({
                   tabIndex={0}
                   role="button"
                   aria-label="Change Profile Picture"
-                  onKeyDown={(e) => {
-                    if (e.key === 'Enter' || e.key === ' ') {
-                      // Trigger the file input click
-                      document.getElementsByName('media')[0].click();
-                    }
-                  }}
+                  // onKeyDown={(e) => {
+                  //   if (e.key === 'Enter' || e.key === ' ') {
+                  //     // Trigger the file input click
+                  //     document.getElementsByName('media')[0].click();
+                  //   }
+                  // }}
                 ></div>
               </div>
             ) : null}
@@ -160,12 +159,12 @@ export default function UpdateProfilePicForm({
                   tabIndex={0}
                   role="button"
                   aria-label="Change Profile Picture"
-                  onKeyDown={(e) => {
-                    if (e.key === 'Enter' || e.key === ' ') {
-                      // Trigger the file input click
-                      document.getElementsByName('media')[0].click();
-                    }
-                  }}
+                  // onKeyDown={(e) => {
+                  //   if (e.key === 'Enter' || e.key === ' ') {
+                  //     // Trigger the file input click
+                  //     document.getElementsByName('media')[0].click();
+                  //   }
+                  // }}
                 ></div>
               </div>
             )}
