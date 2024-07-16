@@ -100,6 +100,11 @@ export default function Profile() {
       'data' in link
   );
 
+  const usersFullName = `${profile?.firstName} ${profile?.lastName}`;
+  const showContactButton =
+    (!isSignedIn && !contact?.isContactPublic) ||
+    (isSignedIn && currentUser?.id !== clerkId);
+
   // User is Editing their Profile
   if (isEditing) {
     return (
@@ -116,100 +121,130 @@ export default function Profile() {
     );
   }
 
-  const showContactButton =
-    (!isSignedIn && !contact?.isContactPublic) ||
-    (isSignedIn && currentUser?.id !== clerkId);
-
   return (
-    <div>
-      {/* Top Section */}
-      <div className="flex flex-col">
-        <div className="flex flex-col space-y-4 md:flex-row md:justify-between md:space-y-0">
-          {/* Profile Picture Section */}
-          <div className="relative h-[200px] w-[160px] basis-1/4 sm:h-[240px] sm:w-[200px] md:h-[289px] md:w-[233px]">
-            {profile?.profilePic?.url && (
-              <Image
-                src={profile.profilePic.url}
-                alt="profile"
-                layout="fill"
-                objectFit="cover"
-                className="rounded-sm border border-black"
-              />
-            )}
-          </div>
-          {/* First and Last Name and Bio Section */}
-          <div className="lg:ml-15 flex flex-col space-y-2 sm:space-y-4 md:ml-10 md:mr-32 md:basis-1/2 md:space-y-5">
-            <p className="text-lg font-semibold sm:text-xl md:text-xl">
-              {profile?.firstName} {profile?.lastName}
-            </p>
-            {profile?.bio ? (
-              <p>{profile.bio}</p>
-            ) : (
-              <p>
-                {profile?.firstName} {profile?.lastName} has no bio.
-              </p>
-            )}
-          </div>
-          {/* Contact Section */}
-          <div className="flex flex-col space-y-2 sm:space-y-4 md:basis-1/4 md:space-y-5">
-            {showContactButton && (
-              // TODO : Add functionality to button
-              <Button className="mt-auto w-20 self-end border border-gray-400 bg-profile_button_bg text-black hover:bg-sky-950 hover:text-white">
-                Contact
-              </Button>
-            )}
-            {isSignedIn && contact?.isContactPublic && (
-              <div className="flex flex-grow flex-col space-y-2 sm:space-y-3 md:space-y-5">
-                {userLinks.map((link, index) => {
-                  if (!link) return null;
-
-                  const IconComponent = IconComponents[link.type];
-                  return (
-                    IconComponent && (
-                      <div key={index} className="flex items-center space-x-2">
-                        {IconComponent}
-                        <span>{link.data}</span>
-                      </div>
-                    )
-                  );
-                })}
-              </div>
-            )}
+    <div className="flex flex-col">
+      <div className="flex max-w-full">
+        <div className="relative h-36 w-28 sm:h-40 sm:w-32 md:h-44 md:w-36 lg:h-48 lg:w-40 xl:h-52 xl:w-44">
+          {profile?.profilePic?.url && (
+            <Image
+              src={profile.profilePic.url}
+              alt={`Profile Picture of ${usersFullName}`}
+              objectFit="cover"
+              layout="fill"
+              className="rounded-sm border border-black"
+            />
+          )}
+        </div>
+        <div className="flex flex-grow flex-col pl-3 md:pl-10">
+          <h1 className="text-sm font-semibold sm:text-lg lg:text-xl 2xl:text-2xl">
+            {usersFullName}
+          </h1>
+          <p className="max-w-xs pt-2 text-xs sm:text-sm md:max-w-md lg:max-w-lg lg:pt-5 xl:max-w-xl">
+            {profile?.bio || `${usersFullName} has no bio.`}
+          </p>
+          <div className="mt-auto flex items-end justify-end space-x-2 lg:hidden">
             {currentUser?.id === clerkId && (
               <Button
-                className="mt-auto w-20 self-end border border-gray-400 bg-profile_button_bg text-black hover:bg-sky-950 hover:text-white"
+                className="w-16 flex-shrink-0 border border-gray-400 bg-profile_button_bg text-xs text-black hover:bg-primary_blue hover:text-white active:bg-primary_blue active:text-white"
+                aria-label="Edit your Profile"
                 onClick={() => {
                   setIsEditing(!isEditing);
                 }}
               >
                 Edit
+              </Button>
+            )}
+            {showContactButton && (
+              <Button
+                className="w-16 flex-shrink-0 border border-gray-400 bg-profile_button_bg text-xs text-black hover:bg-primary_blue hover:text-white active:bg-primary_blue active:text-white"
+                aria-label={`Contact ${usersFullName}`}
+              >
+                Contact
               </Button>
             )}
           </div>
         </div>
+        <div className="hidden flex-grow flex-col lg:flex">
+          {isSignedIn && contact?.isContactPublic && (
+            <div className="flex justify-end">
+              <div className="flex flex-col space-y-4 xl:space-y-6">
+                {userLinks.map((link, index) => {
+                  if (!link) return null;
 
-        {/* <div className="flex">
-          {currentUser?.id === clerkId ? (
-            <div className="ml-auto">
+                  const IconComponent = IconComponents[link.type];
+
+                  if (
+                    IconComponent &&
+                    (link.type === 'phone' || link.type === 'email')
+                  ) {
+                    return (
+                      <div key={index} className="flex items-center space-x-3">
+                        {link.type === 'email' ? (
+                          <a
+                            aria-label={`Email ${usersFullName} at ${link.data}`}
+                            href={link.data}
+                            className="flex items-center space-x-3 border-b-2 border-transparent transition-colors duration-300 hover:cursor-pointer hover:border-primary_blue"
+                          >
+                            {IconComponent}
+                            <span className="text-sm">{link.data}</span>
+                          </a>
+                        ) : (
+                          <div
+                            className="flex items-center space-x-3"
+                            aria-label={`Call ${usersFullName} at ${link.data}`}
+                          >
+                            {IconComponent}
+                            <span className="text-sm">{link.data}</span>
+                          </div>
+                        )}
+                      </div>
+                    );
+                  }
+                })}
+                <div className="flex flex-row justify-between">
+                  {userLinks.map((link, index) => {
+                    if (!link) return null;
+
+                    const IconComponent = IconComponents[link.type];
+                    return (
+                      IconComponent &&
+                      link.type !== 'phone' &&
+                      link.type !== 'email' && (
+                        <a
+                          aria-label={`${usersFullName}'s ${link.type} link`}
+                          className="flex items-center space-x-3 border-b-2 border-transparent transition-colors duration-300 hover:cursor-pointer hover:border-primary_blue"
+                          href={link.data}
+                          key={index}
+                        >
+                          {IconComponent}
+                        </a>
+                      )
+                    );
+                  })}
+                </div>
+              </div>
+            </div>
+          )}
+          <div className="mt-auto flex items-end justify-end">
+            {currentUser?.id === clerkId && (
               <Button
-                className="w-20 border border-gray-400 bg-profile_button_bg text-black hover:bg-sky-950 hover:text-white"
+                className="w-20 border border-gray-400 bg-profile_button_bg text-xs text-black hover:bg-primary_blue hover:text-white active:bg-primary_blue active:text-white"
+                aria-label="Edit your Profile"
                 onClick={() => {
                   setIsEditing(!isEditing);
                 }}
               >
                 Edit
               </Button>
-            </div>
-          ) : (
-            <div
-              className="ml-auto"
-              style={{ minHeight: '36px', maxHeight: '38px' }}
-            ></div>
-          )}
-        </div> */}
+            )}
+            {showContactButton && (
+              <Button className="w-20 border border-gray-400 bg-profile_button_bg text-xs text-black hover:bg-primary_blue hover:text-white active:bg-primary_blue active:text-white">
+                Contact
+              </Button>
+            )}
+          </div>
+        </div>
       </div>
-
-      {/* User's Gallery Section */}
       <Gallery clerkId={clerkId} />
     </div>
   );

@@ -2,7 +2,7 @@ import Profile from '@/components/Profile/Profile';
 
 export default function Page() {
   return (
-    <main className="w-full px-4 pb-4 md:px-12 md:pb-8 lg:px-32 lg:pb-24 ">
+    <main className="pb-auto w-full max-w-7xl px-4 pb-4 sm:px-10 sm:pb-10 md:px-12 md:pb-12 2xl:px-0">
       <Profile />
     </main>
   );
