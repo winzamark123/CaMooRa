@@ -1,7 +1,7 @@
 'use client';
 import { useState } from 'react';
 import { SignedIn, SignedOut, useUser } from '@clerk/nextjs';
-import { ModeToggle } from '../Theme/mode-toggle';
+// import { ModeToggle } from '../Theme/mode-toggle';
 import Image from 'next/image';
 import FoMooLogo from '@/public/fo-moo-logo.svg';
 import Link from 'next/link';
@@ -24,7 +24,7 @@ export default function NavBar() {
       </Link>
       <div className="flex items-center justify-between gap-4 p-4">
         <p>Feedback</p>
-        <ModeToggle />
+        {/* <ModeToggle /> */}
         <SignedIn>{user && <DropDownProfile userId={user.id} />}</SignedIn>
         <div className="flex">
           <SignedOut>
