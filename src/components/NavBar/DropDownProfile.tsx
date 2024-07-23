@@ -25,7 +25,6 @@ export function DropDownProfile({ userId }: { userId: string }) {
         <DropdownMenuItem>
           <Link href={`/profile/${userId}`}>Profile</Link>
         </DropdownMenuItem>
-        <DropdownMenuItem>Settings</DropdownMenuItem>
         <DropdownMenuItem>
           <SignOutButton />
         </DropdownMenuItem>
