@@ -144,10 +144,10 @@ export default function Profile() {
             )}
           </div>
           <div className="flex max-h-48 flex-grow flex-col pl-3 md:pl-10">
-            <h1 className="xs:flex-row flex flex-col items-center text-lg font-extrabold lg:text-xl 2xl:text-2xl">
+            <h1 className="flex flex-col items-center text-lg font-extrabold xs:flex-row lg:text-xl 2xl:text-2xl">
               {usersFullName}
               {profile?.additionalName && (
-                <span className="xs:pl-2 text-xs">
+                <span className="text-xs xs:pl-2">
                   ({profile.additionalName})
                 </span>
               )}
