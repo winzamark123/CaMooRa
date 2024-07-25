@@ -34,15 +34,17 @@ export default function ProfileCard({ id }: ProfileCardProps) {
     <Card className="flex h-96 flex-col justify-end gap-2 rounded-2xl border-slate-400 p-6">
       {isLoadingImages && <div>Loading Images...</div>}
       {user_images && user_images.length > 0 && (
-        <PhotoImage
-          className="rounded-xl object-cover"
-          src={user_images[0].url}
-          alt="profile"
-          isHorizontal={false}
-          style={{
-            filter: 'brightness(0.65)',
-          }}
-        />
+        <Card className="flex h-96 flex-col justify-end gap-2 rounded-2xl border-slate-400 p-6">
+          <PhotoImage
+            className="rounded-xl object-cover"
+            src={user_images[0].url}
+            alt="profile"
+            isHorizontal={false}
+            style={{
+              filter: 'brightness(0.65)',
+            }}
+          />
+        </Card>
       )}
       <div className="z-10 flex gap-2  text-white">
         <p>{user_profile.firstName}</p>

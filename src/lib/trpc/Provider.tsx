@@ -8,12 +8,16 @@ import React, { useState } from 'react';
 import { trpc } from './client';
 
 export default function Provider({ children }: { children: React.ReactNode }) {
+  if (!process.env.NEXT_PUBLIC_TRPC_URL) {
+    throw new Error('Please add NEXT_PUBLIC_TRPC_URL to .env.local');
+  }
+
   const [queryClient] = useState(() => new QueryClient({}));
   const [trpcClient] = useState(
     trpc.createClient({
       links: [
         httpBatchLink({
-          url: 'http://localhost:3000/api/trpc',
+          url: process.env.NEXT_PUBLIC_TRPC_URL,
         }),
       ],
     })
