@@ -24,10 +24,13 @@ export interface ProfileSectionProps {
       instagram?: string | undefined;
       phone?: string | undefined;
       whatsApp?: string | undefined;
+      portfolio?: string | undefined;
       isContactPublic?: boolean | undefined;
       isPhotographer?: boolean | undefined;
       firstName?: string | undefined;
       lastName?: string | undefined;
+      additionalName?: string | undefined;
+      equipment?: string | undefined;
       bio?: string | undefined;
     },
     any,
@@ -39,10 +42,13 @@ export interface ProfileSectionProps {
     instagram?: string | undefined;
     phone?: string | undefined;
     whatsApp?: string | undefined;
+    portfolio?: string | undefined;
     isContactPublic?: boolean | undefined;
     isPhotographer?: boolean | undefined;
     firstName?: string | undefined;
     lastName?: string | undefined;
+    additional?: string | undefined;
+    equipment?: string | undefined;
     bio?: string | undefined;
   }) => void;
   profileUrl: string | undefined;
@@ -149,10 +155,10 @@ export default function ProfileSection({
                 />
                 <FormField
                   control={form.control}
-                  name="instagram"
+                  name="additionalName"
                   render={({ field }) => (
                     <FormItem className="mb-4 md:mb-0">
-                      <FormLabel>Instagram</FormLabel>
+                      <FormLabel>Additional Name</FormLabel>
                       <FormControl>
                         <Input className=" border-black " {...field} />
                       </FormControl>
@@ -174,6 +180,23 @@ export default function ProfileSection({
                           className="resize-none border-black"
                           {...field}
                         />
+                      </FormControl>
+                      <FormMessage />
+                    </FormItem>
+                  )}
+                />
+              </div>
+            </div>
+            <div className="grid md:grid-cols-2 md:gap-16 lg:gap-32">
+              <div className="group relative z-0 w-full">
+                <FormField
+                  control={form.control}
+                  name="equipment"
+                  render={({ field }) => (
+                    <FormItem className="mb-4 md:mb-0">
+                      <FormLabel>Equipment</FormLabel>
+                      <FormControl>
+                        <Input className="border-black" {...field} />
                       </FormControl>
                       <FormMessage />
                     </FormItem>

@@ -16,7 +16,7 @@ export default function Gallery({ clerkId }: { clerkId: string }) {
 
   return (
     <main className="flex flex-col gap-4">
-      <h4 className="mb-10 mt-20 font-mono font-bold">Projects</h4>
+      <h2 className="mb-10 mt-10 font-mono text-xl font-bold">Projects</h2>
       <div className="grid grid-cols-1 gap-10 md:grid-cols-2 lg:grid-cols-4">
         {user_images.map((image) => (
           <div

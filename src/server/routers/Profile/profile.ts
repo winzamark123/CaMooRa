@@ -25,7 +25,15 @@ const updateProfileObject = z.object({
       message: 'Last Name should not contain numbers',
     })
     .optional(),
+  additionalName: z
+    .string()
+    .max(10, { message: 'Additional Name must be 10 characters or less' })
+    .optional(),
   profilePicId: z.string().optional(),
+  equipment: z
+    .string()
+    .max(60, { message: 'Equipment must be 60 characters or less' })
+    .optional(),
   bio: z
     .string()
     .max(150, { message: 'Bio must be 150 characters or less' })
@@ -44,6 +52,8 @@ export const profileRouter = router({
           firstName: true,
           lastName: true,
           profilePic: true,
+          additionalName: true,
+          equipment: true,
           bio: true,
         },
       });
@@ -64,10 +74,10 @@ export const profileRouter = router({
           firstName: input.firstName,
           lastName: input.lastName,
           profilePicId: input.profilePicId,
+          additionalName: input.additionalName,
+          equipment: input.equipment,
           bio: input.bio,
         },
       });
     }),
-
-  // TODO: Finish rest of Profile routes
 });
