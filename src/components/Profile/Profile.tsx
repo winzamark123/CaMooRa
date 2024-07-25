@@ -6,7 +6,8 @@ import { trpc } from '@/lib/trpc/client';
 import { usePathname } from 'next/navigation';
 import { Button } from '../ui/button';
 import Image from 'next/image';
-import { Instagram, Phone, Mail } from 'lucide-react';
+import { Instagram, Phone, Mail, BriefcaseBusiness } from 'lucide-react';
+
 import Gallery from './Gallery';
 // import Link from 'next/link';
 
@@ -16,6 +17,7 @@ export interface ContactProps {
   instagram: string | '';
   phone: string | '';
   whatsApp: string | '';
+  portfolio: string | '';
   isContactPublic: boolean;
   isPhotographer: boolean;
 }
@@ -29,6 +31,8 @@ export interface ProfileProps {
   firstName: string;
   lastName: string;
   profilePic: IProfilePic;
+  equipment: string;
+  additionalName: string;
   bio: string;
 }
 
@@ -84,14 +88,16 @@ export default function Profile() {
     instagram: <Instagram size={20} strokeWidth={2} />,
     email: <Mail size={20} strokeWidth={2} />,
     phone: <Phone size={20} strokeWidth={2} />,
+    portfolio: <BriefcaseBusiness size={20} strokeWidth={2} />,
   };
 
   const userLinks = [
     contact?.phone && { type: 'phone', data: contact.phone },
     contact?.discord && { type: 'discord', data: contact.discord },
-    contact?.email && { type: 'email', data: contact.email },
     contact?.whatsApp && { type: 'whatsapp', data: contact.whatsApp },
     contact?.instagram && { type: 'instagram', data: contact.instagram },
+    contact?.portfolio && { type: 'portfolio', data: contact.portfolio },
+    contact?.email && { type: 'email', data: contact.email },
   ].filter(
     (link) =>
       link !== null &&
@@ -103,7 +109,8 @@ export default function Profile() {
   const usersFullName = `${profile?.firstName} ${profile?.lastName}`;
   const showContactButton =
     (!isSignedIn && !contact?.isContactPublic) ||
-    (isSignedIn && currentUser?.id !== clerkId);
+    (isSignedIn && currentUser?.id !== clerkId) ||
+    (!isSignedIn && contact?.isContactPublic);
 
   // User is Editing their Profile
   if (isEditing) {
@@ -123,85 +130,85 @@ export default function Profile() {
 
   return (
     <div className="flex flex-col">
-      <div className="flex max-w-full">
-        <div className="relative h-36 w-28 sm:h-40 sm:w-32 md:h-44 md:w-36 lg:h-48 lg:w-40 xl:h-52 xl:w-44">
-          {profile?.profilePic?.url && (
-            <Image
-              src={profile.profilePic.url}
-              alt={`Profile Picture of ${usersFullName}`}
-              objectFit="cover"
-              layout="fill"
-              className="rounded-sm border border-black"
-            />
-          )}
-        </div>
-        <div className="flex flex-grow flex-col pl-3 md:pl-10">
-          <h1 className="text-sm font-semibold sm:text-lg lg:text-xl 2xl:text-2xl">
-            {usersFullName}
-          </h1>
-          <p className="max-w-xs pt-2 text-xs sm:text-sm md:max-w-md lg:max-w-lg lg:pt-5 xl:max-w-xl">
-            {profile?.bio || `${usersFullName} has no bio.`}
-          </p>
-          <div className="mt-auto flex items-end justify-end space-x-2 lg:hidden">
-            {currentUser?.id === clerkId && (
-              <Button
-                className="w-16 flex-shrink-0 border border-gray-400 bg-profile_button_bg text-xs text-black hover:bg-primary_blue hover:text-white active:bg-primary_blue active:text-white"
-                aria-label="Edit your Profile"
-                onClick={() => {
-                  setIsEditing(!isEditing);
-                }}
-              >
-                Edit
-              </Button>
-            )}
-            {showContactButton && (
-              <Button
-                className="w-16 flex-shrink-0 border border-gray-400 bg-profile_button_bg text-xs text-black hover:bg-primary_blue hover:text-white active:bg-primary_blue active:text-white"
-                aria-label={`Contact ${usersFullName}`}
-              >
-                Contact
-              </Button>
+      <div className="max-w-full sm:flex">
+        <div className="flex">
+          <div className="relative h-28 w-28 rounded-full md:h-32 md:w-32 lg:h-36 lg:w-36 xl:h-48 xl:w-48">
+            {profile?.profilePic?.url && (
+              <Image
+                src={profile.profilePic.url}
+                alt={`Profile Picture of ${usersFullName}`}
+                objectFit="cover"
+                layout="fill"
+                className="rounded-full border border-black"
+              />
             )}
           </div>
+          <div className="flex max-h-48 flex-grow flex-col pl-3 md:pl-10">
+            <h1 className="flex flex-col items-center text-lg font-extrabold xs:flex-row lg:text-xl 2xl:text-2xl">
+              {usersFullName}
+              {profile?.additionalName && (
+                <span className="text-xs xs:pl-2">
+                  ({profile.additionalName})
+                </span>
+              )}
+            </h1>
+            {/* Bio for bigger screen than sm */}
+            <div className="hidden h-full max-w-xs flex-col justify-between pt-2 sm:flex lg:max-w-lg lg:pt-5 xl:max-w-xl">
+              <p className="text-xs sm:text-sm">
+                {profile?.bio || `${usersFullName} has no bio.`}
+              </p>
+              {profile?.equipment && (
+                <div className="flex flex-col space-y-4">
+                  <h2 className="text-sm font-semibold lg:text-lg 2xl:text-xl">
+                    Equipments
+                  </h2>
+                  <p className="text-sm">{profile.equipment}</p>
+                </div>
+              )}
+            </div>
+          </div>
         </div>
-        <div className="hidden flex-grow flex-col lg:flex">
+        {/* Bio for smaller screen than sm */}
+        <div className="max-w flex flex-col gap-y-10 pt-5 sm:hidden">
+          <p className="text-sm">
+            {profile?.bio || `${usersFullName} has no bio.`}
+          </p>
+          {profile?.equipment && (
+            <div className="flex flex-col gap-y-2">
+              <h2 className="text-sm font-semibold lg:text-lg 2xl:text-xl">
+                Equipments
+              </h2>
+              <p className="text-sm">{profile.equipment}</p>
+            </div>
+          )}
+        </div>
+
+        <div className="flex flex-grow flex-col">
           {isSignedIn && contact?.isContactPublic && (
-            <div className="flex justify-end">
+            <div className="flex pt-5 sm:justify-end sm:pt-0">
               <div className="flex flex-col space-y-4 xl:space-y-6">
-                {userLinks.map((link, index) => {
-                  if (!link) return null;
+                <h2 className="text-sm font-semibold lg:text-lg 2xl:text-xl">
+                  Contact
+                </h2>
+                <ul className="grid list-none grid-cols-2 gap-5 sm:grid-cols-1">
+                  {userLinks.map((link, index) => {
+                    if (!link) return null;
 
-                  const IconComponent = IconComponents[link.type];
+                    const IconComponent = IconComponents[link.type];
 
-                  if (
-                    IconComponent &&
-                    (link.type === 'phone' || link.type === 'email')
-                  ) {
-                    return (
-                      <div key={index} className="flex items-center space-x-3">
-                        {link.type === 'email' ? (
-                          <a
-                            aria-label={`Email ${usersFullName} at ${link.data}`}
-                            href={link.data}
-                            className="flex items-center space-x-3 border-b-2 border-transparent transition-colors duration-300 hover:cursor-pointer hover:border-primary_blue"
-                          >
-                            {IconComponent}
-                            <span className="text-sm">{link.data}</span>
-                          </a>
-                        ) : (
-                          <div
-                            className="flex items-center space-x-3"
-                            aria-label={`Call ${usersFullName} at ${link.data}`}
-                          >
+                    if (IconComponent) {
+                      return (
+                        <li key={index} className="flex items-center space-x-3">
+                          <div className="flex items-center space-x-3">
                             {IconComponent}
                             <span className="text-sm">{link.data}</span>
                           </div>
-                        )}
-                      </div>
-                    );
-                  }
-                })}
-                <div className="flex flex-row justify-between">
+                        </li>
+                      );
+                    }
+                  })}
+                </ul>
+                {/* <div className="flex flex-row justify-between">
                   {userLinks.map((link, index) => {
                     if (!link) return null;
 
@@ -221,14 +228,14 @@ export default function Profile() {
                       )
                     );
                   })}
-                </div>
+                </div> */}
               </div>
             </div>
           )}
           <div className="mt-auto flex items-end justify-end">
             {currentUser?.id === clerkId && (
               <Button
-                className="w-20 border border-gray-400 bg-profile_button_bg text-xs text-black hover:bg-primary_blue hover:text-white active:bg-primary_blue active:text-white"
+                className="mt-8 w-full border border-gray-400 bg-profile_button_bg text-xs text-black hover:bg-primary_blue hover:text-white active:bg-primary_blue active:text-white sm:w-20"
                 aria-label="Edit your Profile"
                 onClick={() => {
                   setIsEditing(!isEditing);
@@ -238,7 +245,7 @@ export default function Profile() {
               </Button>
             )}
             {showContactButton && (
-              <Button className="w-20 border border-gray-400 bg-profile_button_bg text-xs text-black hover:bg-primary_blue hover:text-white active:bg-primary_blue active:text-white">
+              <Button className="mt-8 w-full border border-gray-400 bg-profile_button_bg text-xs text-black hover:bg-primary_blue hover:text-white active:bg-primary_blue active:text-white sm:w-20">
                 Contact
               </Button>
             )}

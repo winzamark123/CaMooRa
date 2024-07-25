@@ -21,6 +21,9 @@ const config: Config = {
       aspectRatio: {
         '16/9': '16 / 9',
         '9/16': '9 / 16',
+
+      screens: {
+        xs: '400px',
       },
       padding: {
         '1/10': '10%',
