@@ -101,23 +101,23 @@ export default function LinkAccountSection({
               </div>
             </div>
             {/* Third Row */}
-            {/* <div className="grid md:grid-cols-2 md:gap-32">
-            <div className="group relative z-0 mb-5 w-full">
-              <FormField
-                control={form.control}
-                name="discord"
-                render={({ field }) => (
-                  <FormItem>
-                    <FormLabel>Other Link</FormLabel>
-                    <FormControl>
-                      <Input className=" border-black " {...field} />
-                    </FormControl>
-                    <FormMessage />
-                  </FormItem>
-                )}
-              />
+            <div className="grid md:grid-cols-2 md:gap-16 lg:gap-32">
+              <div className="group relative z-0 w-full">
+                <FormField
+                  control={form.control}
+                  name="portfolio"
+                  render={({ field }) => (
+                    <FormItem className="mb-4">
+                      <FormLabel>Portfolio</FormLabel>
+                      <FormControl>
+                        <Input className=" border-black " {...field} />
+                      </FormControl>
+                      <FormMessage />
+                    </FormItem>
+                  )}
+                />
+              </div>
             </div>
-          </div> */}
           </form>
         </Form>
       </div>

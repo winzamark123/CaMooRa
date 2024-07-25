@@ -1,5 +1,5 @@
 import { trpc } from '@/lib/trpc/client';
-import { SetStateAction, useState } from 'react';
+import { SetStateAction, useRef, useState } from 'react';
 import { ContactProps, ProfileProps } from './Profile';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { useForm } from 'react-hook-form';
@@ -13,6 +13,8 @@ interface UpdateProfileVariableType {
   clerkId: string;
   firstName?: string;
   lastName?: string;
+  additionalName?: string;
+  equipment?: string;
   bio?: string;
 }
 
@@ -22,6 +24,7 @@ interface UpdateContactVariableType {
   instagram?: string | '';
   phone?: string | '';
   whatsApp?: string | '';
+  portfolio?: string | '';
   isContactPublic?: boolean;
   isPhotographer?: boolean;
 }
@@ -46,9 +49,10 @@ export default function EditProfile({
   // Calling TRPC update procedures
   const updateProfile = trpc.profile.updateProfile.useMutation({
     onSuccess: () => {
-      console.log('Profile fields updated successfully');
+      console.error('Profile fields updated successfully');
       refetchProfile();
       setIsProfileUpdateSuccessful(true);
+      manageTimeout();
     },
     onError: (err) => {
       console.error('Error updating Profile fields ', err);
@@ -58,9 +62,10 @@ export default function EditProfile({
 
   const updateContact = trpc.contact.updateContact.useMutation({
     onSuccess: () => {
-      console.log('Contact fields updated successfully');
+      console.error('Contact fields updated successfully');
       refetchContact();
       setIsProfileUpdateSuccessful(true);
+      manageTimeout();
     },
     onError: (err) => {
       console.error('Error updating Contact fields', err);
@@ -70,6 +75,17 @@ export default function EditProfile({
 
   const [isProfileUpdateSuccessful, setIsProfileUpdateSuccessful] =
     useState<boolean>(false);
+  const timeoutRef = useRef<NodeJS.Timeout | null>(null);
+
+  const manageTimeout = () => {
+    if (timeoutRef.current) {
+      clearTimeout(timeoutRef.current);
+    }
+    timeoutRef.current = setTimeout(() => {
+      setIsProfileUpdateSuccessful(false);
+    }, 5000);
+    window.scrollTo(0, 0);
+  };
 
   // Form validation
   const formSchema = z.object({
@@ -92,11 +108,20 @@ export default function EditProfile({
     instagram: z.string().optional(),
     phone: z.string().optional(),
     whatsApp: z.string().optional(),
+    portfolio: z.string().optional(),
     isContactPublic: z
       .boolean({ invalid_type_error: 'isContactPublic must be a boolean' })
       .optional(),
     isPhotographer: z
       .boolean({ invalid_type_error: 'isPhotographer must be a boolean' })
+      .optional(),
+    additionalName: z
+      .string()
+      .max(10, { message: 'Additional Name must be 10 characters or less' })
+      .optional(),
+    equipment: z
+      .string()
+      .max(60, { message: 'Equipment must be 60 characters or less' })
       .optional(),
     bio: z
       .string()
@@ -112,10 +137,13 @@ export default function EditProfile({
       email: contact.email,
       phone: contact.phone || '',
       whatsApp: contact.whatsApp || '',
+      portfolio: contact.portfolio || '',
       instagram: contact.instagram || '',
       discord: contact.discord || '',
       isContactPublic: contact.isContactPublic,
       isPhotographer: contact.isPhotographer,
+      additionalName: profile.additionalName || '',
+      equipment: profile.equipment || '',
       bio: profile.bio || '',
     },
   });
@@ -129,6 +157,9 @@ export default function EditProfile({
     const trimmedWhatsAppLink = values.whatsApp?.trim();
     const trimmedPhone = values.phone?.trim();
     const trimmedBio = values.bio?.trim();
+    const trimmedPortfolio = values.portfolio?.trim();
+    const trimmedEquipment = values.equipment?.trim();
+    const trimmedAdditionalName = values.additionalName?.trim();
 
     // Checks Profile fields (checks if state variable doesn't equal saved variable in db)
     const updatedProfileData: UpdateProfileVariableType = { clerkId };
@@ -137,6 +168,10 @@ export default function EditProfile({
     if (trimmedLastName !== profile.lastName)
       updatedProfileData.lastName = trimmedLastName;
     if (trimmedBio !== profile.bio) updatedProfileData.bio = trimmedBio;
+    if (trimmedEquipment !== profile.equipment)
+      updatedProfileData.equipment = trimmedEquipment;
+    if (trimmedAdditionalName !== profile.additionalName)
+      updatedProfileData.additionalName = trimmedAdditionalName;
 
     // Checks Contact fields (checks if state variable doesn't equal saved variable in db)
     const updatedContactData: UpdateContactVariableType = { clerkId };
@@ -151,6 +186,8 @@ export default function EditProfile({
     if (trimmedPhone !== contact.phone) updatedContactData.phone = values.phone;
     if (trimmedWhatsAppLink !== contact.whatsApp)
       updatedContactData.whatsApp = values.whatsApp;
+    if (trimmedPortfolio !== contact.portfolio)
+      updatedContactData.portfolio = values.portfolio;
 
     // Update Profile and Contact fields
     if (Object.keys(updatedProfileData).length > 1) {
@@ -163,7 +200,11 @@ export default function EditProfile({
 
   return (
     <div className="xl-space-y-16 flex flex-col space-y-5 md:space-y-10">
-      {isProfileUpdateSuccessful && <div className="bg-green-600">Updated</div>}
+      {isProfileUpdateSuccessful && (
+        <div className="rounded-md bg-green-500 p-2 text-center text-white shadow">
+          Profile Updated Successfully!
+        </div>
+      )}
       <ProfileSection
         form={form}
         onSave={onSave}

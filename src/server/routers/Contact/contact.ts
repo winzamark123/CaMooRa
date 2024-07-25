@@ -6,6 +6,7 @@ export interface Contact {
   discord?: string;
   instagram?: string;
   phone?: string;
+  portfolio?: string;
   whatsApp?: string;
   isContactPublic: boolean;
   isPhotographer: boolean;
@@ -18,6 +19,7 @@ const contact_object = z.object({
   instagram: z.string().optional(),
   phone: z.string().optional(),
   whatsApp: z.string().optional(),
+  portfolio: z.string().optional(),
   isContactPublic: z
     .boolean({ invalid_type_error: 'isContactPublic must be a boolean' })
     .optional(),
@@ -41,6 +43,7 @@ export const contactRouter = router({
           instagram: true,
           phone: true,
           whatsApp: true,
+          portfolio: true,
           isContactPublic: true,
           isPhotographer: true,
         },
@@ -64,6 +67,7 @@ export const contactRouter = router({
           instagram: input.instagram,
           phone: input.phone,
           whatsApp: input.whatsApp,
+          portfolio: input.portfolio,
           isContactPublic: input.isContactPublic,
           isPhotographer: input.isPhotographer,
         },
