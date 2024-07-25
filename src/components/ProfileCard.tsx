@@ -1,7 +1,8 @@
 import React from 'react';
 import { Card } from '@/components/ui/card';
 import { trpc } from '@/lib/trpc/client';
-import Image from 'next/image';
+// import Image from 'next/image';
+import PhotoImage from '@/components/PhotoImage';
 
 interface ProfileCardProps {
   id: string;
@@ -30,18 +31,20 @@ export default function ProfileCard({ id }: ProfileCardProps) {
   }
 
   return (
-    <Card className="flex h-80 flex-col justify-end gap-2 rounded-2xl border-slate-400 p-6">
+    <Card className="flex h-96 flex-col justify-end gap-2 rounded-2xl border-slate-400 p-6">
       {isLoadingImages && <div>Loading Images...</div>}
       {user_images && user_images.length > 0 && (
-        <Image
-          className="rounded-xl object-cover"
-          src={user_images[0].url}
-          alt="profile"
-          fill
-          style={{
-            filter: 'brightness(0.65)',
-          }}
-        />
+        <Card className="flex h-96 flex-col justify-end gap-2 rounded-2xl border-slate-400 p-6">
+          <PhotoImage
+            className="rounded-xl object-cover"
+            src={user_images[0].url}
+            alt="profile"
+            isHorizontal={false}
+            style={{
+              filter: 'brightness(0.65)',
+            }}
+          />
+        </Card>
       )}
       <div className="z-10 flex gap-2  text-white">
         <p>{user_profile.firstName}</p>

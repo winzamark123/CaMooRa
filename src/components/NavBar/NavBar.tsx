@@ -2,8 +2,6 @@
 import { useState } from 'react';
 import { SignedIn, SignedOut, useUser } from '@clerk/nextjs';
 import { ModeToggle } from '../Theme/mode-toggle';
-import Image from 'next/image';
-import FoMooLogo from '@/public/fo-moo-logo.svg';
 import Link from 'next/link';
 import { DropDownProfile } from './DropDownProfile';
 import { Button } from '../ui/button';
@@ -11,6 +9,11 @@ import SignInPopUp from '../Popups/SignInPopUp';
 
 export default function NavBar() {
   const [showSignInPopUp, setShowSignInPopUp] = useState(false);
+  const [isOpen, setIsOpen] = useState(false);
+
+  const toggleMenu = () => {
+    setIsOpen(!isOpen);
+  };
 
   const toggleSignInPopUp = () => {
     setShowSignInPopUp(!showSignInPopUp);
@@ -19,10 +22,27 @@ export default function NavBar() {
 
   return (
     <main className="h-30 flex w-full justify-between p-8">
-      <Link href="/">
-        <Image src={FoMooLogo} alt="FoMoo Logo" width={100} height={100} />
-      </Link>
-      <div className="flex items-center justify-between gap-4 p-4">
+      <Link href="/">CaMooRa</Link>
+      <div className="flex items-center justify-between gap-4 p-4 sm:hidden">
+        <button onClick={toggleMenu}>
+          <svg className="h-6 w-6 fill-current" viewBox="0 0 24 24">
+            {isOpen ? (
+              <path
+                fillRule="evenodd"
+                d="M18.278 16.864a1 1 0 01-1.414 1.414l-4.829-4.829-4.828 4.829a1 1 0 01-1.414-1.414l4.828-4.829-4.828-4.828a1 1 0 011.414-1.414l4.829 4.828 4.828-4.828a1 1 0 011.414 1.414l-4.828 4.829 4.828 4.828z"
+                clipRule="evenodd"
+              />
+            ) : (
+              <path
+                fillRule="evenodd"
+                d="M4 5h16a1 1 0 010 2H4a1 1 0 110-2zm0 6h16a1 1 0 010 2H4a1 1 0 010-2zm0 6h16a1 1 0 010 2H4a1 1 0 010-2z"
+                clipRule="evenodd"
+              />
+            )}
+          </svg>
+        </button>
+      </div>
+      <div className="hidden items-center justify-between gap-4 p-4 sm:flex">
         <p>Feedback</p>
         <ModeToggle />
         <SignedIn>{user && <DropDownProfile userId={user.id} />}</SignedIn>

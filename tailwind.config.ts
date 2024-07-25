@@ -18,6 +18,10 @@ const config: Config = {
       },
     },
     extend: {
+      aspectRatio: {
+        '16/9': '16 / 9',
+        '9/16': '9 / 16',
+      },
       screens: {
         xs: '400px',
       },
