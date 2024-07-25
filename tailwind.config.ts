@@ -18,6 +18,9 @@ const config: Config = {
       },
     },
     extend: {
+      screens: {
+        xs: '400px',
+      },
       padding: {
         '1/10': '10%',
         '1/20': '5%',
