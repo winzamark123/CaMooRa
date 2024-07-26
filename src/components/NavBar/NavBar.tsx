@@ -6,6 +6,8 @@ import Link from 'next/link';
 import { DropDownProfile } from './DropDownProfile';
 import { Button } from '../ui/button';
 import SignInPopUp from '../Popups/SignInPopUp';
+import Logo from '@/public/logo.svg';
+import Image from 'next/image';
 
 export default function NavBar() {
   const [showSignInPopUp, setShowSignInPopUp] = useState(false);
@@ -22,7 +24,9 @@ export default function NavBar() {
 
   return (
     <main className="h-30 flex w-full justify-between p-8">
-      <Link href="/">CaMooRa</Link>
+      <Link href="/">
+        <Image src={Logo} alt="Camoora Logo"></Image>
+      </Link>
       <div className="flex items-center justify-between gap-4 p-4 sm:hidden">
         <button onClick={toggleMenu}>
           <svg className="h-6 w-6 fill-current" viewBox="0 0 24 24">
