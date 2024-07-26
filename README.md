@@ -16,9 +16,9 @@ Welcome to CaMooRa, where we believe every moment is worth capturing. Our platfo
 
 The website is currently under development! Release coming soon! Heres some sneak peek ;3
 
-<img src= "src/public/demo/Guest_Home.png" alt="Guest Home"/>
-<img src="src/public/demo/Profile_Setting.png" alt="Profile"/>
-<img src="src/public/demo/Student_Signin.png" alt="Student"/>
+<img src= "src/public/demo/Home_Page.png" alt="Guest Home" width="200" height ="300"/>
+<img src="src/public/demo/Profile_Page.png" alt="Profile" width="200" height ="300"/>
+<img src="src/public/demo/Profile_Edit.png" alt="Student" width="200" height ="300"/>
 
 ## Frameworks and Tools
 
