@@ -1,6 +1,7 @@
 import { trpc } from '@/lib/trpc/client';
 import { SetStateAction, useRef, useState } from 'react';
-import { ContactProps, ProfileProps } from './Profile';
+import type { ProfileProps } from './Profile';
+import type { Contact } from '../../server/routers/Contact/contact';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { useForm } from 'react-hook-form';
 import { z } from 'zod';
@@ -9,29 +10,23 @@ import LinkAccountSection from './LinkAccountSection';
 import ProjectSection from './ProjectSection';
 import { Button } from '../ui/button';
 
-interface UpdateProfileVariableType {
-  clerkId: string;
+interface UpdateProfileVariableType
+  extends Omit<ProfileProps, 'firstName' | 'lastName' | 'profilePic'> {
+  // Todo: Append profilePic to this type
   firstName?: string;
   lastName?: string;
-  additionalName?: string;
-  equipment?: string;
-  bio?: string;
 }
 
-interface UpdateContactVariableType {
+interface UpdateContactVariableType
+  extends Omit<Contact, 'isContactPublic' | 'isPhotographer'> {
   clerkId: string;
-  discord?: string | '';
-  instagram?: string | '';
-  phone?: string | '';
-  whatsApp?: string | '';
-  portfolio?: string | '';
   isContactPublic?: boolean;
   isPhotographer?: boolean;
 }
 
 interface EditProfileProps {
   profile: ProfileProps;
-  contact: ContactProps;
+  contact: Contact;
   clerkId: string;
   refetchProfile: () => void;
   refetchContact: () => void;

@@ -7,33 +7,17 @@ import { usePathname } from 'next/navigation';
 import { Button } from '../ui/button';
 import Image from 'next/image';
 import { Instagram, Phone, Mail, BriefcaseBusiness } from 'lucide-react';
-
 import Gallery from './Gallery';
-// import Link from 'next/link';
+import type { Contact } from '../../server/routers/Contact/contact';
+import type { Profile } from '../../server/routers/Profile/profile';
 
-export interface ContactProps {
-  email: string;
-  discord: string | '';
-  instagram: string | '';
-  phone: string | '';
-  whatsApp: string | '';
-  portfolio: string | '';
-  isContactPublic: boolean;
-  isPhotographer: boolean;
-}
 interface IProfilePic {
-  clerkId: string;
   id: string;
   url: string;
   createdAt: string;
 }
-export interface ProfileProps {
-  firstName: string;
-  lastName: string;
+export interface ProfileProps extends Profile {
   profilePic: IProfilePic;
-  equipment: string;
-  additionalName: string;
-  bio: string;
 }
 
 export default function Profile() {
@@ -117,7 +101,7 @@ export default function Profile() {
     return (
       <div>
         <EditProfile
-          contact={contact as ContactProps}
+          contact={contact as Contact}
           profile={profile as ProfileProps}
           clerkId={clerkId}
           refetchProfile={refetchProfile}

@@ -6,7 +6,10 @@ export interface Profile {
   clerkId: string;
   firstName: string;
   lastName: string;
+  additionalName?: string;
+  equipment?: string;
   profilePicURL?: string;
+  bio?: string;
 }
 
 const updateProfileObject = z.object({
@@ -49,6 +52,7 @@ export const profileRouter = router({
           clerkId: input.clerkId,
         },
         select: {
+          clerkId: true,
           firstName: true,
           lastName: true,
           profilePic: true,
