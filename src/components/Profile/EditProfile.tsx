@@ -100,10 +100,18 @@ export default function EditProfile({
       .optional(),
     email: z.string().optional(),
     discord: z.string().optional(),
-    instagram: z.string().optional(),
+    instagramTitle: z
+      .string()
+      .max(15, 'Instagram Title must be 15 characters or less')
+      .optional(),
+    instagramLink: z.string().optional(),
     phone: z.string().optional(),
     whatsApp: z.string().optional(),
-    portfolio: z.string().optional(),
+    portfolioTitle: z
+      .string()
+      .max(15, 'Portfolio Title must be 15 characters or less')
+      .optional(),
+    portfolioLink: z.string().optional(),
     isContactPublic: z
       .boolean({ invalid_type_error: 'isContactPublic must be a boolean' })
       .optional(),
@@ -132,8 +140,10 @@ export default function EditProfile({
       email: contact.email,
       phone: contact.phone || '',
       whatsApp: contact.whatsApp || '',
-      portfolio: contact.portfolio || '',
-      instagram: contact.instagram || '',
+      portfolioTitle: contact.portfolioTitle || '',
+      portfolioLink: contact.portfolioLink || '',
+      instagramTitle: contact.instagramTitle || '',
+      instagramLink: contact.instagramLink || '',
       discord: contact.discord || '',
       isContactPublic: contact.isContactPublic,
       isPhotographer: contact.isPhotographer,
@@ -148,11 +158,13 @@ export default function EditProfile({
     const trimmedFirstName = values.firstName?.trim();
     const trimmedLastName = values.lastName?.trim();
     const trimmedDiscordLink = values.discord?.trim();
-    const trimmedInstagramLink = values.instagram?.trim();
+    const trimmedInstagramTitle = values.instagramTitle?.trim();
+    const trimmedInstagramLink = values.instagramLink?.trim();
     const trimmedWhatsAppLink = values.whatsApp?.trim();
     const trimmedPhone = values.phone?.trim();
     const trimmedBio = values.bio?.trim();
-    const trimmedPortfolio = values.portfolio?.trim();
+    const trimmedPortfolioTitle = values.portfolioTitle?.trim();
+    const trimmedPortfolioLink = values.portfolioLink?.trim();
     const trimmedEquipment = values.equipment?.trim();
     const trimmedAdditionalName = values.additionalName?.trim();
 
@@ -176,13 +188,18 @@ export default function EditProfile({
       updatedContactData.isPhotographer = values.isPhotographer;
     if (trimmedDiscordLink !== contact.discord)
       updatedContactData.discord = values.discord;
-    if (trimmedInstagramLink !== contact.instagram)
-      updatedContactData.instagram = values.instagram;
     if (trimmedPhone !== contact.phone) updatedContactData.phone = values.phone;
     if (trimmedWhatsAppLink !== contact.whatsApp)
       updatedContactData.whatsApp = values.whatsApp;
-    if (trimmedPortfolio !== contact.portfolio)
-      updatedContactData.portfolio = values.portfolio;
+
+    if (trimmedInstagramTitle !== contact.instagramTitle)
+      updatedContactData.instagramTitle = values.instagramTitle;
+    if (trimmedInstagramLink !== contact.instagramLink)
+      updatedContactData.instagramLink = values.instagramLink;
+    if (trimmedPortfolioTitle !== contact.portfolioTitle)
+      updatedContactData.portfolioTitle = values.portfolioTitle;
+    if (trimmedPortfolioLink !== contact.portfolioLink)
+      updatedContactData.portfolioLink = values.portfolioLink;
 
     // Update Profile and Contact fields
     if (Object.keys(updatedProfileData).length > 1) {

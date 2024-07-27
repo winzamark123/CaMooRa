@@ -79,8 +79,14 @@ export default function Profile() {
     contact?.phone && { type: 'phone', data: contact.phone },
     contact?.discord && { type: 'discord', data: contact.discord },
     contact?.whatsApp && { type: 'whatsapp', data: contact.whatsApp },
-    contact?.instagram && { type: 'instagram', data: contact.instagram },
-    contact?.portfolio && { type: 'portfolio', data: contact.portfolio },
+    contact?.instagramLink && {
+      type: 'instagram',
+      data: { link: contact.instagramLink, title: contact.instagramTitle },
+    },
+    contact?.portfolioLink && {
+      type: 'portfolio',
+      data: { link: contact.portfolioLink, title: contact.portfolioTitle },
+    },
     contact?.email && { type: 'email', data: contact.email },
   ].filter(
     (link) =>
@@ -174,7 +180,7 @@ export default function Profile() {
                 <h2 className="text-sm font-semibold lg:text-lg 2xl:text-xl">
                   Contact
                 </h2>
-                <ul className="grid list-none grid-cols-2 gap-5 sm:grid-cols-1">
+                <ul className="grid list-none grid-cols-2 gap-5 break-all sm:grid-cols-1">
                   {userLinks.map((link, index) => {
                     if (!link) return null;
 
@@ -185,34 +191,34 @@ export default function Profile() {
                         <li key={index} className="flex items-center space-x-3">
                           <div className="flex items-center space-x-3">
                             {IconComponent}
-                            <span className="text-sm">{link.data}</span>
+                            {/* Checks for Links  */}
+                            {typeof link.data === 'object' &&
+                            (link.type === 'portfolio' ||
+                              link.type === 'instagram') ? (
+                              <a
+                                className="cursor-pointer text-sm underline hover:text-blue-800"
+                                aria-label={`Link to ${usersFullName} ${link.type}`}
+                                href={link.data.link}
+                              >
+                                {link.data.title
+                                  ? link.data.title
+                                  : link.type[0].toUpperCase() +
+                                    link.type.slice(1)}
+                              </a>
+                            ) : (
+                              // No Links
+                              <span className="text-sm">
+                                {typeof link.data === 'string'
+                                  ? link.data
+                                  : link.data.link}
+                              </span>
+                            )}
                           </div>
                         </li>
                       );
                     }
                   })}
                 </ul>
-                {/* <div className="flex flex-row justify-between">
-                  {userLinks.map((link, index) => {
-                    if (!link) return null;
-
-                    const IconComponent = IconComponents[link.type];
-                    return (
-                      IconComponent &&
-                      link.type !== 'phone' &&
-                      link.type !== 'email' && (
-                        <a
-                          aria-label={`${usersFullName}'s ${link.type} link`}
-                          className="flex items-center space-x-3 border-b-2 border-transparent transition-colors duration-300 hover:cursor-pointer hover:border-primary_blue"
-                          href={link.data}
-                          key={index}
-                        >
-                          {IconComponent}
-                        </a>
-                      )
-                    );
-                  })}
-                </div> */}
               </div>
             </div>
           )}

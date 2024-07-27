@@ -16,13 +16,15 @@ import { Textarea } from '../ui/textarea';
 import UpdateProfilePicForm from './UpdateProfilePicForm';
 import Image from 'next/image';
 
-interface ProfileFormValues {
+interface FormValues {
   email?: string;
   discord?: string;
-  instagram?: string;
+  instagramTitle?: string;
+  instagramLink?: string;
   phone?: string;
   whatsApp?: string;
-  portfolio?: string;
+  portfolioTitle?: string;
+  portfolioLink?: string;
   isContactPublic?: boolean;
   isPhotographer?: boolean;
   firstName?: string;
@@ -32,8 +34,8 @@ interface ProfileFormValues {
   bio?: string;
 }
 export interface ProfileSectionProps {
-  form: UseFormReturn<ProfileFormValues, any, undefined>;
-  onSave: (values: ProfileFormValues) => void;
+  form: UseFormReturn<FormValues, any, undefined>;
+  onSave: (values: FormValues) => void;
   profileUrl: string | undefined;
   profilePicId: string;
 }
