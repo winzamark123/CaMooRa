@@ -1,34 +1,47 @@
+import * as React from 'react';
+import { Slot } from '@radix-ui/react-slot';
 import Image from 'next/image';
-import React from 'react';
+import { cn } from '@/lib/utils'; // Adjust the import path as needed
+import { cva, type VariantProps } from 'class-variance-authority';
 
-interface PhotoImageProps {
+const photoImageVariants = cva(
+  'relative h-full w-full border-white rounded-xl overflow-hidden filter brightness-50',
+  {
+    variants: {
+      aspect: {
+        portrait: 'aspect-portrait h-96', // You might define your own classes for aspect ratios
+        landscape: 'aspect-landscape w-96', // or use inline styles for flexibility
+      },
+    },
+    defaultVariants: {
+      aspect: 'portrait',
+    },
+  }
+);
+
+export interface PhotoImageProps
+  extends React.HTMLAttributes<HTMLDivElement>,
+    VariantProps<typeof photoImageVariants> {
   src: string;
   alt: string;
-  isHorizontal?: boolean;
-  className?: string;
-  style?: React.CSSProperties;
+  asChild?: boolean;
 }
 
-const PhotoImage = React.forwardRef<HTMLImageElement, PhotoImageProps>(
-  ({ src, alt, isHorizontal, ...props }) => {
+const PhotoImage = React.forwardRef<HTMLDivElement, PhotoImageProps>(
+  ({ src, alt, aspect, asChild = false, className, ...props }, ref) => {
+    const Comp = asChild ? Slot : 'div';
     return (
-      <div
-        className={`relative h-full w-full border-white ${
-          isHorizontal ? 'aspect-w-16 aspect-h-9' : 'aspect-w-9 aspect-h-16'
-        }`}
+      <Comp
+        className={cn(photoImageVariants({ aspect, className }))}
+        ref={ref}
+        {...props}
       >
-        <Image
-          src={src}
-          alt={alt}
-          layout="fill"
-          objectFit="contain"
-          {...props}
-        />
-      </div>
+        <Image src={src} alt={alt} layout="fill" objectFit="cover" />
+      </Comp>
     );
   }
 );
 
 PhotoImage.displayName = 'PhotoImage';
 
-export default PhotoImage;
+export { PhotoImage, photoImageVariants };

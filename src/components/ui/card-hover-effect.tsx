@@ -2,7 +2,7 @@ import { cn } from '@/lib/utils';
 import { AnimatePresence, motion } from 'framer-motion';
 import Link from 'next/link';
 import { useState } from 'react';
-import ProfileCard from '../ProfileCard';
+import ProfileCard from '../../app/_components/ProfileCard';
 
 export const HoverEffect = ({
   items,

@@ -22,12 +22,12 @@ export function DropDownProfile({ userId }: { userId: string }) {
         </Button>
       </DropdownMenuTrigger>
       <DropdownMenuContent align="end">
-        <DropdownMenuItem>
-          <Link href={`/profile/${userId}`}>Profile</Link>
-        </DropdownMenuItem>
-        <DropdownMenuItem>
-          <SignOutButton />
-        </DropdownMenuItem>
+        <Link href={`/profile/${userId}`}>
+          <DropdownMenuItem>Profile</DropdownMenuItem>
+        </Link>
+        <SignOutButton>
+          <DropdownMenuItem>Sign out</DropdownMenuItem>
+        </SignOutButton>
       </DropdownMenuContent>
     </DropdownMenu>
   );

@@ -1,5 +1,5 @@
-import PhotographersList from '../components/Profile/PhotographersList';
-import Landing from '@/components/Landing/Landing';
+import PhotographersList from './_components/PhotographersList';
+import Landing from '@/app/_components/Landing/Landing';
 import { SignedOut, SignedIn } from '@clerk/nextjs';
 
 export default async function Home() {
