@@ -46,10 +46,13 @@ model Contact {
   // Contact Information
   email     String  @unique
   discord   String?
-  instagram String?
   phone     String?
   whatsApp  String?
-  portfolio  String?
+
+  instagramTitle String?
+  instagramLink  String?
+  portfolioTitle  String?
+  portfolioLink   String?
 
   // Preferences
   isContactPublic Boolean @default(false)

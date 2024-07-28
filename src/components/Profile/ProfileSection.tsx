@@ -16,41 +16,26 @@ import { Textarea } from '../ui/textarea';
 import UpdateProfilePicForm from './UpdateProfilePicForm';
 import Image from 'next/image';
 
+interface FormValues {
+  email?: string;
+  discord?: string;
+  instagramTitle?: string;
+  instagramLink?: string;
+  phone?: string;
+  whatsApp?: string;
+  portfolioTitle?: string;
+  portfolioLink?: string;
+  isContactPublic?: boolean;
+  isPhotographer?: boolean;
+  firstName?: string;
+  lastName?: string;
+  additionalName?: string;
+  equipment?: string;
+  bio?: string;
+}
 export interface ProfileSectionProps {
-  form: UseFormReturn<
-    {
-      email?: string | undefined;
-      discord?: string | undefined;
-      instagram?: string | undefined;
-      phone?: string | undefined;
-      whatsApp?: string | undefined;
-      portfolio?: string | undefined;
-      isContactPublic?: boolean | undefined;
-      isPhotographer?: boolean | undefined;
-      firstName?: string | undefined;
-      lastName?: string | undefined;
-      additionalName?: string | undefined;
-      equipment?: string | undefined;
-      bio?: string | undefined;
-    },
-    any,
-    undefined
-  >;
-  onSave: (values: {
-    email?: string | undefined;
-    discord?: string | undefined;
-    instagram?: string | undefined;
-    phone?: string | undefined;
-    whatsApp?: string | undefined;
-    portfolio?: string | undefined;
-    isContactPublic?: boolean | undefined;
-    isPhotographer?: boolean | undefined;
-    firstName?: string | undefined;
-    lastName?: string | undefined;
-    additional?: string | undefined;
-    equipment?: string | undefined;
-    bio?: string | undefined;
-  }) => void;
+  form: UseFormReturn<FormValues, any, undefined>;
+  onSave: (values: FormValues) => void;
   profileUrl: string | undefined;
   profilePicId: string;
 }

@@ -4,9 +4,11 @@ import prisma from '../../../../prisma/prisma';
 export interface Contact {
   email?: string;
   discord?: string;
-  instagram?: string;
+  instagramTitle?: string;
+  instagramLink?: string;
   phone?: string;
-  portfolio?: string;
+  portfolioTitle?: string;
+  portfolioLink?: string;
   whatsApp?: string;
   isContactPublic: boolean;
   isPhotographer: boolean;
@@ -16,10 +18,18 @@ const contact_object = z.object({
   clerkId: z.string(),
   email: z.string().optional(),
   discord: z.string().optional(),
-  instagram: z.string().optional(),
+  instagramTitle: z
+    .string()
+    .max(15, 'Instagram Title must be 15 characters or less')
+    .optional(),
+  instagramLink: z.string().optional(),
   phone: z.string().optional(),
   whatsApp: z.string().optional(),
-  portfolio: z.string().optional(),
+  portfolioTitle: z
+    .string()
+    .max(15, 'Portfolio Title must be 15 characters or less')
+    .optional(),
+  portfolioLink: z.string().optional(),
   isContactPublic: z
     .boolean({ invalid_type_error: 'isContactPublic must be a boolean' })
     .optional(),
@@ -40,10 +50,12 @@ export const contactRouter = router({
         select: {
           email: true,
           discord: true,
-          instagram: true,
+          instagramTitle: true,
+          instagramLink: true,
           phone: true,
           whatsApp: true,
-          portfolio: true,
+          portfolioTitle: true,
+          portfolioLink: true,
           isContactPublic: true,
           isPhotographer: true,
         },
@@ -64,10 +76,12 @@ export const contactRouter = router({
         data: {
           email: input.email,
           discord: input.discord,
-          instagram: input.instagram,
+          instagramTitle: input.instagramTitle,
+          instagramLink: input.instagramLink,
           phone: input.phone,
           whatsApp: input.whatsApp,
-          portfolio: input.portfolio,
+          portfolioTitle: input.portfolioTitle,
+          portfolioLink: input.portfolioLink,
           isContactPublic: input.isContactPublic,
           isPhotographer: input.isPhotographer,
         },

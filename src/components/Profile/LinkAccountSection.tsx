@@ -51,15 +51,36 @@ export default function LinkAccountSection({
                   )}
                 />
               </div>
-              <div className="group relative z-0 w-full">
+              <div className="group relative z-0 flex w-full flex-grow">
                 <FormField
                   control={form.control}
-                  name="instagram"
+                  name="instagramTitle"
                   render={({ field }) => (
-                    <FormItem className="mb-4">
+                    <FormItem className="mb-4 flex-grow">
                       <FormLabel>Instagram</FormLabel>
                       <FormControl>
-                        <Input className=" border-black " {...field} />
+                        <Input
+                          className="rounded-e-none border-black "
+                          placeholder="Instagram Title"
+                          {...field}
+                        />
+                      </FormControl>
+                      <FormMessage />
+                    </FormItem>
+                  )}
+                />
+                <FormField
+                  control={form.control}
+                  name="instagramLink"
+                  render={({ field }) => (
+                    <FormItem className="mb-4 flex-grow">
+                      <div className="h-6"></div>
+                      <FormControl>
+                        <Input
+                          className="rounded-s-none border-l-0 border-black "
+                          placeholder="Instagram Link"
+                          {...field}
+                        />
                       </FormControl>
                       <FormMessage />
                     </FormItem>
@@ -102,15 +123,36 @@ export default function LinkAccountSection({
             </div>
             {/* Third Row */}
             <div className="grid md:grid-cols-2 md:gap-16 lg:gap-32">
-              <div className="group relative z-0 w-full">
+              <div className="flex w-full">
                 <FormField
                   control={form.control}
-                  name="portfolio"
+                  name="portfolioTitle"
                   render={({ field }) => (
-                    <FormItem className="mb-4">
+                    <FormItem className="mb-4 flex-grow">
                       <FormLabel>Portfolio</FormLabel>
                       <FormControl>
-                        <Input className=" border-black " {...field} />
+                        <Input
+                          className="rounded-e-none border-black "
+                          placeholder="Portfolio Title"
+                          {...field}
+                        />
+                      </FormControl>
+                      <FormMessage />
+                    </FormItem>
+                  )}
+                />
+                <FormField
+                  control={form.control}
+                  name="portfolioLink"
+                  render={({ field }) => (
+                    <FormItem className="mb-4 flex-grow">
+                      <div className="h-6"></div>
+                      <FormControl>
+                        <Input
+                          className="rounded-s-none border-l-0 border-black "
+                          placeholder="Portfolio Link"
+                          {...field}
+                        />
                       </FormControl>
                       <FormMessage />
                     </FormItem>
