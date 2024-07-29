@@ -24,10 +24,25 @@ export default function NavBar() {
 
   return (
     <main className="h-30 flex w-full justify-between p-8">
-      <Link href="/">
-        <Image src={Logo} alt="Camoora Logo"></Image>
-      </Link>
-      <div className="flex items-center justify-between gap-4 p-4 sm:hidden">
+      <div className="p-4">
+        <Link href="/">
+          <Image src={Logo} alt="Camoora Logo"></Image>
+        </Link>
+      </div>
+      <div className="hidden items-center justify-between gap-4 p-4 sm:flex">
+        <p>Feedback</p>
+        <ModeToggle />
+        <SignedIn>{user && <DropDownProfile userId={user.id} />}</SignedIn>
+        <div className="flex">
+          <SignedOut>
+            <Button className="px-6 py-3" onClick={toggleSignInPopUp}>
+              Get Started
+            </Button>
+          </SignedOut>
+        </div>
+      </div>
+      {showSignInPopUp && <SignInPopUp onToggle={toggleSignInPopUp} />}
+      <div className="fixed right-8 top-8 z-30 p-4 sm:hidden">
         <button onClick={toggleMenu}>
           <svg className="h-6 w-6 fill-current" viewBox="0 0 24 24">
             {isOpen ? (
@@ -46,19 +61,23 @@ export default function NavBar() {
           </svg>
         </button>
       </div>
-      <div className="hidden items-center justify-between gap-4 p-4 sm:flex">
-        <p>Feedback</p>
-        <ModeToggle />
-        <SignedIn>{user && <DropDownProfile userId={user.id} />}</SignedIn>
-        <div className="flex">
-          <SignedOut>
-            <Button className="px-6 py-3" onClick={toggleSignInPopUp}>
-              Get Started
-            </Button>
-          </SignedOut>
+      {isOpen && (
+        <div
+          className="fixed left-0 top-0 z-20 flex h-full w-full flex-col items-center 
+        justify-center  gap-4 border border-black bg-white p-4 sm:hidden"
+        >
+          <p>Feedback</p>
+          <ModeToggle />
+          <SignedIn>{user && <DropDownProfile userId={user.id} />}</SignedIn>
+          <div className="flex">
+            <SignedOut>
+              <Button className="px-6 py-3" onClick={toggleSignInPopUp}>
+                Get Started
+              </Button>
+            </SignedOut>
+          </div>
         </div>
-      </div>
-      {showSignInPopUp && <SignInPopUp onToggle={toggleSignInPopUp} />}
+      )}
     </main>
   );
 }
