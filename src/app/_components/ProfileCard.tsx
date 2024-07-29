@@ -30,7 +30,7 @@ export default function ProfileCard({ id }: ProfileCardProps) {
   }
 
   return (
-    <Card className="flex flex-col justify-end gap-2 rounded-2xl border-slate-400 ">
+    <Card className="flex flex-col justify-end sm:rounded-2xl sm:border-slate-400">
       {isLoadingImages && <div>Loading Images...</div>}
       {user_images && user_images.length > 0 && (
         <PhotoImage src={user_images[0].url} alt="profile" />
