@@ -19,8 +19,8 @@ const config: Config = {
     },
     extend: {
       aspectRatio: {
-        '16/9': '16 / 9',
-        '9/16': '9 / 16',
+        landscape: '16 / 9',
+        portrait: '12 / 16',
       },
       screens: {
         xs: '400px',

@@ -2,7 +2,7 @@ import { cn } from '@/lib/utils';
 import { AnimatePresence, motion } from 'framer-motion';
 import Link from 'next/link';
 import { useState } from 'react';
-import ProfileCard from '../ProfileCard';
+import ProfileCard from '../../app/_components/ProfileCard';
 
 export const HoverEffect = ({
   items,
@@ -18,7 +18,7 @@ export const HoverEffect = ({
   return (
     <div
       className={cn(
-        'grid grid-cols-1 gap-4  py-10  md:grid-cols-2 lg:grid-cols-3',
+        'grid grid-cols-1 py-10  sm:gap-4  md:grid-cols-2 lg:grid-cols-3',
         className
       )}
     >
@@ -26,7 +26,7 @@ export const HoverEffect = ({
         <Link
           key={item.clerkId}
           href={`/profile/${item.clerkId}`}
-          className="group relative  block h-full w-full p-2"
+          className="group relative  block h-full w-full"
           onMouseEnter={() => setHoveredIndex(idx)}
           onMouseLeave={() => setHoveredIndex(null)}
         >
