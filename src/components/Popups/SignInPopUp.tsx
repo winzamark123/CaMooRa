@@ -9,8 +9,8 @@ import PopupSVG from '@/public/fo-moo-pop-up.svg';
 export default function SignInPopUp({ onToggle }: { onToggle: () => void }) {
   return (
     <main
-      className="absolute left-0 top-0 flex h-full w-full 
-    items-center justify-center bg-black bg-opacity-50"
+      className="absolute left-0 top-0 z-50 flex h-full 
+    w-full items-center justify-center bg-black bg-opacity-50"
       onClick={onToggle}
     >
       <motion.div
@@ -25,7 +25,7 @@ export default function SignInPopUp({ onToggle }: { onToggle: () => void }) {
       rounded-2xl bg-sky-900 px-16 text-white"
         onClick={(event) => event.stopPropagation()}
       >
-        <div className="absolute left-10 flex flex-col gap-4 p-20">
+        <div className="absolute left-8 top-20 flex flex-col gap-4 sm:left-10 sm:top-0 sm:p-20">
           <h4>Welcome to FoMoo!</h4>
           <p>Please Sign in with your UCDavis account</p>
           <SignInButton>
