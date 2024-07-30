@@ -21,6 +21,8 @@ export const images_router = router({
       const imageDetails = images.map((image) => ({
         url: image.url,
         id: image.id,
+        imageWidth: image.imgWidth,
+        imageHeight: image.imgHeight,
       }));
       return imageDetails;
     }),
@@ -31,6 +33,8 @@ export const images_router = router({
         file_type: z.string(),
         size: z.number(),
         checksum: z.string(),
+        imgWidth: z.number().optional(),
+        imgHeight: z.number().optional(),
       })
     )
     .mutation(async ({ input, ctx }) => {
@@ -39,6 +43,8 @@ export const images_router = router({
         size: input.size,
         checksum: input.checksum,
         clerkId: ctx.user.id,
+        imgHeight: input.imgHeight,
+        imgWidth: input.imgWidth,
       });
 
       if (error) {
@@ -60,6 +66,8 @@ export const images_router = router({
         file_type: z.string(),
         size: z.number(),
         checksum: z.string(),
+        imgWidth: z.number(),
+        imgHeight: z.number(),
       })
     )
     .mutation(async ({ input, ctx }) => {
@@ -68,6 +76,8 @@ export const images_router = router({
         size: input.size,
         checksum: input.checksum,
         clerkId: ctx.user.id,
+        imgHeight: input.imgHeight,
+        imgWidth: input.imgWidth,
       });
 
       if (error) {
