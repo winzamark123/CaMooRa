@@ -21,6 +21,8 @@ export default function ProfileCard({ id }: ProfileCardProps) {
     return <div>Loading...</div>;
   }
 
+  console.log('hello');
+
   if (error) {
     return <div>Error: {error.message}</div>;
   }
