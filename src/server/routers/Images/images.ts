@@ -33,8 +33,8 @@ export const images_router = router({
         file_type: z.string(),
         size: z.number(),
         checksum: z.string(),
-        imgWidth: z.number(),
-        imgHeight: z.number(),
+        imgWidth: z.number().optional(),
+        imgHeight: z.number().optional(),
       })
     )
     .mutation(async ({ input, ctx }) => {

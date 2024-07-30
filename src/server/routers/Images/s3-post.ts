@@ -12,8 +12,8 @@ interface GetSignedURLProps {
   size: number;
   checksum: string;
   clerkId: string;
-  imgWidth: number;
-  imgHeight: number;
+  imgWidth?: number;
+  imgHeight?: number;
 }
 
 const s3 = new S3Client({
