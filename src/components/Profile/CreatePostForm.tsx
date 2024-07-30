@@ -1,15 +1,15 @@
 'use client';
 
-import { useState } from 'react';
+import { useState, useRef } from 'react';
 import { trpc } from '@/lib/trpc/client';
 import { computeSHA256 } from '@/server/routers/Images/imagesUtils';
-import Image from 'next/image';
+import NextImage from 'next/image';
 import Loader from '@/components/ui/Loader';
 
 export default function CreatePostForm() {
   const [file, setFile] = useState<File | null>(null);
   const [selectedImage, setSelectedImage] = useState<string | null>('');
-
+  const imgRef = useRef(new Image());
   const [loading, setLoading] = useState(false);
 
   const signedURL = trpc.images.uploadImage.useMutation();
@@ -19,23 +19,21 @@ export default function CreatePostForm() {
 
     setLoading(true);
 
-    // Do all the image upload and everything
+    // Uploads the image to the AWS S3 bucket
     try {
       if (file) {
         const signedURLResult = await signedURL.mutateAsync({
           file_type: file.type,
           size: file.size,
           checksum: await computeSHA256(file),
+          imgHeight: imgRef.current.height,
+          imgWidth: imgRef.current.width,
         });
-
         if (signedURLResult.error || !signedURLResult.success) {
           setLoading(false);
           return;
         }
-
         const url = signedURLResult.success?.signed_url;
-        console.log('THIS IS URL:', url);
-
         await fetch(url, {
           method: 'PUT',
           body: file,
@@ -43,6 +41,11 @@ export default function CreatePostForm() {
             'Content-Type': file.type,
           },
         });
+        console.log(
+          'UPLOADING IMAGE: ',
+          imgRef.current.width,
+          imgRef.current.height
+        );
       }
     } catch (error) {
       setLoading(false);
@@ -61,6 +64,10 @@ export default function CreatePostForm() {
       const reader = new FileReader();
       reader.onloadend = () => {
         setSelectedImage(reader.result as string);
+
+        // Set the image dimensions
+        const img = imgRef.current;
+        img.src = reader.result as string;
       };
       reader.readAsDataURL(file);
       setFile(file);
@@ -83,7 +90,7 @@ export default function CreatePostForm() {
           )}
           {selectedImage && (
             <div className="relative h-full w-full">
-              <Image
+              <NextImage
                 src={selectedImage}
                 layout="fill"
                 objectFit="cover"

@@ -12,6 +12,8 @@ interface GetSignedURLProps {
   size: number;
   checksum: string;
   clerkId: string;
+  imgWidth: number;
+  imgHeight: number;
 }
 
 const s3 = new S3Client({
@@ -32,6 +34,8 @@ export async function getPresignedURL({
   size,
   checksum,
   clerkId,
+  imgWidth,
+  imgHeight,
 }: GetSignedURLProps) {
   //check file types
   if (!acceptedTypes.includes(file_type)) {
@@ -68,6 +72,8 @@ export async function getPresignedURL({
         clerkId: clerkId,
         url: signedURL.split('?')[0],
         key: `${clerkId}/${generatedFileName}`,
+        imgWidth: imgWidth,
+        imgHeight: imgHeight,
       },
     });
     console.log('images_result:', images_result);
