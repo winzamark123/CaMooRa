@@ -16,9 +16,24 @@ datasource db {
 model User {
   clerkId String @id @unique
 
-  profile Profile?
-  contact Contact?
-  Images  Images[]
+  profile            Profile?
+  contact            Contact?
+  Images             Images[]
+  savedPhotographers SavedPhotographer[] @relation("SavedPhotographersAsUser")
+  savedByUsers       SavedPhotographer[] @relation("SavedPhotographersAsPhotographer")
+  SavedPhotographer  SavedPhotographer[]
+}
+
+model SavedPhotographer {
+  id             String  @id @default(cuid())
+  user           User    @relation("SavedPhotographersAsUser", fields: [userId], references: [clerkId], onDelete: Cascade)
+  userId         String
+  photographer   User    @relation("SavedPhotographersAsPhotographer", fields: [photographerId], references: [clerkId], onDelete: Cascade)
+  photographerId String
+  User           User?   @relation(fields: [userClerkId], references: [clerkId])
+  userClerkId    String?
+
+  @@unique([userId, photographerId])
 }
 
 model Profile {
@@ -28,12 +43,12 @@ model Profile {
 
   // Personal Information
   additionalName String?
-  firstName    String 
-  lastName     String 
-  bio          String?
+  firstName      String
+  lastName       String
+  bio            String?
 
   // Media
-  equipment String? 
+  equipment    String?
   profilePic   Images? @relation(fields: [profilePicId], references: [id])
   profilePicId String
 }
@@ -44,15 +59,15 @@ model Contact {
   clerkId String @unique
 
   // Contact Information
-  email     String  @unique
-  discord   String?
-  phone     String?
-  whatsApp  String?
+  email    String  @unique
+  discord  String?
+  phone    String?
+  whatsApp String?
 
   instagramTitle String?
   instagramLink  String?
-  portfolioTitle  String?
-  portfolioLink   String?
+  portfolioTitle String?
+  portfolioLink  String?
 
   // Preferences
   isContactPublic Boolean @default(false)
@@ -61,9 +76,9 @@ model Contact {
 
 model Images {
   // Identifiers
-  id        String    @id @default(cuid())
-  user      User      @relation(fields: [clerkId], references: [clerkId], onDelete: Cascade)
-  clerkId   String
+  id      String @id @default(cuid())
+  user    User   @relation(fields: [clerkId], references: [clerkId], onDelete: Cascade)
+  clerkId String
 
   // Image Information
   key       String

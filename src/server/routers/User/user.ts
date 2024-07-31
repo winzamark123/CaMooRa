@@ -1,4 +1,4 @@
-import { router, publicProcedure } from '@/lib/trpc/trpc';
+import { router, publicProcedure, protectedProcedure } from '@/lib/trpc/trpc';
 import { z } from 'zod';
 import prisma from '@prisma/prisma';
 import type { Profile } from '../Profile/profile';
@@ -38,6 +38,15 @@ export const user_router = router({
       });
       return user as User;
     }),
+
+  getSavedPhotographers: protectedProcedure.query(async () => {
+    const savedPhotographers = await prisma.savedPhotographer.findMany({
+      include: {
+        photographer: true,
+      },
+    });
+    return savedPhotographers.map((sp) => sp.photographer);
+  }),
 });
 
 export type UserRouter = typeof user_router;
