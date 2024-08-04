@@ -39,14 +39,45 @@ export const user_router = router({
       return user as User;
     }),
 
-  getSavedPhotographers: protectedProcedure.query(async () => {
-    const savedPhotographers = await prisma.savedPhotographer.findMany({
-      include: {
-        photographer: true,
-      },
-    });
-    return savedPhotographers.map((sp) => sp.photographer);
-  }),
+  getFavoritePhotographers: protectedProcedure
+    .input(z.object({ clerkId: z.string() }))
+    .query(async ({ input }) => {
+      const favoritePhotographers = await prisma.favoritePhotographers.findMany(
+        {
+          where: {
+            userId: input.clerkId,
+          },
+          include: {
+            photographer: true,
+          },
+        }
+      );
+      return favoritePhotographers.map((favorite) => favorite.photographer);
+    }),
+
+  saveFavoritePhotographer: protectedProcedure
+    .input(z.object({ userId: z.string(), photographerId: z.string() }))
+    .mutation(async ({ input }) => {
+      // Check if the favorite photographer already exists
+      const existingFavorite = await prisma.favoritePhotographers.findUnique({
+        where: {
+          userId_photographerId: {
+            userId: input.userId,
+            photographerId: input.photographerId,
+          },
+        },
+      });
+      if (existingFavorite) {
+        return { message: 'Favorite already exists' };
+      }
+      await prisma.favoritePhotographers.create({
+        data: {
+          userId: input.userId,
+          photographerId: input.photographerId,
+        },
+      });
+      return { message: 'Favorite saved' };
+    }),
 });
 
 export type UserRouter = typeof user_router;

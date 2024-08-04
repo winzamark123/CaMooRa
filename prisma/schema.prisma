@@ -16,22 +16,22 @@ datasource db {
 model User {
   clerkId String @id @unique
 
-  profile            Profile?
-  contact            Contact?
-  Images             Images[]
-  savedPhotographers SavedPhotographer[] @relation("SavedPhotographersAsUser")
-  savedByUsers       SavedPhotographer[] @relation("SavedPhotographersAsPhotographer")
-  SavedPhotographer  SavedPhotographer[]
+  profile               Profile?
+  contact               Contact?
+  Images                Images[]
+  favoritePhotographers favoritePhotographers[] @relation("SavedPhotographersAsUser")
+  savedByUsers          favoritePhotographers[] @relation("SavedPhotographersAsPhotographer")
 }
 
-model SavedPhotographer {
+model favoritePhotographers {
+  // user = user who saved the photographer
+  // photographer = user who is saved
   id             String  @id @default(cuid())
   user           User    @relation("SavedPhotographersAsUser", fields: [userId], references: [clerkId], onDelete: Cascade)
   userId         String
   photographer   User    @relation("SavedPhotographersAsPhotographer", fields: [photographerId], references: [clerkId], onDelete: Cascade)
   photographerId String
-  User           User?   @relation(fields: [userClerkId], references: [clerkId])
-  userClerkId    String?
+  clerkId        String?
 
   @@unique([userId, photographerId])
 }

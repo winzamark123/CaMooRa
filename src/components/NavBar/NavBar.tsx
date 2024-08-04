@@ -42,6 +42,8 @@ export default function NavBar() {
         </div>
       </div>
       {showSignInPopUp && <SignInPopUp onToggle={toggleSignInPopUp} />}
+
+      {/* Mobile view, will need to refactor*/}
       <div className="right-8 top-8 z-30 p-4 sm:hidden">
         <button onClick={toggleMenu}>
           <svg className="h-6 w-6 fill-current" viewBox="0 0 24 24">
