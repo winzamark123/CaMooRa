@@ -1,4 +1,4 @@
-import PhotographersList from './_components/PhotographersList';
+import MainGallery from './_components/MainGallery';
 import Landing from '@/app/_components/Landing/Landing';
 
 export default async function Home() {
@@ -8,7 +8,7 @@ export default async function Home() {
         <Landing />
       </div>
       <div className="sm:p-10">
-        <PhotographersList />
+        <MainGallery />
       </div>
     </main>
   );
