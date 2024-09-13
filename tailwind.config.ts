@@ -29,6 +29,9 @@ const config: Config = {
         '1/10': '10%',
         '1/20': '5%',
       },
+      width: {
+        '5-xl': '64rem',
+      },
       height: {
         'third-screen': '33.333vh',
         'half-screen': '50vh',
