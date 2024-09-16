@@ -56,8 +56,8 @@ export default function ExhibitionHall() {
   console.log('FAV USERS', fav_users);
 
   return (
-    <main className="flex flex-col border border-white">
-      <div className="flex justify-end border">
+    <main className="flex flex-col ">
+      <div className="flex justify-end ">
         <DropdownMenu>
           <DropdownMenuTrigger asChild>
             <Button variant="outline">{dropdownText}</Button>

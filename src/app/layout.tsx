@@ -7,7 +7,7 @@ import { ThemeProvider } from '@/components/Theme/theme-provider';
 import Provider from '@/lib/trpc/Provider';
 
 export const metadata: Metadata = {
-  title: 'FoMoo - Dont Get FOMO for Your Graduation',
+  title: 'CaMOOra',
   description:
     'Student Photography Platform for Graduation Photos Made by Students',
 };
