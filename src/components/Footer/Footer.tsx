@@ -25,7 +25,7 @@ export default function Footer() {
   return (
     <main className="mt-auto flex w-full flex-col items-center justify-center bg-primary_blue p-8 text-white">
       <p>Made by UCDavis Students for UCDavis Students &lt;3</p>
-      <div className="flex items-center justify-center gap-2 p-4">
+      <div className="flex items-center justify-center gap-2 p-4 ">
         {socials.map((social) => {
           const Icon = social.icon;
           return (
@@ -34,7 +34,7 @@ export default function Footer() {
               href={social.link}
               target="_blank"
               rel="noopener noreferrer"
-              className="text-gray-600 hover:text-gray-800"
+              className="text-white hover:text-white"
             >
               <Icon />
             </Link>

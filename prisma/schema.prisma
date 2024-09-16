@@ -16,14 +16,14 @@ datasource db {
 model User {
   clerkId String @id @unique
 
-  profile               Profile?
-  contact               Contact?
-  Images                Images[]
-  favoritePhotographers favoritePhotographers[] @relation("SavedPhotographersAsUser")
-  savedByUsers          favoritePhotographers[] @relation("SavedPhotographersAsPhotographer")
+  profile      Profile?
+  contact      Contact?
+  Images       Images[]
+  Favorites    Favorites[] @relation("SavedPhotographersAsUser")
+  savedByUsers Favorites[] @relation("SavedPhotographersAsPhotographer")
 }
 
-model favoritePhotographers {
+model Favorites {
   // user = user who saved the photographer
   // photographer = user who is saved
   id             String  @id @default(cuid())

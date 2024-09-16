@@ -11,17 +11,26 @@ export default function FavPhotographer({
   userId,
   photographerId,
 }: FavPhotographerProps) {
-  const mutation = trpc.user.saveFavoritePhotographer.useMutation({
+  const save_mutation = trpc.favorites.saveFavorite.useMutation({
     onSuccess: () => {
-      console.error('Favorite Photographer saved successfully');
+      console.log('Favorite Photographer saved successfully');
     },
     onError: (err) => {
       console.error('Error saving Favorite Photographer ', err);
     },
   });
 
+  // const remove_mutation = trpc.favorites.removeFavorite.useMutation({
+  //   onSuccess: () => {
+  //     console.log('Favorite Remove successfully');
+  //   },
+  //   onError: (err) => {
+  //     console.error('Error removing Favorite Photographer', err);
+  //   },
+  // });
+
   function saveFavoritePhotographer() {
-    mutation.mutate({
+    save_mutation.mutate({
       userId: userId,
       photographerId: photographerId,
     });
