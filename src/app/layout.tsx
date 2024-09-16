@@ -7,7 +7,7 @@ import { ThemeProvider } from '@/components/Theme/theme-provider';
 import Provider from '@/lib/trpc/Provider';
 
 export const metadata: Metadata = {
-  title: 'FoMoo - Dont Get FOMO for Your Graduation',
+  title: 'CaMOOra',
   description:
     'Student Photography Platform for Graduation Photos Made by Students',
 };
@@ -20,7 +20,7 @@ export default function RootLayout({
   return (
     <ClerkProvider>
       <html lang="en">
-        <body className="flex min-h-screen flex-col">
+        <body className="flex min-h-screen flex-col ">
           <Provider>
             <ThemeProvider
               attribute="class"

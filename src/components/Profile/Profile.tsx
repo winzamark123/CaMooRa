@@ -11,6 +11,7 @@ import { Instagram, Phone, Mail, BriefcaseBusiness } from 'lucide-react';
 import Gallery from './Gallery';
 import type { Contact } from '../../server/routers/Contact/contact';
 import type { Profile } from '../../server/routers/Profile/profile';
+import FavPhotographer from '@/app/profile/[userId]/_components/FavPhotographer';
 
 const IconComponents: Record<string, any> = {
   whatsapp: (
@@ -231,6 +232,9 @@ export default function Profile() {
           </div>
         </div>
       </div>
+      {currentUser && (
+        <FavPhotographer userId={currentUser.id} photographerId={clerkId} />
+      )}
       <Gallery clerkId={clerkId} />
     </div>
   );

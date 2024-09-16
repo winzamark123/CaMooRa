@@ -19,9 +19,6 @@ export async function createUser({
 }: createUserProp) {
   try {
     // Check if user already exists, might not need this in production
-    // since its only called when user is created
-    // but it's good to have it here for testing since we have many moving parts
-
     const existingUser = await prisma.user.findUnique({
       where: {
         clerkId,
