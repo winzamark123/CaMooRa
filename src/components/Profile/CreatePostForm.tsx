@@ -6,7 +6,7 @@ import { computeSHA256 } from '@/server/routers/Images/imagesUtils';
 import NextImage from 'next/image';
 import Loader from '@/components/ui/Loader';
 
-export default function CreatePostForm() {
+export default function CreatePostForm({sectionId}: {sectionId: string }) {
   const [file, setFile] = useState<File | null>(null);
   const [selectedImage, setSelectedImage] = useState<string | null>('');
   const imgRef = useRef(new Image());
@@ -28,6 +28,7 @@ export default function CreatePostForm() {
           checksum: await computeSHA256(file),
           imgHeight: imgRef.current.height,
           imgWidth: imgRef.current.width,
+          imageSectionId: sectionId,
         });
         if (signedURLResult.error || !signedURLResult.success) {
           setLoading(false);

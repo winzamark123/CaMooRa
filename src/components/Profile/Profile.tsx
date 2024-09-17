@@ -1,14 +1,14 @@
 'use client';
 import { useUser } from '@clerk/nextjs';
 import { useState } from 'react';
-import EditProfile from '@/components/Profile/EditProfile';
+import EditProfile from '@/components/Profile/Edit/EditProfile';
 import { trpc } from '@/lib/trpc/client';
 import { usePathname } from 'next/navigation';
 import { Button } from '../ui/button';
 import Bio from './Bio';
 import Image from 'next/image';
 import { Instagram, Phone, Mail, BriefcaseBusiness } from 'lucide-react';
-import Gallery from './Gallery';
+import Projects from './Projects';
 import type { Contact } from '../../server/routers/Contact/contact';
 import type { Profile } from '../../server/routers/Profile/profile';
 
@@ -231,7 +231,7 @@ export default function Profile() {
           </div>
         </div>
       </div>
-      <Gallery clerkId={clerkId} />
+      <Projects clerkId={clerkId} />
     </div>
   );
 }

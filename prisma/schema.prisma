@@ -16,9 +16,9 @@ datasource db {
 model User {
   clerkId String @id @unique
 
-  profile Profile?
-  contact Contact?
-  Images  Images[]
+  profile       Profile?
+  contact       Contact?
+  imageSections Image_section[]
 }
 
 model Profile {
@@ -28,12 +28,12 @@ model Profile {
 
   // Personal Information
   additionalName String?
-  firstName    String 
-  lastName     String 
-  bio          String?
+  firstName      String
+  lastName       String
+  bio            String?
 
   // Media
-  equipment String? 
+  equipment    String?
   profilePic   Images? @relation(fields: [profilePicId], references: [id])
   profilePicId String
 }
@@ -44,26 +44,37 @@ model Contact {
   clerkId String @unique
 
   // Contact Information
-  email     String  @unique
-  discord   String?
-  phone     String?
-  whatsApp  String?
+  email    String  @unique
+  discord  String?
+  phone    String?
+  whatsApp String?
 
   instagramTitle String?
   instagramLink  String?
-  portfolioTitle  String?
-  portfolioLink   String?
+  portfolioTitle String?
+  portfolioLink  String?
 
   // Preferences
   isContactPublic Boolean @default(false)
   isPhotographer  Boolean @default(false)
 }
 
+// TODO: Chnage the name of this model to Photo Album
+model Image_section {
+  // Identifiers
+  id          String   @id @default(cuid())
+  user        User     @relation(fields: [clerkId], references: [clerkId], onDelete: Cascade)
+  clerkId     String
+  sectionName String
+  Images      Images[]
+}
+
 model Images {
   // Identifiers
-  id        String    @id @default(cuid())
-  user      User      @relation(fields: [clerkId], references: [clerkId], onDelete: Cascade)
-  clerkId   String
+  id             String         @id @default(cuid())
+  ImageSection   Image_section? @relation(fields: [ImageSectionId], references: [id], onDelete: Cascade)
+  ImageSectionId String?
+  clerkId        String
 
   // Image Information
   key       String

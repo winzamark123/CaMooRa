@@ -1,12 +1,9 @@
 import React from 'react';
 import { trpc } from '@/lib/trpc/client';
 import Image from 'next/image';
-import CreatePostForm from './CreatePostForm';
+import CreatePostForm from '../CreatePostForm';
 
-export default function EditGallery({ clerkId }: { clerkId: string }) {
-  const { data: user_images, isLoading: isLoadingImages } =
-    trpc.images.getAllImages.useQuery({ clerkId: clerkId });
-
+export default function EditSectionGallery({sectionId, section_images}: {sectionId: string, section_images: Array<any>}) {
   const deleteImage = trpc.images.deleteImage.useMutation();
 
   const handleDeleteImage = async (imageId: string) => {
@@ -17,18 +14,10 @@ export default function EditGallery({ clerkId }: { clerkId: string }) {
     // window.location.reload();
   };
 
-  if (isLoadingImages) {
-    return <div>Loading Images...</div>;
-  }
-
-  if (!user_images) {
-    return <div>No Images Available for this User</div>;
-  }
-
   return (
     <main className="flex flex-col gap-4">
       <div className="grid grid-cols-1 gap-10 md:grid-cols-2 lg:grid-cols-4">
-        {user_images.map((image) => (
+        {section_images.map((image) => (
           <div key={image.id} className="relative flex h-72 gap-4 p-4">
             <Image
               className="rounded-sm border border-black object-cover"
@@ -45,7 +34,7 @@ export default function EditGallery({ clerkId }: { clerkId: string }) {
           </div>
         ))}
         <div className="relative flex h-72 gap-4 rounded-sm border border-black">
-          <CreatePostForm />
+          <CreatePostForm sectionId={sectionId} />
         </div>
       </div>
     </main>

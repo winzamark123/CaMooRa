@@ -27,6 +27,23 @@ export const images_router = router({
       return imageDetails;
     }),
 
+  getAllImageSections: publicProcedure
+    .input(z.object({ clerkId: z.string() }))
+    .query(async ({ input }) => {
+      const imageSections = await prisma.image_section.findMany({
+        where: { clerkId: input.clerkId },
+        select: {
+          id: true,
+          sectionName: true,
+          Images: {
+            select: { id: true, url: true, imgWidth: true, imgHeight: true },
+          },
+        },
+      });
+
+      return imageSections;
+    }),
+
   updateProfilePic: protectedProcedure
     .input(
       z.object({
@@ -68,6 +85,7 @@ export const images_router = router({
         checksum: z.string(),
         imgWidth: z.number(),
         imgHeight: z.number(),
+        imageSectionId: z.string(),
       })
     )
     .mutation(async ({ input, ctx }) => {
@@ -78,6 +96,7 @@ export const images_router = router({
         clerkId: ctx.user.id,
         imgHeight: input.imgHeight,
         imgWidth: input.imgWidth,
+        imageSectionId: input.imageSectionId,
       });
 
       if (error) {

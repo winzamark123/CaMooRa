@@ -1,14 +1,14 @@
 import { trpc } from '@/lib/trpc/client';
 import { SetStateAction, useRef, useState } from 'react';
-import type { ProfileProps } from './Profile';
-import type { Contact } from '../../server/routers/Contact/contact';
+import type { ProfileProps } from '../Profile';
+import type { Contact } from '../../../server/routers/Contact/contact';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { useForm } from 'react-hook-form';
 import { z } from 'zod';
-import ProfileSection from './ProfileSection';
-import LinkAccountSection from './LinkAccountSection';
-import ProjectSection from './ProjectSection';
-import { Button } from '../ui/button';
+import EditProfileSection from './EditProfileSection';
+import EditLinkAccountSection from './EditLinkAccountSection';
+import EditProjectSection from './EditProjectSection';
+import { Button } from '../../ui/button';
 
 interface UpdateProfileVariableType
   extends Omit<ProfileProps, 'firstName' | 'lastName' | 'profilePic'> {
@@ -217,14 +217,14 @@ export default function EditProfile({
           Profile Updated Successfully!
         </div>
       )}
-      <ProfileSection
+      <EditProfileSection
         form={form}
         onSave={onSave}
         profileUrl={profile?.profilePic.url}
         profilePicId={profile?.profilePic.id}
       />
-      <LinkAccountSection form={form} onSave={onSave} />
-      <ProjectSection clerkId={clerkId} />
+      <EditLinkAccountSection form={form} onSave={onSave} />
+      <EditProjectSection clerkId={clerkId} />
       <div className="mt-4 flex flex-row-reverse">
         <Button
           className="ml-5 w-20 border border-gray-400 bg-profile_button_bg text-black hover:bg-sky-950 hover:text-white"

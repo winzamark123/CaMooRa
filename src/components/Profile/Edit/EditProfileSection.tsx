@@ -1,6 +1,6 @@
 import React from 'react';
 import { useState } from 'react';
-import SimpleModal from './ProfilePicPopUp';
+import SimpleModal from '../ProfilePicPopUp';
 import {
   Form,
   FormControl,
@@ -8,12 +8,12 @@ import {
   FormItem,
   FormLabel,
   FormMessage,
-} from '../ui/form';
-import { Input } from '../ui/input';
-import { Switch } from '../ui/switch';
+} from '../../ui/form';
+import { Input } from '../../ui/input';
+import { Switch } from '../../ui/switch';
 import { UseFormReturn } from 'react-hook-form';
-import { Textarea } from '../ui/textarea';
-import UpdateProfilePicForm from './UpdateProfilePicForm';
+import { Textarea } from '../../ui/textarea';
+import UpdateProfilePicForm from '../UpdateProfilePicForm';
 import Image from 'next/image';
 
 interface FormValues {
@@ -33,19 +33,19 @@ interface FormValues {
   equipment?: string;
   bio?: string;
 }
-export interface ProfileSectionProps {
+export interface EditProfileSectionProps {
   form: UseFormReturn<FormValues, any, undefined>;
   onSave: (values: FormValues) => void;
   profileUrl: string | undefined;
   profilePicId: string;
 }
 
-export default function ProfileSection({
+export default function EditProfileSection({
   form,
   onSave,
   profileUrl,
   profilePicId,
-}: ProfileSectionProps) {
+}: EditProfileSectionProps) {
   const [isModalOpen, setModalOpen] = useState(false);
 
   const handleOpenModal = () => setModalOpen(true);

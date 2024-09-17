@@ -6,19 +6,19 @@ import {
   FormItem,
   FormLabel,
   FormMessage,
-} from '../ui/form';
-import { Input } from '../ui/input';
-import { ProfileSectionProps } from './ProfileSection';
+} from '../../ui/form';
+import { Input } from '../../ui/input';
+import { EditProfileSectionProps } from './EditProfileSection';
 
-type LinkAccountSectionProps = Omit<
-  ProfileSectionProps,
+type EditLinkAccountSectionProps = Omit<
+  EditProfileSectionProps,
   'profileUrl' | 'profilePicId'
 >;
 
-export default function LinkAccountSection({
+export default function EditLinkAccountSection({
   form,
   onSave,
-}: LinkAccountSectionProps) {
+}: EditLinkAccountSectionProps) {
   return (
     <div>
       <h4 className="mb-5 border-b-2 pb-4 font-bold">Link Account</h4>
