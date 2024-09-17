@@ -16,18 +16,20 @@ export const favorite_router = router({
       });
       return favoritePhotographers.map((favorite) => favorite.photographer);
     }),
+
   isFavorite: protectedProcedure
-    .input(z.object({ clerkId: z.string() }))
+    .input(z.object({ clerkId: z.string(), favoriteClerkId: z.string() }))
     .query(async ({ input }) => {
-      const favoritePhotographers = await prisma.favorites.findMany({
+      const existingFavorite = await prisma.favorites.findUnique({
         where: {
-          userId: input.clerkId,
-        },
-        include: {
-          photographer: true,
+          userId_photographerId: {
+            userId: input.clerkId,
+            photographerId: input.favoriteClerkId,
+          },
         },
       });
-      return favoritePhotographers.map((favorite) => favorite.photographer);
+
+      return existingFavorite !== null;
     }),
 
   saveFavorite: protectedProcedure

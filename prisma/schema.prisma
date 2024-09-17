@@ -19,19 +19,18 @@ model User {
   profile      Profile?
   contact      Contact?
   Images       Images[]
-  Favorites    Favorites[] @relation("SavedPhotographersAsUser")
-  savedByUsers Favorites[] @relation("SavedPhotographersAsPhotographer")
+  Favorites    Favorites[] @relation("favorites")
+  savedByUsers Favorites[] @relation("favoritedBy")
 }
 
 model Favorites {
   // user = user who saved the photographer
   // photographer = user who is saved
-  id             String  @id @default(cuid())
-  user           User    @relation("SavedPhotographersAsUser", fields: [userId], references: [clerkId], onDelete: Cascade)
+  id             String @id @default(cuid())
+  user           User   @relation("favorites", fields: [userId], references: [clerkId], onDelete: Cascade)
   userId         String
-  photographer   User    @relation("SavedPhotographersAsPhotographer", fields: [photographerId], references: [clerkId], onDelete: Cascade)
+  photographer   User   @relation("favoritedBy", fields: [photographerId], references: [clerkId], onDelete: Cascade)
   photographerId String
-  clerkId        String?
 
   @@unique([userId, photographerId])
 }
