@@ -1,7 +1,8 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 import { trpc } from '@/lib/trpc/client';
 import { Button } from '@/components/ui/button';
 import { useState } from 'react';
+import { Star } from 'lucide-react';
 
 interface FavPhotographerProps {
   userId: string;
@@ -16,7 +17,16 @@ export default function FavPhotographer({
     clerkId: userId,
     favoriteClerkId: photographerId,
   });
+
   const [isFavorite, setIsFavorite] = useState(isFavoriteQuery.data);
+  const [isLoading, setIsLoading] = useState(true);
+
+  useEffect(() => {
+    if (isFavoriteQuery.data !== undefined) {
+      setIsFavorite(isFavoriteQuery.data);
+      setIsLoading(false);
+    }
+  }, [isFavoriteQuery.data]);
 
   const save_mutation = trpc.favorites.saveFavorite.useMutation({
     onSuccess: () => {
@@ -38,6 +48,10 @@ export default function FavPhotographer({
     },
   });
 
+  if (isLoading) {
+    return <div> Loading...</div>;
+  }
+
   function toggleFavorite() {
     if (isFavorite) {
       remove_mutation.mutate({
@@ -54,9 +68,9 @@ export default function FavPhotographer({
 
   return (
     <main>
-      <Button onClick={toggleFavorite}>
-        {!isFavorite && <div>Save</div>}
-        {isFavorite && <div>Remove</div>}
+      <Button onClick={toggleFavorite} variant={'ghost'}>
+        {!isFavorite && <Star />}
+        {isFavorite && <Star fill="orange" />}
       </Button>
     </main>
   );
