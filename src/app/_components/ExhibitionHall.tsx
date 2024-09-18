@@ -35,7 +35,7 @@ export default function ExhibitionHall() {
     data: fav_users,
     isLoading: fav_users_loading,
     error: fav_users_error,
-  } = trpc.user.getFavoritePhotographers.useQuery(
+  } = trpc.favorites.getFavorite.useQuery(
     { clerkId: user?.id as string },
     {
       enabled: !!user, // only fetch if the user is logged in
