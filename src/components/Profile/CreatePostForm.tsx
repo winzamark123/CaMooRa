@@ -6,7 +6,7 @@ import { computeSHA256 } from '@/server/routers/Images/imagesUtils';
 import NextImage from 'next/image';
 import Loader from '@/components/ui/Loader';
 
-export default function CreatePostForm({sectionId}: {sectionId: string }) {
+export default function CreatePostForm({ sectionId }: { sectionId: string }) {
   const [file, setFile] = useState<File | null>(null);
   const [selectedImage, setSelectedImage] = useState<string | null>('');
   const imgRef = useRef(new Image());

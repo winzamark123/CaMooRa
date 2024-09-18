@@ -34,6 +34,7 @@ export default function Projects({ clerkId }: { clerkId: string }) {
               onClick={() => setSelectedSection(section.id)}
             >
               <p>{section.sectionName}</p>
+              <p>{selectedSection}</p>
             </Button>
           ))}
       </div>

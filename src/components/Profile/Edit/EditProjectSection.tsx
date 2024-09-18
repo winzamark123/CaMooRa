@@ -23,12 +23,13 @@ export default function EditProjectSection({
   const [selectedSection, setSelectedSection] = useState<SelectedSection>();
   useEffect(() => {
     if (imageSections) {
+      // console.log("It's rendering");
       setSelectedSection({
         sectionId: imageSections[0].id,
         sectionIndex: 0,
       });
     }
-  }, [])
+  }, [imageSections]);
 
   if (isLoadingSections) {
     return <div>Loading Images...</div>;
@@ -58,13 +59,22 @@ export default function EditProjectSection({
               <p>{section.sectionName}</p>
             </Button>
           ))}
-          {/* TODO: Finish adding more image sections */}
-          {/* Allows users to add more Image */}
-          <Button className='rounded-full'>+</Button>
+        {/* TODO: Finish adding more image sections */}
+        {/* Allows users to add more Image */}
+        <Button className="rounded-full">+</Button>
       </div>
       <p className="my-5 text-xs">Click to Add Photos</p>
 
-      {selectedSection && <EditSectionGallery section_images={imageSections && imageSections[selectedSection.sectionIndex].Images || []} sectionId={selectedSection.sectionId} />}
+      {selectedSection && (
+        <EditSectionGallery
+          section_images={
+            (imageSections &&
+              imageSections[selectedSection.sectionIndex].Images) ||
+            []
+          }
+          sectionId={selectedSection.sectionId}
+        />
+      )}
     </div>
   );
 }

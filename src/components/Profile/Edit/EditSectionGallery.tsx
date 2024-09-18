@@ -3,7 +3,13 @@ import { trpc } from '@/lib/trpc/client';
 import Image from 'next/image';
 import CreatePostForm from '../CreatePostForm';
 
-export default function EditSectionGallery({sectionId, section_images}: {sectionId: string, section_images: Array<any>}) {
+export default function EditSectionGallery({
+  sectionId,
+  section_images,
+}: {
+  sectionId: string;
+  section_images: Array<any>;
+}) {
   const deleteImage = trpc.images.deleteImage.useMutation();
 
   const handleDeleteImage = async (imageId: string) => {
