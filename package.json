@@ -8,7 +8,7 @@
     "start": "next start",
     "lint": "next lint",
     "postinstall": "prisma generate",
-    "migrate": "if [ \"$NODE_ENV\" != \"production\" ] && [ -z \"$CI\" ]; then prisma migrate dev; fi"
+    "migrate": "if [ -z \"$SKIP_PRISMA_MIGRATE\" ]; then prisma migrate dev; fi"
   },
 
 

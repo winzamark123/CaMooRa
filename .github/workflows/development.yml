@@ -13,7 +13,7 @@ jobs:
     environment:
       name: development
     env:
-      NODE_ENV: development # Set NODE_ENV for all steps in this job
+      SKIP_PRISMA_MIGRATE: true
     steps:
       - name: Checkout code
         uses: actions/checkout@v4
