@@ -4,11 +4,14 @@
   "private": true,
   "scripts": {
     "dev": "next dev",
-    "build": "prisma generate && next build",
+    "build": "npm run migrate && prisma generate && next build",
     "start": "next start",
     "lint": "next lint",
-    "postinstall": "prisma generate"
+    "postinstall": "prisma generate",
+    "migrate": "if [ -z \"$SKIP_PRISMA_MIGRATE\" ]; then prisma migrate dev; fi"
   },
+
+
   "dependencies": {
     "@aws-sdk/client-s3": "^3.598.0",
     "@aws-sdk/s3-request-presigner": "^3.598.0",

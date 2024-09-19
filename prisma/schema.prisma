@@ -16,9 +16,23 @@ datasource db {
 model User {
   clerkId String @id @unique
 
-  profile       Profile?
-  contact       Contact?
-  photoAlbums PhotoAlbum[]
+  profile      Profile?
+  contact      Contact?
+  photoAlbums  PhotoAlbum[]
+  Favorites    Favorites[] @relation("favorites")
+  savedByUsers Favorites[] @relation("favoritedBy")
+}
+
+model Favorites {
+  // user = user who saved the photographer
+  // photographer = user who is saved
+  id             String @id @default(cuid())
+  user           User   @relation("favorites", fields: [userId], references: [clerkId], onDelete: Cascade)
+  userId         String
+  photographer   User   @relation("favoritedBy", fields: [photographerId], references: [clerkId], onDelete: Cascade)
+  photographerId String
+
+  @@unique([userId, photographerId])
 }
 
 model Profile {

@@ -6,7 +6,8 @@ import Link from 'next/link';
 import { DropDownProfile } from './DropDownProfile';
 import { Button } from '../ui/button';
 import SignInPopUp from '../Popups/SignInPopUp';
-import Logo from '@/public/logo.svg';
+import LogoBlack from '@/public/logo-black.svg';
+import LogoWhite from '@/public/logo-white.svg';
 import Image from 'next/image';
 
 export default function NavBar() {
@@ -26,7 +27,16 @@ export default function NavBar() {
     <main className="h-30 flex w-full justify-between p-8">
       <div className="p-4">
         <Link href="/">
-          <Image src={Logo} alt="Camoora Logo"></Image>
+          <Image
+            className="dark:hidden"
+            src={LogoBlack}
+            alt="Camoora Logo"
+          ></Image>
+          <Image
+            className="hidden dark:flex"
+            src={LogoWhite}
+            alt="Camoora Logo"
+          ></Image>
         </Link>
       </div>
       <div className="hidden items-center justify-between gap-4 p-4 sm:flex">
@@ -42,6 +52,8 @@ export default function NavBar() {
         </div>
       </div>
       {showSignInPopUp && <SignInPopUp onToggle={toggleSignInPopUp} />}
+
+      {/* Mobile view, will need to refactor*/}
       <div className="right-8 top-8 z-30 p-4 sm:hidden">
         <button onClick={toggleMenu}>
           <svg className="h-6 w-6 fill-current" viewBox="0 0 24 24">

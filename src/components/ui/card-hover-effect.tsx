@@ -8,9 +8,11 @@ export const HoverEffect = ({
   items,
   className,
 }: {
-  items: {
-    clerkId: string;
-  }[];
+  items:
+    | {
+        clerkId: string;
+      }[]
+    | undefined;
   className?: string;
 }) => {
   const [hoveredIndex, setHoveredIndex] = useState<number | null>(null);
@@ -22,7 +24,7 @@ export const HoverEffect = ({
         className
       )}
     >
-      {items.map((item, idx) => (
+      {items?.map((item, idx) => (
         <Link
           key={item.clerkId}
           href={`/profile/${item.clerkId}`}
