@@ -18,7 +18,7 @@ model User {
 
   profile      Profile?
   contact      Contact?
-  Images       Images[]
+  photoAlbums  PhotoAlbum[]
   Favorites    Favorites[] @relation("favorites")
   savedByUsers Favorites[] @relation("favoritedBy")
 }
@@ -73,11 +73,21 @@ model Contact {
   isPhotographer  Boolean @default(false)
 }
 
+model PhotoAlbum {
+  // Identifiers
+  id          String   @id @default(cuid())
+  user        User     @relation(fields: [clerkId], references: [clerkId], onDelete: Cascade)
+  clerkId     String
+  photoAlbumName String
+  Images      Images[]
+}
+
 model Images {
   // Identifiers
-  id      String @id @default(cuid())
-  user    User   @relation(fields: [clerkId], references: [clerkId], onDelete: Cascade)
-  clerkId String
+  id             String         @id @default(cuid())
+  PhotoAlbum   PhotoAlbum? @relation(fields: [PhotoAlbumId], references: [id], onDelete: Cascade)
+  PhotoAlbumId String?
+  clerkId        String
 
   // Image Information
   key       String

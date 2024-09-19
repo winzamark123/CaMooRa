@@ -27,6 +27,23 @@ export const images_router = router({
       return imageDetails;
     }),
 
+  getAllPhotoAlbums: publicProcedure
+    .input(z.object({ clerkId: z.string() }))
+    .query(async ({ input }) => {
+      const photoAlbums = await prisma.photoAlbum.findMany({
+        where: { clerkId: input.clerkId },
+        select: {
+          id: true,
+          photoAlbumName: true,
+          Images: {
+            select: { id: true, url: true, imgWidth: true, imgHeight: true },
+          },
+        },
+      });
+
+      return photoAlbums;
+    }),
+
   updateProfilePic: protectedProcedure
     .input(
       z.object({
@@ -68,6 +85,7 @@ export const images_router = router({
         checksum: z.string(),
         imgWidth: z.number(),
         imgHeight: z.number(),
+        photoAlbumId: z.string(),
       })
     )
     .mutation(async ({ input, ctx }) => {
@@ -78,6 +96,7 @@ export const images_router = router({
         clerkId: ctx.user.id,
         imgHeight: input.imgHeight,
         imgWidth: input.imgWidth,
+        photoAlbumId: input.photoAlbumId,
       });
 
       if (error) {
