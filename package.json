@@ -4,11 +4,12 @@
   "private": true,
   "scripts": {
     "dev": "next dev",
-    "build": "npm run migrate && prisma generate && next build",
+    "build": "prisma generate && next build",
     "start": "next start",
     "lint": "next lint",
     "postinstall": "prisma generate",
-    "migrate": "if [ -z \"$SKIP_PRISMA_MIGRATE\" ]; then prisma migrate dev; fi"
+    "migrate:dev": "if [ -z \"$SKIP_PRISMA_MIGRATE\" ]; then prisma migrate dev; fi",
+    "migrate:deploy": "prisma migrate deploy"
   },
 
 
