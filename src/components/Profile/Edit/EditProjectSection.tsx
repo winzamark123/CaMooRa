@@ -1,35 +1,32 @@
-import EditSectionGallery from './EditSectionGallery';
+import EditPhotoAlbum from './EditPhotoAlbum';
 import { trpc } from '@/lib/trpc/client';
 import { useEffect, useState } from 'react';
 import { Button } from '@/components/ui/button';
+import { SelectedPhotoAlbumProps } from '../Projects';
 
 interface EditProjectSectionProps {
   clerkId: string;
 }
 
-interface SelectedSection {
-  sectionId: string;
-  sectionIndex: number;
-}
-
 export default function EditProjectSection({
   clerkId,
 }: EditProjectSectionProps) {
-  const { data: imageSections, isLoading: isLoadingSections } =
-    trpc.images.getAllImageSections.useQuery({
+  const { data: photoAlbums, isLoading: isLoadingSections } =
+    trpc.images.getAllPhotoAlbums.useQuery({
       clerkId,
     });
 
-  const [selectedSection, setSelectedSection] = useState<SelectedSection>();
+  const [selectedPhotoAlbum, setSelectedPhotoAlbum] =
+    useState<SelectedPhotoAlbumProps>();
   useEffect(() => {
-    if (imageSections) {
+    if (photoAlbums) {
       // console.log("It's rendering");
-      setSelectedSection({
-        sectionId: imageSections[0].id,
-        sectionIndex: 0,
+      setSelectedPhotoAlbum({
+        photoAlbumId: photoAlbums[0].id,
+        photoAlbumIndex: 0,
       });
     }
-  }, [imageSections]);
+  }, [photoAlbums]);
 
   if (isLoadingSections) {
     return <div>Loading Images...</div>;
@@ -44,35 +41,34 @@ export default function EditProjectSection({
         </span>
       </h4>
       <div className="flex flex-row gap-x-4">
-        {imageSections &&
-          imageSections.map((section, index) => (
+        {photoAlbums &&
+          photoAlbums.map((photoAlbum, index) => (
             <Button
-              key={section.id}
+              key={photoAlbum.id}
               className="rounded-full border border-gray-400 bg-profile_button_bg text-xs text-black hover:bg-primary_blue hover:text-white active:bg-primary_blue active:text-white"
               onClick={() =>
-                setSelectedSection({
-                  sectionId: section.id,
-                  sectionIndex: index,
+                setSelectedPhotoAlbum({
+                  photoAlbumId: photoAlbum.id,
+                  photoAlbumIndex: index,
                 })
               }
             >
-              <p>{section.sectionName}</p>
+              <p>{photoAlbum.photoAlbumName}</p>
             </Button>
           ))}
-        {/* TODO: Finish adding more image sections */}
-        {/* Allows users to add more Image */}
+        {/* TODO: Finish allowing user to add more Photo Albums */}
         <Button className="rounded-full">+</Button>
       </div>
       <p className="my-5 text-xs">Click to Add Photos</p>
 
-      {selectedSection && (
-        <EditSectionGallery
-          section_images={
-            (imageSections &&
-              imageSections[selectedSection.sectionIndex].Images) ||
+      {selectedPhotoAlbum && (
+        <EditPhotoAlbum
+          photoAlbum={
+            (photoAlbums &&
+              photoAlbums[selectedPhotoAlbum.photoAlbumIndex].Images) ||
             []
           }
-          sectionId={selectedSection.sectionId}
+          photoAlbumId={selectedPhotoAlbum.photoAlbumId}
         />
       )}
     </div>

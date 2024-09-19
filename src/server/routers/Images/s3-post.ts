@@ -14,7 +14,7 @@ interface GetSignedURLProps {
   clerkId: string;
   imgWidth?: number;
   imgHeight?: number;
-  imageSectionId?: string;
+  photoAlbumId?: string;
 }
 
 const s3 = new S3Client({
@@ -37,7 +37,7 @@ export async function getPresignedURL({
   clerkId,
   imgWidth,
   imgHeight,
-  imageSectionId,
+  photoAlbumId,
 }: GetSignedURLProps) {
   //check file types
   if (!acceptedTypes.includes(file_type)) {
@@ -77,9 +77,9 @@ export async function getPresignedURL({
       imgHeight: imgHeight,
     };
 
-    // If imageSectionId is provided, add it to the imageData object (Profile Pic doesn't have imageSectionId)
-    if (imageSectionId) {
-      imageData.ImageSectionId = imageSectionId;
+    // If photoAlbumID is provided, add it to the imageData object (Profile Pic doesn't have photoAlbumId)
+    if (photoAlbumId) {
+      imageData.PhotoAlbumId = photoAlbumId;
     }
 
     const images_result = await prisma.images.create({

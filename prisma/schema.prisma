@@ -18,7 +18,7 @@ model User {
 
   profile       Profile?
   contact       Contact?
-  imageSections Image_section[]
+  photoAlbums PhotoAlbum[]
 }
 
 model Profile {
@@ -59,21 +59,20 @@ model Contact {
   isPhotographer  Boolean @default(false)
 }
 
-// TODO: Chnage the name of this model to Photo Album
-model Image_section {
+model PhotoAlbum {
   // Identifiers
   id          String   @id @default(cuid())
   user        User     @relation(fields: [clerkId], references: [clerkId], onDelete: Cascade)
   clerkId     String
-  sectionName String
+  photoAlbumName String
   Images      Images[]
 }
 
 model Images {
   // Identifiers
   id             String         @id @default(cuid())
-  ImageSection   Image_section? @relation(fields: [ImageSectionId], references: [id], onDelete: Cascade)
-  ImageSectionId String?
+  PhotoAlbum   PhotoAlbum? @relation(fields: [PhotoAlbumId], references: [id], onDelete: Cascade)
+  PhotoAlbumId String?
   clerkId        String
 
   // Image Information

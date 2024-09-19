@@ -1,7 +1,7 @@
 import prisma from '@prisma/prisma';
 import { createContact } from '../Contact/contactUtils';
 import { createProfile } from '../Profile/profileUtils';
-import { createImageSection } from '../ImageSection/imageSectionUtils';
+import { createPhotoAlbum } from '../PhotoAlbum/photoAlbumUtils';
 
 interface createUserProp {
   clerkId: string;
@@ -49,10 +49,10 @@ export async function createUser({
     // create contact for the user
     await createContact({ clerkId: newUser.clerkId, userEmail: userEmail });
 
-    // create default image section for the user
-    await createImageSection({
+    // create default photo album for the user
+    await createPhotoAlbum({
       clerkId: newUser.clerkId,
-      sectionName: 'Default',
+      photoAlbumName: 'Untitled Album',
     });
   } catch (err) {
     console.error('ERROR CREATING USER' + err);

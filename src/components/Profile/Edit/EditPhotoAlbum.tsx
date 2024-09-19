@@ -3,12 +3,12 @@ import { trpc } from '@/lib/trpc/client';
 import Image from 'next/image';
 import CreatePostForm from '../CreatePostForm';
 
-export default function EditSectionGallery({
-  sectionId,
-  section_images,
+export default function EditPhotoAlbum({
+  photoAlbumId,
+  photoAlbum,
 }: {
-  sectionId: string;
-  section_images: Array<any>;
+  photoAlbumId: string;
+  photoAlbum: Array<any>;
 }) {
   const deleteImage = trpc.images.deleteImage.useMutation();
 
@@ -23,7 +23,7 @@ export default function EditSectionGallery({
   return (
     <main className="flex flex-col gap-4">
       <div className="grid grid-cols-1 gap-10 md:grid-cols-2 lg:grid-cols-4">
-        {section_images.map((image) => (
+        {photoAlbum.map((image) => (
           <div key={image.id} className="relative flex h-72 gap-4 p-4">
             <Image
               className="rounded-sm border border-black object-cover"
@@ -40,7 +40,7 @@ export default function EditSectionGallery({
           </div>
         ))}
         <div className="relative flex h-72 gap-4 rounded-sm border border-black">
-          <CreatePostForm sectionId={sectionId} />
+          <CreatePostForm photoAlbumId={photoAlbumId} />
         </div>
       </div>
     </main>
