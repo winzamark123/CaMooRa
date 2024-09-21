@@ -5,6 +5,7 @@ import { trpc } from '@/lib/trpc/client';
 import { computeSHA256 } from '@/server/routers/Images/imagesUtils';
 import NextImage from 'next/image';
 import Loader from '@/components/ui/Loader';
+import FilePondComponent from './FilePondComponent';
 
 export default function CreatePostForm({
   photoAlbumId,
@@ -83,6 +84,11 @@ export default function CreatePostForm({
     <>
       <form onSubmit={handleSubmit} className="h-full w-full">
         {loading && <Loader />}
+        <FilePondComponent
+          photoAlbumId={photoAlbumId}
+          onUploadSuccess={console.log('HALo')}
+          allowMultiple={false}
+        />
 
         {/* Preview File */}
         <label className="block h-full w-full">

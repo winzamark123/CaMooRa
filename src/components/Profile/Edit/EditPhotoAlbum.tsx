@@ -1,7 +1,7 @@
 import React from 'react';
 import { trpc } from '@/lib/trpc/client';
 import Image from 'next/image';
-import CreatePostForm from '../CreatePostForm';
+import CreatePostForm from '../UploadImage/CreatePostForm';
 
 export default function EditPhotoAlbum({
   photoAlbumId,
