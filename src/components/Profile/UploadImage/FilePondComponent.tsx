@@ -6,13 +6,14 @@ import { trpc } from '@/lib/trpc/client';
 
 // Import FilePond and plugins
 import { FilePond, registerPlugin } from 'react-filepond';
-import 'filepond/dist/filepond.min.css';
 
 // Import the plugins
 import FilePondPluginImageExifOrientation from 'filepond-plugin-image-exif-orientation';
 import FilePondPluginImagePreview from 'filepond-plugin-image-preview';
 import FilePondPluginFileValidateType from 'filepond-plugin-file-validate-type';
 import 'filepond-plugin-image-preview/dist/filepond-plugin-image-preview.css';
+import 'filepond/dist/filepond.min.css';
+import './filepond_custom.css';
 
 // Register the plugins
 registerPlugin(
@@ -48,8 +49,6 @@ const FilePondComponent: React.FC<FilePondComponentProps> = ({
 
     const actualFile = file as File;
 
-    console.log('ProcessFile called');
-
     // Compute the checksum and get image dimensions
     const objectUrl = URL.createObjectURL(actualFile);
     const img = new Image();
@@ -80,7 +79,6 @@ const FilePondComponent: React.FC<FilePondComponentProps> = ({
         }
 
         const url = signedURLResult.success.signed_url;
-        console.log('HERE');
 
         // Upload the file to S3 using XMLHttpRequest
         const xhr = new XMLHttpRequest();
@@ -133,17 +131,20 @@ const FilePondComponent: React.FC<FilePondComponentProps> = ({
   };
 
   return (
-    <div className="h-full w-full p-4">
-      <FilePond
-        acceptedFileTypes={['image/*']}
-        allowMultiple={allowMultiple}
-        server={{
-          process: processFile,
-        }}
-        name="files"
-        labelIdle='Drag & Drop your files or <span class="filepond--label-action">Browse</span>'
-        stylePanelAspectRatio={'0.2'}
-      />
+    <div className="flex h-full w-full items-center justify-center p-4">
+      <div className="h-full w-1/2 ">
+        <FilePond
+          imagePreviewHeight={150}
+          acceptedFileTypes={['image/*']}
+          instantUpload={false}
+          allowMultiple={allowMultiple}
+          server={{
+            process: processFile,
+          }}
+          name="files"
+          labelIdle='Drag & Drop your files or <span class="filepond--label-action">Browse</span>'
+        />
+      </div>
     </div>
   );
 };
