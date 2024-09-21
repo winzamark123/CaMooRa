@@ -1,11 +1,8 @@
-// File: components/FilePondComponent.tsx
-
 'use client';
 
-import React, { useState } from 'react';
+import React from 'react';
 import { computeSHA256 } from '@/server/routers/Images/imagesUtils';
 import { trpc } from '@/lib/trpc/client';
-import Loader from '@/components/ui/Loader';
 
 // Import FilePond and plugins
 import { FilePond, registerPlugin } from 'react-filepond';
@@ -35,112 +32,119 @@ const FilePondComponent: React.FC<FilePondComponentProps> = ({
   onUploadSuccess,
   allowMultiple = false,
 }) => {
-  const [loading, setLoading] = useState(false);
-
   const signedURL = trpc.images.uploadImage.useMutation();
 
+  const processFile = (
+    fieldName: string,
+    file: Blob,
+    metadata: any,
+    load: (fileId: any) => void,
+    error: (message: string) => void,
+    progress: (isComputable: boolean, loaded: number, total: number) => void,
+    abort: () => void
+  ) => {
+    const request = new XMLHttpRequest();
+    let aborted = false;
+
+    const actualFile = file as File;
+
+    console.log('ProcessFile called');
+
+    // Compute the checksum and get image dimensions
+    const objectUrl = URL.createObjectURL(actualFile);
+    const img = new Image();
+    img.src = objectUrl;
+
+    img.onload = async () => {
+      try {
+        const imgWidth = img.width;
+        const imgHeight = img.height;
+        URL.revokeObjectURL(objectUrl);
+
+        // Compute the checksum
+        const checksum = await computeSHA256(actualFile);
+
+        // Get signed URL
+        const signedURLResult = await signedURL.mutateAsync({
+          file_type: actualFile.type,
+          size: actualFile.size,
+          checksum,
+          imgHeight,
+          imgWidth,
+          photoAlbumId,
+        });
+
+        if (signedURLResult.error || !signedURLResult.success) {
+          error('Failed to get signed URL');
+          return;
+        }
+
+        const url = signedURLResult.success.signed_url;
+        console.log('HERE');
+
+        // Upload the file to S3 using XMLHttpRequest
+        const xhr = new XMLHttpRequest();
+        xhr.open('PUT', url, true);
+        xhr.setRequestHeader('Content-Type', actualFile.type);
+
+        xhr.upload.onprogress = (e: ProgressEvent) => {
+          progress(e.lengthComputable, e.loaded, e.total);
+        };
+
+        xhr.onload = () => {
+          if (xhr.status === 200) {
+            load(actualFile.name); // Notify FilePond that the upload has completed
+            if (onUploadSuccess) {
+              onUploadSuccess(actualFile.name);
+            }
+          } else {
+            error('Upload failed');
+          }
+        };
+
+        xhr.onerror = () => {
+          error('Upload error');
+        };
+
+        xhr.onabort = () => {
+          abort();
+        };
+
+        xhr.send(actualFile);
+      } catch (err) {
+        if (!aborted) {
+          error('An error occurred');
+        }
+      }
+    };
+
+    img.onerror = () => {
+      if (!aborted) {
+        error('Failed to load image');
+      }
+    };
+
+    return {
+      abort: () => {
+        aborted = true;
+        request.abort();
+      },
+    };
+  };
+
   return (
-    <>
-      {loading && <Loader />}
-      <div className="h-full w-full">
-        <FilePond
-          acceptedFileTypes={['image/*']}
-          allowMultiple={allowMultiple}
-          server={{
-            process: async (
-              fieldName,
-              file,
-              metadata,
-              load,
-              error,
-              progress,
-              abort
-            ) => {
-              setLoading(true);
-              try {
-                // Compute the checksum
-                const checksum = await computeSHA256(file);
-
-                // Get image dimensions
-                const img = new Image();
-                const objectUrl = URL.createObjectURL(file);
-                img.src = objectUrl;
-
-                img.onload = async () => {
-                  const imgWidth = img.width;
-                  const imgHeight = img.height;
-                  URL.revokeObjectURL(objectUrl);
-
-                  // Get signed URL
-                  const signedURLResult = await signedURL.mutateAsync({
-                    file_type: file.type,
-                    size: file.size,
-                    checksum,
-                    imgHeight,
-                    imgWidth,
-                    photoAlbumId,
-                  });
-
-                  if (signedURLResult.error || !signedURLResult.success) {
-                    error('Failed to get signed URL');
-                    setLoading(false);
-                    return;
-                  }
-
-                  const url = signedURLResult.success.signed_url;
-
-                  // Upload the file to S3
-                  const xhr = new XMLHttpRequest();
-                  xhr.open('PUT', url, true);
-                  xhr.setRequestHeader('Content-Type', file.type);
-
-                  xhr.upload.onprogress = (e: ProgressEvent) => {
-                    progress(e.lengthComputable, e.loaded, e.total);
-                  };
-
-                  xhr.onload = () => {
-                    if (xhr.status === 200) {
-                      load(file.name); // Pass the file name to the load callback
-                      if (onUploadSuccess) {
-                        onUploadSuccess(file.name);
-                      }
-                    } else {
-                      error('Upload failed');
-                    }
-                    setLoading(false);
-                  };
-
-                  xhr.onerror = () => {
-                    error('Upload error');
-                    setLoading(false);
-                  };
-
-                  xhr.onabort = () => {
-                    abort();
-                    setLoading(false);
-                  };
-
-                  xhr.send(file);
-                };
-              } catch (err) {
-                error('An error occurred');
-                setLoading(false);
-              }
-
-              // Provide abort method
-              return {
-                abort: () => {
-                  // Handle abort
-                  setLoading(false);
-                },
-              };
-            },
-          }}
-          name="files"
-          labelIdle='Drag & Drop your files or <span class="filepond--label-action">Browse</span>'
-        />
-      </div>
-    </>
+    <div className="h-full w-full p-4">
+      <FilePond
+        acceptedFileTypes={['image/*']}
+        allowMultiple={allowMultiple}
+        server={{
+          process: processFile,
+        }}
+        name="files"
+        labelIdle='Drag & Drop your files or <span class="filepond--label-action">Browse</span>'
+        stylePanelAspectRatio={'0.2'}
+      />
+    </div>
   );
 };
 
