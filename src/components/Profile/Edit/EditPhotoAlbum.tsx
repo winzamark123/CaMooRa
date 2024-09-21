@@ -2,13 +2,14 @@ import React from 'react';
 import { trpc } from '@/lib/trpc/client';
 import Image from 'next/image';
 import CreatePostForm from '../CreatePostForm';
+import { ImageProp } from '@/server/routers/Images/images';
 
 export default function EditPhotoAlbum({
   photoAlbumId,
-  photoAlbum,
+  images,
 }: {
   photoAlbumId: string;
-  photoAlbum: Array<any>;
+  images: Array<ImageProp>;
 }) {
   const deleteImage = trpc.images.deleteImage.useMutation();
 
@@ -23,7 +24,7 @@ export default function EditPhotoAlbum({
   return (
     <main className="flex flex-col gap-4">
       <div className="grid grid-cols-1 gap-10 md:grid-cols-2 lg:grid-cols-4">
-        {photoAlbum.map((image) => (
+        {images.map((image) => (
           <div key={image.id} className="relative flex h-72 gap-4 p-4">
             <Image
               className="rounded-sm border border-black object-cover"
