@@ -144,6 +144,12 @@ export default function Profile() {
                 </span>
               )}
             </h1>
+            {currentUser && (
+              <FavPhotographer
+                userId={currentUser.id}
+                photographerId={clerkId}
+              />
+            )}
             {/* Bio for bigger screen than sm */}
             <div className="hidden h-full max-w-xs flex-col justify-between pt-2 sm:flex lg:max-w-lg lg:pt-5 xl:max-w-xl">
               <Bio
@@ -232,9 +238,6 @@ export default function Profile() {
           </div>
         </div>
       </div>
-      {currentUser && (
-        <FavPhotographer userId={currentUser.id} photographerId={clerkId} />
-      )}
       <Projects clerkId={clerkId} />
     </div>
   );
