@@ -19,8 +19,8 @@ model User {
   profile      Profile?
   contact      Contact?
   photoAlbums  PhotoAlbum[]
-  Favorites    Favorites[] @relation("favorites")
-  savedByUsers Favorites[] @relation("favoritedBy")
+  Favorites    Favorites[]  @relation("favorites")
+  savedByUsers Favorites[]  @relation("favoritedBy")
 }
 
 model Favorites {
@@ -75,19 +75,19 @@ model Contact {
 
 model PhotoAlbum {
   // Identifiers
-  id          String   @id @default(cuid())
-  user        User     @relation(fields: [clerkId], references: [clerkId], onDelete: Cascade)
-  clerkId     String
+  id             String   @id @default(cuid())
+  user           User     @relation(fields: [clerkId], references: [clerkId], onDelete: Cascade)
+  clerkId        String
   photoAlbumName String
-  Images      Images[]
+  Images         Images[]
 }
 
 model Images {
   // Identifiers
-  id             String         @id @default(cuid())
+  id           String      @id @default(cuid())
   PhotoAlbum   PhotoAlbum? @relation(fields: [PhotoAlbumId], references: [id], onDelete: Cascade)
   PhotoAlbumId String?
-  clerkId        String
+  clerkId      String
 
   // Image Information
   key       String
