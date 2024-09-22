@@ -1,8 +1,8 @@
 import React from 'react';
 import { trpc } from '@/lib/trpc/client';
 import Image from 'next/image';
-import CreatePostForm from '../CreatePostForm';
-import { ImageProp } from '@/server/routers/Images/images';
+import CreatePostForm from '../UploadImage/CreatePostForm';
+
 
 export default function EditPhotoAlbum({
   photoAlbumId,
@@ -23,25 +23,28 @@ export default function EditPhotoAlbum({
 
   return (
     <main className="flex flex-col gap-4">
-      <div className="grid grid-cols-1 gap-10 md:grid-cols-2 lg:grid-cols-4">
-        {images.map((image) => (
-          <div key={image.id} className="relative flex h-72 gap-4 p-4">
-            <Image
-              className="rounded-sm border border-black object-cover"
-              src={image.url}
-              alt="Photography Image"
-              fill
-            />
-            <button
-              className="absolute -right-3 -top-3 z-30 flex h-6 w-6 items-center justify-center rounded-full border border-gray-400 bg-white text-xs  text-black hover:bg-red-400"
-              onClick={() => handleDeleteImage(image.id)}
-            >
-              X
-            </button>
-          </div>
-        ))}
-        <div className="relative flex h-72 gap-4 rounded-sm border border-black">
-          <CreatePostForm photoAlbumId={photoAlbumId} />
+
+      <div className="h-half-screen">
+        <CreatePostForm photoAlbumId={photoAlbumId} />
+      </div>
+      <div className="flex flex-col gap-4">
+        <div className="grid grid-cols-1 gap-10 md:grid-cols-2 lg:grid-cols-4">
+          {photoAlbum.map((image) => (
+            <div key={image.id} className="relative flex h-72 gap-4 p-4">
+              <Image
+                className="rounded-sm border border-black object-cover"
+                src={image.url}
+                alt="Photography Image"
+                fill
+              />
+              <button
+                className="absolute -right-3 -top-3 z-30 flex h-6 w-6 items-center justify-center rounded-full border border-gray-400 bg-white text-xs  text-black hover:bg-red-400"
+                onClick={() => handleDeleteImage(image.id)}
+              >
+                X
+              </button>
+            </div>
+          ))}
         </div>
       </div>
     </main>
