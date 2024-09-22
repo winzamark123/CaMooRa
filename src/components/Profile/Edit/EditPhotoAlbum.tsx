@@ -21,7 +21,7 @@ export default function EditPhotoAlbum({
   };
 
   return (
-    <main className="flex flex-col">
+    <main className="flex flex-col gap-4">
       <div className="h-half-screen">
         <CreatePostForm photoAlbumId={photoAlbumId} />
       </div>

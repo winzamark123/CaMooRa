@@ -131,8 +131,8 @@ const FilePondComponent: React.FC<FilePondComponentProps> = ({
   };
 
   return (
-    <div className="flex h-full w-full items-center justify-center p-4">
-      <div className="h-full w-1/2 ">
+    <div className="flex h-full w-full items-center justify-center rounded-xl bg-stone-100 p-4">
+      <div className="h-full w-1/2">
         <FilePond
           imagePreviewHeight={150}
           acceptedFileTypes={['image/*']}

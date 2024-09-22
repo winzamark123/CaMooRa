@@ -173,3 +173,14 @@
 .filepond--item {
     width: calc(50% - 0.5em);
 }
+
+/* bordered drop area */
+.filepond--panel-root {
+    background-color: #f5f5f4;
+    border: 2px solid #2c3340;
+}
+
+.filepond--drop-label {
+    color: #555;
+    /* height: 300px; */
+}

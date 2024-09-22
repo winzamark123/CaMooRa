@@ -11,7 +11,7 @@ import { Instagram, Phone, Mail, BriefcaseBusiness } from 'lucide-react';
 import Projects from './Projects';
 import type { Contact } from '../../server/routers/Contact/contact';
 import type { Profile } from '../../server/routers/Profile/profile';
-import FavPhotographer from '@/app/profile/[userId]/_components/FavPhotographer';
+import FavPhotographer from './FavPhotographer';
 
 const IconComponents: Record<string, any> = {
   whatsapp: (
