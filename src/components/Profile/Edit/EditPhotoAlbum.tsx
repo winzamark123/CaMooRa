@@ -4,6 +4,7 @@ import Image from 'next/image';
 import CreatePostForm from '../CreatePostForm';
 import { ImageProp } from '@/server/routers/Images/images';
 
+// fixed
 export default function EditPhotoAlbum({
   photoAlbumId,
   images,
