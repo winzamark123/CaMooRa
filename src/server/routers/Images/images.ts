@@ -4,6 +4,13 @@ import prisma from '@prisma/prisma';
 import { getPresignedURL } from './s3-post';
 import { deletePhotoCommand } from './s3-delete';
 
+export interface ImageProp {
+  id: string;
+  url: string;
+  imgWidth: number | null;
+  imgHeight: number | null;
+}
+
 export const images_router = router({
   getAllImages: publicProcedure
     .input(z.object({ clerkId: z.string() }))
@@ -25,23 +32,6 @@ export const images_router = router({
         imageHeight: image.imgHeight,
       }));
       return imageDetails;
-    }),
-
-  getAllPhotoAlbums: publicProcedure
-    .input(z.object({ clerkId: z.string() }))
-    .query(async ({ input }) => {
-      const photoAlbums = await prisma.photoAlbum.findMany({
-        where: { clerkId: input.clerkId },
-        select: {
-          id: true,
-          photoAlbumName: true,
-          Images: {
-            select: { id: true, url: true, imgWidth: true, imgHeight: true },
-          },
-        },
-      });
-
-      return photoAlbums;
     }),
 
   updateProfilePic: protectedProcedure

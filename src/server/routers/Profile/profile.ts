@@ -1,5 +1,5 @@
 import { router, publicProcedure, protectedProcedure } from '@/lib/trpc/trpc';
-import prisma from '../../../../prisma/prisma';
+import prisma from '@prisma/prisma';
 import { z } from 'zod';
 
 export interface Profile {

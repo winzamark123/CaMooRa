@@ -4,6 +4,7 @@ import { contactRouter } from './routers/Contact/contact';
 import { profileRouter } from './routers/Profile/profile';
 import { images_router } from './routers/Images/images';
 import { favorite_router } from './routers/Favorites/favorite';
+import { photoAlbum_router } from './routers/PhotoAlbum/photoAlbum';
 
 export const appRouter = router({
   user: user_router,
@@ -11,6 +12,7 @@ export const appRouter = router({
   contact: contactRouter,
   images: images_router,
   favorites: favorite_router,
+  photoAlbum: photoAlbum_router,
   // Add more routers here
 });
 
