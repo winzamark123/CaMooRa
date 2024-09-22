@@ -11,8 +11,6 @@ import { FilePond, registerPlugin } from 'react-filepond';
 import FilePondPluginImageExifOrientation from 'filepond-plugin-image-exif-orientation';
 import FilePondPluginImagePreview from 'filepond-plugin-image-preview';
 import FilePondPluginFileValidateType from 'filepond-plugin-file-validate-type';
-import 'filepond-plugin-image-preview/dist/filepond-plugin-image-preview.css';
-import 'filepond/dist/filepond.min.css';
 import './filepond_custom.css';
 
 // Register the plugins
@@ -132,7 +130,7 @@ const FilePondComponent: React.FC<FilePondComponentProps> = ({
 
   return (
     <div className="flex h-full w-full items-center justify-center rounded-xl bg-stone-100 p-4">
-      <div className="h-full w-1/2">
+      <div className="h-full w-1/2 overflow-auto">
         <FilePond
           imagePreviewHeight={150}
           acceptedFileTypes={['image/*']}
