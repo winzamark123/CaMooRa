@@ -79,11 +79,9 @@ model PhotoAlbum {
   user           User     @relation(fields: [clerkId], references: [clerkId], onDelete: Cascade)
   clerkId        String
   photoAlbumName String
-  Images      Images[]
+  Images         Images[]
 
   @@unique([clerkId, photoAlbumName])
-
-
 }
 
 model Images {

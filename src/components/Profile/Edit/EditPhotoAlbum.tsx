@@ -4,7 +4,6 @@ import Image from 'next/image';
 import { ImageProp } from '@/server/routers/Images/images';
 import CreatePostForm from '../UploadImage/CreatePostForm';
 
-
 // fixed
 export default function EditPhotoAlbum({
   photoAlbumId,
@@ -25,7 +24,6 @@ export default function EditPhotoAlbum({
 
   return (
     <main className="flex flex-col gap-4">
-
       <div className="h-half-screen">
         <CreatePostForm photoAlbumId={photoAlbumId} />
       </div>
