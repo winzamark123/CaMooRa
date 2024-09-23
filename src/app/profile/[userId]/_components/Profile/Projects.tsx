@@ -1,7 +1,7 @@
 import React from 'react';
 import { useEffect } from 'react';
 import { trpc } from '@/lib/trpc/client';
-import { Button } from '../ui/button';
+import { Button } from '@/components/ui/button';
 import { useState } from 'react';
 import PhotoAlbum from './PhotoAlbum';
 
@@ -19,7 +19,6 @@ export default function Projects({ clerkId }: { clerkId: string }) {
     useState<SelectedPhotoAlbumProps>();
   useEffect(() => {
     if (photoAlbums) {
-      // console.log("It's rendering");
       setSelectedPhotoAlbum({
         photoAlbumId: photoAlbums[0].id,
         photoAlbumIndex: 0,
@@ -44,6 +43,11 @@ export default function Projects({ clerkId }: { clerkId: string }) {
             <Button
               key={photoAlbum.id}
               className="rounded-full border border-gray-400 bg-profile_button_bg text-xs text-black hover:bg-primary_blue hover:text-white active:bg-primary_blue active:text-white"
+              style={
+                selectedPhotoAlbum?.photoAlbumId === photoAlbum.id
+                  ? { backgroundColor: '#013C5A', color: 'white' }
+                  : {}
+              }
               aria-label={`Photo Album ${photoAlbum.photoAlbumName}`}
               onClick={() =>
                 setSelectedPhotoAlbum({
@@ -52,7 +56,7 @@ export default function Projects({ clerkId }: { clerkId: string }) {
                 })
               }
             >
-              <p>{photoAlbum.photoAlbumName}</p>
+              {photoAlbum.photoAlbumName} ({photoAlbum.Images.length})
             </Button>
           ))}
       </div>

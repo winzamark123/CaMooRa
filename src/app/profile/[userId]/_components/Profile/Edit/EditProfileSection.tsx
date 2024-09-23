@@ -8,11 +8,11 @@ import {
   FormItem,
   FormLabel,
   FormMessage,
-} from '../../ui/form';
-import { Input } from '../../ui/input';
-import { Switch } from '../../ui/switch';
+} from '../../../../../../components/ui/form';
+import { Input } from '../../../../../../components/ui/input';
+import { Switch } from '../../../../../../components/ui/switch';
 import { UseFormReturn } from 'react-hook-form';
-import { Textarea } from '../../ui/textarea';
+import { Textarea } from '../../../../../../components/ui/textarea';
 import UpdateProfilePicForm from '../UpdateProfilePicForm';
 import Image from 'next/image';
 

@@ -3,6 +3,9 @@ import Image from 'next/image';
 import { ImageProp } from '@/server/routers/Images/images';
 
 export default function PhotoAlbum({ images }: { images: Array<ImageProp> }) {
+  if (images.length === 0) {
+    return <div>No images under Photo Album</div>;
+  }
   return (
     <main className="flex flex-col gap-4">
       <div className="grid grid-cols-1 gap-10 md:grid-cols-2 lg:grid-cols-4">

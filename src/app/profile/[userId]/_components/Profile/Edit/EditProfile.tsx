@@ -1,14 +1,14 @@
 import { trpc } from '@/lib/trpc/client';
 import { SetStateAction, useRef, useState } from 'react';
 import type { ProfileProps } from '../Profile';
-import type { Contact } from '../../../server/routers/Contact/contact';
+import type { Contact } from '../../../../../../server/routers/Contact/contact';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { useForm } from 'react-hook-form';
 import { z } from 'zod';
 import EditProfileSection from './EditProfileSection';
 import EditLinkAccountSection from './EditLinkAccountSection';
 import EditProjectSection from './EditProjectSection';
-import { Button } from '../../ui/button';
+import { Button } from '../../../../../../components/ui/button';
 
 interface UpdateProfileVariableType
   extends Omit<ProfileProps, 'firstName' | 'lastName' | 'profilePic'> {
@@ -229,12 +229,14 @@ export default function EditProfile({
         <Button
           className="ml-5 w-20 border border-gray-400 bg-profile_button_bg text-black hover:bg-sky-950 hover:text-white"
           onClick={form.handleSubmit(onSave)}
+          aria-label="Save Profile edits"
         >
           Save
         </Button>
         <Button
           className="w-20 border border-gray-400 bg-profile_button_bg text-black hover:bg-sky-950 hover:text-white"
           onClick={() => setIsEditing(false)}
+          aria-label="Cancel Profile edits"
         >
           Cancel
         </Button>
