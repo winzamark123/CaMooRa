@@ -11,8 +11,6 @@
     "migrate:dev": "if [ -z \"$SKIP_PRISMA_MIGRATE\" ]; then prisma migrate dev; fi",
     "migrate:deploy": "prisma migrate deploy"
   },
-
-
   "dependencies": {
     "@aws-sdk/client-s3": "^3.598.0",
     "@aws-sdk/s3-request-presigner": "^3.598.0",
@@ -30,6 +28,10 @@
     "@trpc/server": "^11.0.0-rc.382",
     "class-variance-authority": "^0.7.0",
     "clsx": "^2.1.1",
+    "filepond": "^4.31.3",
+    "filepond-plugin-file-validate-type": "^1.2.9",
+    "filepond-plugin-image-exif-orientation": "^1.0.11",
+    "filepond-plugin-image-preview": "^4.6.12",
     "framer-motion": "^11.2.12",
     "ldrs": "^1.0.2",
     "lucide-react": "^0.379.0",
@@ -37,6 +39,7 @@
     "next-themes": "^0.3.0",
     "react": "^18.3.1",
     "react-dom": "^18.3.1",
+    "react-filepond": "^7.1.2",
     "react-hook-form": "^7.52.0",
     "svix": "^1.24.0",
     "tailwind-merge": "^2.3.0",

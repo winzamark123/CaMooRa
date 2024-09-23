@@ -9,9 +9,9 @@ import Bio from './Bio';
 import Image from 'next/image';
 import { Instagram, Phone, Mail, BriefcaseBusiness } from 'lucide-react';
 import Projects from './Projects';
-import type { Contact } from '../../../../../server/routers/Contact/contact';
-import type { Profile } from '../../../../../server/routers/Profile/profile';
-import FavPhotographer from '@/app/profile/[userId]/_components/FavPhotographer';
+import type { Contact } from '@/server/routers/Contact/contact';
+import type { Profile } from '@/server/routers/Profile/profile';
+import FavPhotographer from './FavPhotographer';
 
 const IconComponents: Record<string, any> = {
   whatsapp: (
@@ -144,6 +144,12 @@ export default function Profile() {
                 </span>
               )}
             </h1>
+            {currentUser && (
+              <FavPhotographer
+                userId={currentUser.id}
+                photographerId={clerkId}
+              />
+            )}
             {/* Bio for bigger screen than sm */}
             <div className="hidden h-full max-w-xs flex-col justify-between pt-2 sm:flex lg:max-w-lg lg:pt-5 xl:max-w-xl">
               <Bio
@@ -232,9 +238,6 @@ export default function Profile() {
           </div>
         </div>
       </div>
-      {currentUser && (
-        <FavPhotographer userId={currentUser.id} photographerId={clerkId} />
-      )}
       <Projects clerkId={clerkId} />
     </div>
   );
