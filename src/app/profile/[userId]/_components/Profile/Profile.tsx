@@ -1,16 +1,16 @@
 'use client';
 import { useUser } from '@clerk/nextjs';
 import { useState } from 'react';
-import EditProfile from '@/components/Profile/Edit/EditProfile';
+import EditProfile from '@/app/profile/[userId]/_components/Profile/Edit/EditProfile';
 import { trpc } from '@/lib/trpc/client';
 import { usePathname } from 'next/navigation';
-import { Button } from '../ui/button';
+import { Button } from '../../../../../components/ui/button';
 import Bio from './Bio';
 import Image from 'next/image';
 import { Instagram, Phone, Mail, BriefcaseBusiness } from 'lucide-react';
 import Projects from './Projects';
-import type { Contact } from '../../server/routers/Contact/contact';
-import type { Profile } from '../../server/routers/Profile/profile';
+import type { Contact } from '../../../../../server/routers/Contact/contact';
+import type { Profile } from '../../../../../server/routers/Profile/profile';
 import FavPhotographer from '@/app/profile/[userId]/_components/FavPhotographer';
 
 const IconComponents: Record<string, any> = {

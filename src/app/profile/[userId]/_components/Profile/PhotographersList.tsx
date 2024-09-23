@@ -1,7 +1,7 @@
 'use client';
 import React from 'react';
 import { trpc } from '@/lib/trpc/client';
-import { HoverEffect } from '../ui/card-hover-effect';
+import { HoverEffect } from '../../../../../components/ui/card-hover-effect';
 
 export default function PhotographersList() {
   //trpc handles caching itself
