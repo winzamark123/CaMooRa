@@ -4,11 +4,11 @@
   "private": true,
   "scripts": {
     "dev": "next dev",
-    "build": "prisma generate && next build",
+    "build": "node scripts/check-schema.mjs && prisma generate && next build",
+    "build:ci": "prisma generate && next build",
     "start": "next start",
     "lint": "next lint",
     "postinstall": "prisma generate",
-    "migrate:dev": "if [ -z \"$SKIP_PRISMA_MIGRATE\" ]; then prisma migrate dev; fi",
     "migrate:deploy": "prisma migrate deploy"
   },
   "dependencies": {
@@ -28,6 +28,7 @@
     "@trpc/server": "^11.0.0-rc.382",
     "class-variance-authority": "^0.7.0",
     "clsx": "^2.1.1",
+    "dotenv": "^16.4.5",
     "filepond": "^4.31.3",
     "filepond-plugin-file-validate-type": "^1.2.9",
     "filepond-plugin-image-exif-orientation": "^1.0.11",

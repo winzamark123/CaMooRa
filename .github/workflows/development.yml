@@ -12,8 +12,6 @@ jobs:
     runs-on: ubuntu-latest
     environment:
       name: development
-    env:
-      SKIP_PRISMA_MIGRATE: true
     steps:
       - name: Checkout code
         uses: actions/checkout@v4
@@ -30,7 +28,7 @@ jobs:
         run: npm run lint
 
       - name: Build Next.js app
-        run: npm run build
+        run: npm run build:ci
 
       - name: Success
         run: echo " ~Build successful~ "
