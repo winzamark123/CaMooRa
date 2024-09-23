@@ -10,7 +10,7 @@ import {
   DropdownMenuItem,
   DropdownMenuTrigger,
 } from '@/components/ui/dropdown-menu';
-import UsernameProfilePic from '../User/UsernameProfilePic';
+import UsernameProfilePic from './User/UsernameProfilePic';
 import Link from 'next/link';
 
 export function DropDownProfile({ userId }: { userId: string }) {
