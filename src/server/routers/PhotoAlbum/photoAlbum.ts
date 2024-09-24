@@ -25,7 +25,7 @@ export const photoAlbum_router = router({
   createPhotoAlbum: protectedProcedure
     .input(z.object({ photoAlbumName: z.string() }))
     .mutation(async ({ input, ctx }) => {
-      // checking if the photo album exists (if it doesn't, throw an error)
+      // checking if the photo album exists (if it does, throw an error)
       const existingPhotoAlbum = await prisma.photoAlbum.findUnique({
         where: {
           clerkId_photoAlbumName: {
