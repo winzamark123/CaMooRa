@@ -1,7 +1,4 @@
 {
-    "buildCommand": "npm run migrate:deploy && npm run build:ci",
-    "build": {
-        "ignoreCommand": "./scripts/ignore-build.sh"
-    }  
+    "buildCommand": "npm run migrate:deploy && npm run build:ci"
 }
 
