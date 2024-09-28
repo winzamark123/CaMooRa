@@ -18,13 +18,20 @@ interface EditProjectSectionProps {
 export default function EditProjectSection({
   clerkId,
 }: EditProjectSectionProps) {
+  // State and Refs
+  const [newPhotoAlbumName, setNewPhotoAlbumName] = useState('');
+  const [isCreatingPhotoAlbum, setIsCreatingPhotoAlbum] = useState(false);
+  const [selectedPhotoAlbum, setSelectedPhotoAlbum] =
+    useState<SelectedPhotoAlbumProps>();
+  const hasSetSelectedAlbumRef = useRef(false);
+  const inputRef = useRef<HTMLInputElement>(null);
+
+  // TRPC Queries and Mutations
   const {
     data: photoAlbums,
     isLoading: isLoadingSections,
     refetch: refetchPhotoAlbums,
-  } = trpc.photoAlbum.getAllPhotoAlbums.useQuery({
-    clerkId,
-  });
+  } = trpc.photoAlbum.getAllPhotoAlbums.useQuery({ clerkId });
 
   const createPhotoAlbum = trpc.photoAlbum.createPhotoAlbum.useMutation({
     onSuccess: () => {
@@ -36,56 +43,81 @@ export default function EditProjectSection({
     },
   });
 
-  const deletePhotoALbum = trpc.photoAlbum.deletePhotoAlbum.useMutation({
+  const deletePhotoAlbum = trpc.photoAlbum.deletePhotoAlbum.useMutation({
     onSuccess: () => {
       console.log('Photo Album deleted successfully');
-      refetchPhotoAlbums();
+      refetchPhotoAlbums().then((refetchedData) => {
+        if (
+          selectedPhotoAlbum &&
+          refetchedData.data &&
+          refetchedData.data.length > 0
+        ) {
+          const newIndex =
+            selectedPhotoAlbum.photoAlbumIndex > 0
+              ? selectedPhotoAlbum.photoAlbumIndex - 1
+              : 0;
+          setSelectedPhotoAlbum({
+            photoAlbumId: refetchedData.data[newIndex].id,
+            photoAlbumIndex: newIndex,
+          });
+        } else {
+          resetSelectedAlbum();
+        }
+      });
     },
     onError: (err) => {
       console.error('Error deleting Photo Album', err);
     },
   });
 
-  const [newPhotoAlbumName, setNewPhotoAlbumName] = useState('');
-  const [isCreatingPhotoAlbum, setIsCreatingPhotoAlbum] = useState(false);
-  const [selectedPhotoAlbum, setSelectedPhotoAlbum] =
-    useState<SelectedPhotoAlbumProps>();
+  // Utility Functions
+  const resetCreatingState = () => {
+    setIsCreatingPhotoAlbum(false);
+    setNewPhotoAlbumName('');
+  };
 
-  // Set the first Photo Album as the selected Photo Album
+  const resetSelectedAlbum = () => {
+    hasSetSelectedAlbumRef.current = false;
+    setSelectedPhotoAlbum(undefined);
+  };
+
+  // When Photo Albums are loaded
   useEffect(() => {
-    if (photoAlbums) {
+    if (photoAlbums?.length === 0) {
+      resetSelectedAlbum();
+    } else if (!hasSetSelectedAlbumRef.current && photoAlbums) {
       setSelectedPhotoAlbum({
         photoAlbumId: photoAlbums[0].id,
         photoAlbumIndex: 0,
       });
+      hasSetSelectedAlbumRef.current = true;
     }
   }, [photoAlbums]);
 
-  // Focus on the input field when creating a new Photo Album (Better accessibility)
-  const inputRef = useRef<HTMLInputElement>(null);
+  // Focus on input when creating a new photo album (Accessibility)
   useEffect(() => {
     if (isCreatingPhotoAlbum && inputRef.current) {
       inputRef.current.focus();
     }
   }, [isCreatingPhotoAlbum]);
 
-  // Handle Enter and Escape key presses for the input field when creating a new Photo Album
+  // Event Handlers
   const handleKeyDown = (event: React.KeyboardEvent<HTMLInputElement>) => {
     if (event.key === 'Enter') {
       createPhotoAlbum.mutate({ photoAlbumName: newPhotoAlbumName });
-      setIsCreatingPhotoAlbum(false);
+      resetCreatingState();
     } else if (event.key === 'Escape') {
-      setIsCreatingPhotoAlbum(false);
-      setNewPhotoAlbumName('');
+      resetCreatingState();
     }
   };
 
   const handleDeletePhotoAlbum = (photoAlbumName: string) => {
-    deletePhotoALbum.mutate({ photoAlbumName });
+    deletePhotoAlbum.mutate({ photoAlbumName });
   };
 
+  // Render
   if (isLoadingSections) {
-    return <div>Loading Images...</div>;
+    return <div>Loading...</div>;
   }
 
   return (
@@ -196,16 +228,13 @@ export default function EditProjectSection({
       </div>
       <p className="my-5 text-xs">Click to Add Photos</p>
 
-      {selectedPhotoAlbum && (
+      {selectedPhotoAlbum && photoAlbums && (
         <EditPhotoAlbum
-          images={
-            (photoAlbums &&
-              photoAlbums[selectedPhotoAlbum.photoAlbumIndex].Images) ||
-            []
-          }
+          images={photoAlbums[selectedPhotoAlbum.photoAlbumIndex].Images || []}
           photoAlbumId={selectedPhotoAlbum.photoAlbumId}
         />
       )}
+      {!selectedPhotoAlbum && <div>No Photo Albums Available</div>}
     </div>
   );
 }
