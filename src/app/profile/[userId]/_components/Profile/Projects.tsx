@@ -18,7 +18,7 @@ export default function Projects({ clerkId }: { clerkId: string }) {
   const [selectedPhotoAlbum, setSelectedPhotoAlbum] =
     useState<SelectedPhotoAlbumProps>();
   useEffect(() => {
-    if (photoAlbums) {
+    if (photoAlbums && photoAlbums.length > 0) {
       setSelectedPhotoAlbum({
         photoAlbumId: photoAlbums[0].id,
         photoAlbumIndex: 0,
@@ -28,10 +28,6 @@ export default function Projects({ clerkId }: { clerkId: string }) {
 
   if (isLoading) {
     return <div>Loading Images...</div>;
-  }
-
-  if (!photoAlbums) {
-    return <div>No Images Available for this User</div>;
   }
 
   return (
@@ -69,6 +65,7 @@ export default function Projects({ clerkId }: { clerkId: string }) {
           }
         />
       )}
+      {!selectedPhotoAlbum && <div>No Photo Albums Available</div>}
     </main>
   );
 }
