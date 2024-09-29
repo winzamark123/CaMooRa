@@ -34,6 +34,20 @@ export const images_router = router({
       return imageDetails;
     }),
 
+  // get images by their albums and clerkId of the photographer
+  getImagesByAlbum: publicProcedure
+    .input(z.object({ clerkId: z.string(), albumId: z.string() }))
+    .query(async ({ input }) => {
+      const images = await prisma.images.findMany({
+        where: {
+          clerkId: input.clerkId,
+          PhotoAlbumId: input.albumId,
+        },
+      });
+
+      return images;
+    }),
+
   updateProfilePic: protectedProcedure
     .input(
       z.object({

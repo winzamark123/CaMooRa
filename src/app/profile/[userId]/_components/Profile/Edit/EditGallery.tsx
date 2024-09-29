@@ -11,11 +11,7 @@ import {
 } from '@/components/ui/dropdown-menu';
 import { MoreHorizontal, Trash2, Pencil } from 'lucide-react';
 
-interface EditProjectSectionProps {
-  clerkId: string;
-}
-
-export default function EditGallery({ clerkId }: EditProjectSectionProps) {
+export default function EditGallery({ clerkId }: { clerkId: string }) {
   const {
     data: photoAlbums,
     isLoading: isLoadingSections,
@@ -196,12 +192,8 @@ export default function EditGallery({ clerkId }: EditProjectSectionProps) {
 
       {selectedPhotoAlbum && (
         <EditPhotoAlbum
-          images={
-            (photoAlbums &&
-              photoAlbums[selectedPhotoAlbum.photoAlbumIndex].Images) ||
-            []
-          }
-          photoAlbumId={selectedPhotoAlbum.photoAlbumId}
+          clerkId={clerkId}
+          albumId={selectedPhotoAlbum.photoAlbumId}
         />
       )}
     </div>

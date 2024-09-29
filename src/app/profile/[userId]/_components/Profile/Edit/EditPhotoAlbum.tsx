@@ -1,34 +1,45 @@
 import React from 'react';
 import { trpc } from '@/lib/trpc/client';
 import Image from 'next/image';
-import { ImageProp } from '@/server/routers/Images/images';
 import CreatePostForm from '../UploadImage/CreatePostForm';
 
 export default function EditPhotoAlbum({
-  photoAlbumId,
-  images,
+  albumId,
+  clerkId,
 }: {
-  photoAlbumId: string;
-  images: Array<ImageProp>;
+  albumId: string;
+  clerkId: string;
 }) {
+  const {
+    data: images,
+    isLoading: isLoading,
+    isError: isError,
+    refetch: refetchImagesByAlbum,
+  } = trpc.images.getImagesByAlbum.useQuery({ clerkId, albumId });
+
   const deleteImage = trpc.images.deleteImage.useMutation();
 
   const handleDeleteImage = async (imageId: string) => {
-    console.log('Image ID: ', imageId);
-    const res = await deleteImage.mutate({ imageId: imageId });
-    console.log(res);
-    console.log('Deleted Image');
-    // window.location.reload();
+    try {
+      const res = await deleteImage.mutate({ imageId: imageId });
+      console.log(res);
+      await refetchImagesByAlbum();
+    } catch (error) {
+      console.error('Failed to refetch after delete');
+    }
   };
+
+  if (isLoading) return <div>Loading...</div>;
+  if (isError) return <div>Error </div>;
 
   return (
     <main className="flex flex-col gap-4">
       <div className="h-half-screen">
-        <CreatePostForm photoAlbumId={photoAlbumId} />
+        <CreatePostForm photoAlbumId={albumId} />
       </div>
       <div className="flex flex-col gap-4">
         <div className="grid grid-cols-1 gap-10 md:grid-cols-2 lg:grid-cols-4">
-          {images.map((image) => (
+          {images?.map((image) => (
             <div key={image.id} className="relative flex h-72 gap-4 p-4">
               <Image
                 className="rounded-sm border border-black object-cover"
