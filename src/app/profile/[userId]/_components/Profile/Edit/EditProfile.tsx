@@ -7,7 +7,7 @@ import { useForm } from 'react-hook-form';
 import { z } from 'zod';
 import EditProfileSection from './EditProfileSection';
 import EditLinkAccountSection from './EditLinkAccountSection';
-import EditProjectSection from './EditProjectSection';
+import EditGallery from './EditGallery';
 import { Button } from '../../../../../../components/ui/button';
 
 interface UpdateProfileVariableType
@@ -224,7 +224,7 @@ export default function EditProfile({
         profilePicId={profile?.profilePic.id}
       />
       <EditLinkAccountSection form={form} onSave={onSave} />
-      <EditProjectSection clerkId={clerkId} />
+      <EditGallery clerkId={clerkId} />
       <div className="mt-4 flex flex-row-reverse">
         <Button
           className="ml-5 w-20 border border-gray-400 bg-profile_button_bg text-black hover:bg-sky-950 hover:text-white"
