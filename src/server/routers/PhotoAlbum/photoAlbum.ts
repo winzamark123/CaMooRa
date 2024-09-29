@@ -13,7 +13,7 @@ export const photoAlbum_router = router({
           id: true,
           photoAlbumName: true,
           Images: {
-            select: { id: true, url: true, imgWidth: true, imgHeight: true },
+            select: { id: true, url: true },
           },
         },
       });

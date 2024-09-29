@@ -7,8 +7,6 @@ import { deletePhotoCommand } from './s3-delete';
 export interface ImageProp {
   id: string;
   url: string;
-  imgWidth: number | null;
-  imgHeight: number | null;
 }
 
 export const images_router = router({
