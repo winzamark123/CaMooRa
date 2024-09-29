@@ -11,7 +11,7 @@ import {
 } from '@/components/ui/dropdown-menu';
 import { MoreHorizontal, Trash2, Pencil } from 'lucide-react';
 
-export default function EditGallery({ clerkId }: { clerkId: string }) {
+export default function EditProjectSection({ clerkId }: { clerkId: string }) {
   const {
     data: photoAlbums,
     isLoading: isLoadingSections,

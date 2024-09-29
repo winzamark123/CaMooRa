@@ -2,6 +2,7 @@ import React from 'react';
 import { trpc } from '@/lib/trpc/client';
 import Image from 'next/image';
 import CreatePostForm from '../UploadImage/CreatePostForm';
+import EditGallery from './ReactMosaic/EditGallery';
 
 export default function EditPhotoAlbum({
   albumId,
@@ -34,8 +35,11 @@ export default function EditPhotoAlbum({
 
   return (
     <main className="flex flex-col gap-4">
-      <div className="h-half-screen">
+      <div className="h-third-screen">
         <CreatePostForm photoAlbumId={albumId} />
+      </div>
+      <div className="h-half-screen border border-black">
+        <EditGallery />
       </div>
       <div className="flex flex-col gap-4">
         <div className="grid grid-cols-1 gap-10 md:grid-cols-2 lg:grid-cols-4">

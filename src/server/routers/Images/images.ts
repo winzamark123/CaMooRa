@@ -25,13 +25,7 @@ export const images_router = router({
         },
       });
 
-      const imageDetails = images.map((image) => ({
-        url: image.url,
-        id: image.id,
-        imageWidth: image.imgWidth,
-        imageHeight: image.imgHeight,
-      }));
-      return imageDetails;
+      return images;
     }),
 
   // get images by their albums and clerkId of the photographer
