@@ -1,12 +1,12 @@
 import { router } from '@/lib/trpc/trpc';
-import { getFavorite, isFavorite } from './queries';
-import { removeFavorite, saveFavorite } from './mutation';
+import * as queries from './queries';
+import * as mutations from './mutation';
 
 export const favorite_router = router({
-  getFavorite,
-  isFavorite,
-  removeFavorite,
-  saveFavorite,
+  getFavorite: queries.getFavorite,
+  isFavorite: queries.isFavorite,
+  removeFavorite: mutations.removeFavorite,
+  saveFavorite: mutations.saveFavorite,
 });
 
 export type FavoriteRouter = typeof favorite_router;

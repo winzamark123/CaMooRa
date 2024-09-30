@@ -1,8 +1,8 @@
 import { router } from '@/lib/trpc/trpc';
-import { getContact } from './queries';
-import { updateContact } from './mutation';
+import * as queries from './queries';
+import * as mutations from './mutation';
 
 export const contactRouter = router({
-  getContact,
-  updateContact,
+  getContact: queries.getContact,
+  updateContact: mutations.updateContact,
 });

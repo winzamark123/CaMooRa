@@ -1,7 +1,7 @@
 import prisma from '@prisma/prisma';
 import { createContact } from '../Contact/utils';
 import { createProfile } from '../Profile/profileUtils';
-import { createPhotoAlbum } from '../PhotoAlbum/photoAlbumUtils';
+import { createPhotoAlbum } from '../PhotoAlbum/utils';
 
 interface createUserProp {
   clerkId: string;
