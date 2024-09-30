@@ -2,19 +2,6 @@ import { z } from 'zod';
 import { publicProcedure } from '@/lib/trpc/trpc';
 import prisma from '@prisma/prisma';
 
-export interface Contact {
-  email?: string;
-  discord?: string;
-  instagramTitle?: string;
-  instagramLink?: string;
-  phone?: string;
-  portfolioTitle?: string;
-  portfolioLink?: string;
-  whatsApp?: string;
-  isContactPublic: boolean;
-  isPhotographer: boolean;
-}
-
 const contact_object = z.object({
   clerkId: z.string(),
   email: z.string().optional(),

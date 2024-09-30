@@ -1,6 +1,6 @@
 import prisma from '@prisma/prisma';
 import { createContact } from '../Contact/utils';
-import { createProfile } from '../Profile/profileUtils';
+import { createProfile } from '../Profile/utils';
 import { createPhotoAlbum } from '../PhotoAlbum/utils';
 
 interface createUserProp {

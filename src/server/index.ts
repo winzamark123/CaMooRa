@@ -1,7 +1,7 @@
 import { router } from '../lib/trpc/trpc';
-import { user_router } from './routers/User/user';
+import { user_router } from './routers/User';
 import { contactRouter } from './routers/Contact';
-import { profileRouter } from './routers/Profile/profile';
+import { profileRouter } from './routers/Profile';
 import { images_router } from './routers/Images';
 import { favorite_router } from './routers/Favorites';
 import { photoAlbum_router } from './routers/PhotoAlbum';

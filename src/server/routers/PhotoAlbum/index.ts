@@ -1,6 +1,6 @@
 import { router } from '@/lib/trpc/trpc';
 import * as queries from './queries';
-import * as mutations from './mutation';
+import * as mutations from './mutations';
 
 export const photoAlbum_router = router({
   getAllPhotoAlbums: queries.getAllPhotoAlbums,
