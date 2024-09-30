@@ -1,5 +1,5 @@
 import prisma from '@prisma/prisma';
-import { createContact } from '../Contact/contactUtils';
+import { createContact } from '../Contact/utils';
 import { createProfile } from '../Profile/profileUtils';
 import { createPhotoAlbum } from '../PhotoAlbum/photoAlbumUtils';
 

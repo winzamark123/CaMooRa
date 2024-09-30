@@ -1,9 +1,9 @@
 import { router } from '../lib/trpc/trpc';
 import { user_router } from './routers/User/user';
-import { contactRouter } from './routers/Contact/contact';
+import { contactRouter } from './routers/Contact';
 import { profileRouter } from './routers/Profile/profile';
 import { images_router } from './routers/Images/images';
-import { favorite_router } from './routers/Favorites/favorite';
+import { favorite_router } from './routers/Favorites';
 import { photoAlbum_router } from './routers/PhotoAlbum/photoAlbum';
 
 export const appRouter = router({

@@ -2,7 +2,7 @@ import { router, publicProcedure } from '@/lib/trpc/trpc';
 import { z } from 'zod';
 import prisma from '@prisma/prisma';
 import type { Profile } from '../Profile/profile';
-import type { Contact } from '../Contact/contact';
+import type { Contact } from '../Contact';
 
 interface User {
   clerkId: string;
