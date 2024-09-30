@@ -13,7 +13,7 @@ export const getAllPhotographers = publicProcedure.query(async () => {
   return await prisma.user.findMany({
     where: {
       contact: {
-        isPhotographer: false, // switch to true when you make your profile a photographer to see it for now
+        isPhotographer: true,
       },
     },
   });
