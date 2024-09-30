@@ -2,7 +2,7 @@
 
 import { useState } from 'react';
 import { trpc } from '@/lib/trpc/client';
-import { computeSHA256 } from '@/server/routers/Images/imagesUtils';
+import { computeSHA256 } from '@/server/routers/Images/utils';
 import Image from 'next/image';
 import { Button } from '../../../../../components/ui/button';
 

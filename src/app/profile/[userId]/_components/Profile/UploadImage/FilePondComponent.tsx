@@ -1,7 +1,7 @@
 'use client';
 
 import React from 'react';
-import { computeSHA256 } from '@/server/routers/Images/imagesUtils';
+import { computeSHA256 } from '@/server/routers/Images/utils';
 import { trpc } from '@/lib/trpc/client';
 
 // Import FilePond and plugins

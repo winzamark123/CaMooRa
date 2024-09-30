@@ -1,7 +1,7 @@
 import { trpc } from '@/lib/trpc/client';
 import { SetStateAction, useRef, useState } from 'react';
 import type { ProfileProps } from '../Profile';
-import type { Contact } from '../../../../../../server/routers/Contact/contact';
+import type { Contact } from '../../../../../../server/routers/Contact';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { useForm } from 'react-hook-form';
 import { z } from 'zod';

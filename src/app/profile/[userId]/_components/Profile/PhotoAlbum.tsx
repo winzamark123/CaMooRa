@@ -1,6 +1,6 @@
 import React from 'react';
 import Image from 'next/image';
-import { ImageProp } from '@/server/routers/Images/images';
+import { ImageProp } from '@/server/routers/Images/index';
 
 export default function PhotoAlbum({ images }: { images: Array<ImageProp> }) {
   if (images.length === 0) {

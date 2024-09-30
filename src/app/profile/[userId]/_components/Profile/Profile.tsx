@@ -9,8 +9,8 @@ import Bio from './Bio';
 import Image from 'next/image';
 import { Instagram, Phone, Mail, BriefcaseBusiness } from 'lucide-react';
 import Projects from './Projects';
-import type { Contact } from '@/server/routers/Contact/contact';
-import type { Profile } from '@/server/routers/Profile/profile';
+import type { Contact } from '@/server/routers/Contact/index';
+import type { Profile } from '@/server/routers/Profile/index';
 import FavPhotographer from './FavPhotographer';
 
 const IconComponents: Record<string, any> = {
