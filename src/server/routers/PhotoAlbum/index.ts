@@ -1,7 +1,7 @@
 import { router, protectedProcedure, publicProcedure } from '@/lib/trpc/trpc';
 import { z } from 'zod';
 import prisma from '@prisma/prisma';
-import { createPhotoAlbum } from './photoAlbumUtils';
+import { createPhotoAlbum } from './utils';
 
 export const photoAlbum_router = router({
   getAllPhotoAlbums: publicProcedure

@@ -4,7 +4,7 @@ import { contactRouter } from './routers/Contact/contact';
 import { profileRouter } from './routers/Profile/profile';
 import { images_router } from './routers/Images/images';
 import { favorite_router } from './routers/Favorites/favorite';
-import { photoAlbum_router } from './routers/PhotoAlbum/photoAlbum';
+import { photoAlbum_router } from './routers/PhotoAlbum';
 
 export const appRouter = router({
   user: user_router,

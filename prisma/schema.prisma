@@ -80,6 +80,7 @@ model PhotoAlbum {
   clerkId        String
   photoAlbumName String
   Images         Images[]
+  layout         Json?
 
   @@unique([clerkId, photoAlbumName])
 }
