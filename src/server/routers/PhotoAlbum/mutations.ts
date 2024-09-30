@@ -1,6 +1,7 @@
 import { protectedProcedure } from '@/lib/trpc/trpc';
 import { z } from 'zod';
 import prisma from '@prisma/prisma';
+import { createPhotoAlbum as create } from './utils';
 
 // TODO: Add limit to the amount of characters in the photo album name (Both create and update for backend and frontend)
 export const createPhotoAlbum = protectedProcedure
@@ -21,18 +22,10 @@ export const createPhotoAlbum = protectedProcedure
     }
 
     // creating the photo album
-    try {
-      await prisma.photoAlbum.create({
-        data: {
-          clerkId: ctx.user.id,
-          photoAlbumName: input.photoAlbumName,
-        },
-      });
-      console.log('Created Photo Album');
-    } catch (err) {
-      console.error('ERROR CREATING PHOTO ALBUM' + err);
-      throw new Error('ERROR CREATING PHOTO ALBUM');
-    }
+    await create({
+      clerkId: ctx.user.id,
+      photoAlbumName: input.photoAlbumName,
+    });
   });
 
 export const updatePhotoAlbumName = protectedProcedure
