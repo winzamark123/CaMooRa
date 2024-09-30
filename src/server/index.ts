@@ -1,10 +1,10 @@
 import { router } from '../lib/trpc/trpc';
-import { user_router } from './routers/User/user';
-import { contactRouter } from './routers/Contact/contact';
-import { profileRouter } from './routers/Profile/profile';
-import { images_router } from './routers/Images/images';
-import { favorite_router } from './routers/Favorites/favorite';
-import { photoAlbum_router } from './routers/PhotoAlbum/photoAlbum';
+import { user_router } from './routers/User';
+import { contactRouter } from './routers/Contact';
+import { profileRouter } from './routers/Profile';
+import { images_router } from './routers/Images';
+import { favorite_router } from './routers/Favorites';
+import { photoAlbum_router } from './routers/PhotoAlbum';
 
 export const appRouter = router({
   user: user_router,
