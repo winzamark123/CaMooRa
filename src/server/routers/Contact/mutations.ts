@@ -1,5 +1,5 @@
 import { z } from 'zod';
-import { publicProcedure } from '@/lib/trpc/trpc';
+import { protectedProcedure } from '@/lib/trpc/trpc';
 import prisma from '@prisma/prisma';
 
 const contact_object = z.object({
@@ -25,13 +25,9 @@ const contact_object = z.object({
     .boolean({ invalid_type_error: 'isPhotographer must be a boolean' })
     .optional(),
 });
-export const updateContact = publicProcedure
+export const updateContact = protectedProcedure
   .input(contact_object)
-  .mutation(async ({ input, ctx }) => {
-    if (ctx.user?.id !== input.clerkId) {
-      throw new Error('You do not have permission to update this contact');
-    }
-    console.log(input);
+  .mutation(async ({ input }) => {
     await prisma.contact.update({
       where: {
         clerkId: input.clerkId,
