@@ -9,7 +9,7 @@ import {
   DropdownMenuItem,
   DropdownMenuTrigger,
 } from '@/components/ui/dropdown-menu';
-import { MoreHorizontal, Trash2, Pencil } from 'lucide-react';
+import { Trash2, Pencil } from 'lucide-react';
 
 interface EditProjectSectionProps {
   clerkId: string;
@@ -123,24 +123,27 @@ export default function EditProjectSection({
   return (
     <div>
       <h4 className="mb-5 border-b-2 pb-4 font-bold">
-        Your Projects{' '}
+        My Albums{' '}
         <span className="text-xs font-normal">
           (Please Add a Minimum of 3 Photos)
         </span>
       </h4>
+      <p className="my-5 text-xs">
+        Upload your photos. The first image will be used as the cover photo on
+        feeds.
+      </p>
       {/* TODO: Allow user to update their Photo Album names */}
-      <div className="flex flex-row flex-wrap gap-x-4">
+      <div className="mb-5 flex flex-row flex-wrap gap-x-4">
         {/* Display All Photo Albums Buttons */}
         {photoAlbums &&
           photoAlbums.map((photoAlbum, index) => (
-            <div key={photoAlbum.id} className="flex items-stretch">
+            <div key={photoAlbum.id} className="flex">
               <Button
-                className="rounded-l-full border-y border-l border-gray-400 bg-profile_button_bg text-black hover:bg-primary_blue hover:text-white active:bg-primary_blue active:text-white"
-                style={
+                className={` h-9 w-32 rounded-none rounded-l-lg border-y border-l border-gray-400 bg-primary_blue p-2 text-white hover:contrast-75  active:contrast-75 ${
                   selectedPhotoAlbum?.photoAlbumId === photoAlbum.id
-                    ? { backgroundColor: '#013C5A', color: 'white' }
-                    : {}
-                }
+                    ? 'bg-[#56647E]'
+                    : ''
+                }`}
                 aria-label={`Photo Album ${photoAlbum.photoAlbumName} (${photoAlbum.Images.length} Images)`}
                 onClick={() =>
                   setSelectedPhotoAlbum({
@@ -149,21 +152,19 @@ export default function EditProjectSection({
                   })
                 }
               >
-                <span className="text-xs ">
-                  {photoAlbum.photoAlbumName} ({photoAlbum.Images.length}){' '}
-                </span>
+                <span className="text-xs ">{photoAlbum.photoAlbumName}</span>
                 <span className="sr-only">{`Photo Album ${photoAlbum.photoAlbumName} (${photoAlbum.Images.length} Images)`}</span>
               </Button>
               <DropdownMenu>
-                {/* Ellipsis Button (Open Pop-Up) */}
+                {/* Edit Button (Open Pop-Up) */}
                 <DropdownMenuTrigger asChild>
                   <Button
                     aria-haspopup="true"
                     size="icon"
-                    className="rounded-r-full border border-gray-400 bg-profile_button_bg text-xs text-black hover:bg-primary_blue hover:text-white active:bg-primary_blue active:text-white"
-                    aria-label={`Options for ${photoAlbum.photoAlbumName}`}
+                    className="h-9 rounded-none rounded-r-lg border-y border-r border-gray-400 bg-[#C2C4C6] hover:bg-[#C2C4C6] "
+                    aria-label={`Toggle Menu for ${photoAlbum.photoAlbumName}`}
                   >
-                    <MoreHorizontal className="h-4 w-4" />
+                    <Pencil color="rgb(1,60,90)" className="h-4 w-4" />
                     <span className="sr-only">Toggle menu</span>
                   </Button>
                 </DropdownMenuTrigger>
@@ -174,7 +175,7 @@ export default function EditProjectSection({
                       onClick={() => {
                         handleDeletePhotoAlbum(photoAlbum.photoAlbumName);
                       }}
-                      className="flex w-full cursor-pointer space-x-2 bg-red-600 focus:bg-red-800 focus:text-slate-200"
+                      className="flex w-full cursor-pointer space-x-2 bg-white text-black focus:bg-red-600  focus:text-white"
                       aria-label={`Delete ${photoAlbum.photoAlbumName}`}
                     >
                       <Trash2 className="h-4 w-4" />
@@ -187,7 +188,7 @@ export default function EditProjectSection({
                   {/* Update Album Name Button */}
                   <DropdownMenuItem asChild>
                     <Button
-                      className="flex w-full cursor-pointer space-x-2 bg-blue-600 focus:bg-blue-800 focus:text-slate-200"
+                      className="flex w-full cursor-pointer space-x-2 bg-white text-black focus:bg-blue-600 focus:text-white"
                       aria-label={`Update Name for ${photoAlbum.photoAlbumName}`}
                     >
                       <Pencil className="h-4 w-4" />
@@ -217,7 +218,7 @@ export default function EditProjectSection({
           </>
         )}
         <Button
-          className="rounded-full"
+          className="rounded-lg border bg-sky-950 text-white hover:border-gray-400 hover:bg-profile_button_bg hover:text-black"
           aria-label="Create a New Photo Album"
           onClick={() => {
             setIsCreatingPhotoAlbum(true);
@@ -225,8 +226,11 @@ export default function EditProjectSection({
         >
           +
         </Button>
+        {/* TODO: Add functionality to Preview button */}
+        <Button className="ml-auto w-32 border bg-sky-950 text-xs text-white hover:border-gray-400 hover:bg-profile_button_bg hover:text-black">
+          Preview
+        </Button>
       </div>
-      <p className="my-5 text-xs">Click to Add Photos</p>
 
       {selectedPhotoAlbum && photoAlbums && (
         <EditPhotoAlbum

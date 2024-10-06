@@ -14,6 +14,7 @@ import { Switch } from '../../../../../../components/ui/switch';
 import { UseFormReturn } from 'react-hook-form';
 import { Textarea } from '../../../../../../components/ui/textarea';
 import UpdateProfilePicForm from '../UpdateProfilePicForm';
+import { Button } from '@/components/ui/button';
 import Image from 'next/image';
 
 interface FormValues {
@@ -74,13 +75,16 @@ export default function EditProfileSection({
               className="rounded-sm border border-black"
             />
           </div>
-          <button
-            className="mt-3 text-xs underline hover:text-gray-400"
-            onClick={handleOpenModal}
-            aria-label="Upload Profile Picture"
-          >
-            Upload Your Profile Picture
-          </button>
+          <div className="mt-2 flex flex-col gap-2">
+            <span className="text-xs">Upload your Profile Picture</span>
+            <Button
+              className="w-full border  bg-sky-950 text-xs text-white hover:border-gray-400 hover:bg-profile_button_bg hover:text-black sm:w-20"
+              onClick={handleOpenModal}
+              aria-label="Upload Profile Picture"
+            >
+              Upload
+            </Button>
+          </div>
         </div>
         <Form {...form}>
           <form
@@ -158,7 +162,7 @@ export default function EditProfileSection({
                   name="bio"
                   render={({ field }) => (
                     <FormItem className="mb-4 md:mb-0">
-                      <FormLabel>Bio</FormLabel>
+                      <FormLabel>Bio (Please include...)</FormLabel>
                       <FormControl>
                         <Textarea
                           placeholder="Your Bio"
