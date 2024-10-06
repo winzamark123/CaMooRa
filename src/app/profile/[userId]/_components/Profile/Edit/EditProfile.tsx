@@ -227,14 +227,14 @@ export default function EditProfile({
       <EditProjectSection clerkId={clerkId} />
       <div className="mt-4 flex flex-row-reverse">
         <Button
-          className="ml-5 w-20 border bg-sky-950 text-white hover:border-gray-400 hover:bg-profile_button_bg hover:text-black"
+          className="ml-5 w-20 border bg-sky-950 text-xs text-white hover:border-gray-400 hover:bg-profile_button_bg hover:text-black focus:border-gray-400 focus:bg-profile_button_bg focus:text-black sm:w-20"
           onClick={form.handleSubmit(onSave)}
           aria-label="Save Profile edits"
         >
           Save
         </Button>
         <Button
-          className="w-20 border bg-sky-950 text-white hover:border-gray-400 hover:bg-profile_button_bg hover:text-black"
+          className="w-20 border bg-sky-950 text-xs text-white hover:border-gray-400 hover:bg-profile_button_bg hover:text-black focus:border-gray-400 focus:bg-profile_button_bg focus:text-black sm:w-20"
           onClick={() => setIsEditing(false)}
           aria-label="Cancel Profile edits"
         >

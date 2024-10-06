@@ -218,7 +218,7 @@ export default function EditProjectSection({
           </>
         )}
         <Button
-          className="rounded-lg border bg-sky-950 text-white hover:border-gray-400 hover:bg-profile_button_bg hover:text-black"
+          className="rounded-lg border bg-sky-950 text-xs text-white hover:border-gray-400 hover:bg-profile_button_bg hover:text-black focus:border-gray-400 focus:bg-profile_button_bg focus:text-black"
           aria-label="Create a New Photo Album"
           onClick={() => {
             setIsCreatingPhotoAlbum(true);
@@ -227,7 +227,7 @@ export default function EditProjectSection({
           +
         </Button>
         {/* TODO: Add functionality to Preview button */}
-        <Button className="ml-auto w-32 border bg-sky-950 text-xs text-white hover:border-gray-400 hover:bg-profile_button_bg hover:text-black">
+        <Button className="ml-auto w-32 border bg-sky-950 text-xs text-white hover:border-gray-400 hover:bg-profile_button_bg hover:text-black focus:border-gray-400 focus:bg-profile_button_bg focus:text-black">
           Preview
         </Button>
       </div>
