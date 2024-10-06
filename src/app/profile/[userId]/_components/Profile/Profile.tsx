@@ -1,7 +1,8 @@
 'use client';
-import { useUser } from '@clerk/nextjs';
+import { useUser, SignedOut } from '@clerk/nextjs';
 import { useState } from 'react';
 import EditProfile from '@/app/profile/[userId]/_components/Profile/Edit/EditProfile';
+import SignInPopUp from '@/components/Popups/SignInPopUp';
 import { trpc } from '@/lib/trpc/client';
 import { usePathname } from 'next/navigation';
 import { Button } from '../../../../../components/ui/button';
@@ -27,6 +28,7 @@ export default function Profile() {
   const pathname = usePathname();
   const clerkId = pathname.split('/').pop() || '';
   const { isSignedIn, user: currentUser } = useUser();
+  const [showSignInPopUp, setShowSignInPopUp] = useState(false);
 
   const {
     data: profile,
@@ -71,12 +73,15 @@ export default function Profile() {
       'data' in link
   );
 
-  // Conditions for showing the Contact Button
+  const toggleEditing = () => {
+    setIsEditing(!isEditing);
+  };
+
+  const toggleSignInPopUp = () => {
+    setShowSignInPopUp(!showSignInPopUp);
+  };
+
   const usersFullName = `${profile?.firstName} ${profile?.lastName}`;
-  const showContactButton =
-    (!isSignedIn && !contact?.isContactPublic) ||
-    (isSignedIn && currentUser?.id !== clerkId) ||
-    (!isSignedIn && contact?.isContactPublic);
 
   // User is Editing their Profile
   if (isEditing) {
@@ -196,24 +201,27 @@ export default function Profile() {
           <div className="mt-auto flex items-end justify-end">
             {currentUser?.id === clerkId && (
               <Button
-                className="mt-8 w-full border bg-sky-950 text-white hover:border-gray-400 hover:bg-profile_button_bg hover:text-black sm:w-20"
+                className="mt-8 w-full border border-gray-400 bg-profile_button_bg text-xs text-black hover:bg-primary_blue hover:text-white focus:bg-primary_blue  focus:text-white sm:w-20"
                 aria-label="Edit your Profile"
-                onClick={() => {
-                  setIsEditing(!isEditing);
-                }}
+                onClick={toggleEditing}
               >
                 Edit
               </Button>
             )}
-            {showContactButton && (
-              <Button className="mt-8 w-full border border-gray-400 bg-profile_button_bg text-xs text-black hover:bg-primary_blue hover:text-white active:bg-primary_blue active:text-white sm:w-20">
+            <SignedOut>
+              <Button
+                onClick={toggleSignInPopUp}
+                className="mt-8 w-full border border-gray-400 bg-profile_button_bg text-xs text-black hover:bg-primary_blue hover:text-white focus:bg-primary_blue  focus:text-white sm:w-20"
+                aria-label={`Contact ${usersFullName}`}
+              >
                 Contact
               </Button>
-            )}
+            </SignedOut>
           </div>
         </div>
       </div>
       <Projects clerkId={clerkId} />
+      {showSignInPopUp && <SignInPopUp onToggle={toggleSignInPopUp} />}
     </div>
   );
 }
