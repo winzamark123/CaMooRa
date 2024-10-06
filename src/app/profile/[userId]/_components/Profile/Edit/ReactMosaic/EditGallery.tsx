@@ -1,10 +1,6 @@
-import { Mosaic, MosaicWindow } from 'react-mosaic-component';
+import { Mosaic, MosaicNode, getLeaves } from 'react-mosaic-component';
+import { useState } from 'react';
 import 'react-mosaic-component/react-mosaic-component.css';
-interface ExampleWindowProps {
-  count: number;
-  path: MosaicBranch[];
-  totalWindowCount: number;
-}
 
 export default function EditGallery() {
   type ViewId = 'a' | 'b' | 'c' | 'new';
@@ -16,22 +12,48 @@ export default function EditGallery() {
     new: 'New Window',
   };
 
+  const INITIAL_LAYOUT: MosaicNode<ViewId> = {
+    direction: 'row',
+    first: 'a',
+    second: {
+      direction: 'column',
+      first: 'b',
+      second: 'c',
+    },
+  };
+  const [currentNode, setCurrentNode] = useState<MosaicNode<ViewId> | null>(
+    INITIAL_LAYOUT
+  );
+  const [currentTheme, setCurrentTheme] = useState<string>('light');
+
+  const onChange = (newNode: MosaicNode<ViewId> | null) => {
+    setCurrentNode(newNode);
+    // Optionally, save the layout to localStorage or send to an API
+  };
+
+  const onRelease = (newNode: MosaicNode<ViewId> | null) => {
+    console.log('Mosaic layout released:', newNode);
+    // Save the layout to localStorage or send to an API
+  };
+
+  const totalWindowCount = getLeaves(currentNode).length;
+
   return (
-    <Mosaic<ViewId>
-      renderTile={(id, path) => (
-        <MosaicWindow<number> path={path} title={TITLE_MAP[id]} toolbarControls>
-          <h1>{TITLE_MAP[id]}</h1>
-        </MosaicWindow>
-      )}
-      initialValue={{
-        direction: 'row',
-        first: 'a',
-        second: {
-          direction: 'column',
-          first: 'b',
-          second: 'c',
-        },
-      }}
-    />
+    <div className={`edit-gallery ${currentTheme}`}>
+      <Mosaic<ViewId>
+        renderTile={(id, path) => (
+          <MosaicWindowComponent
+            id={id}
+            path={path}
+            title={TITLE_MAP[id]}
+            totalWindowCount={totalWindowCount}
+          />
+        )}
+        value={currentNode}
+        onChange={onChange}
+        onRelease={onRelease}
+        className={`mosaic-container ${currentTheme}`}
+      />
+    </div>
   );
 }
