@@ -78,7 +78,7 @@ export default function EditProfileSection({
           <div className="mt-2 flex flex-col gap-2">
             <span className="text-xs">Upload your Profile Picture</span>
             <Button
-              className="w-full border  bg-sky-950 text-xs text-white hover:border-gray-400 hover:bg-profile_button_bg hover:text-black focus:border-gray-400 focus:bg-profile_button_bg focus:text-black sm:w-20"
+              className="w-full border  border-gray-400 bg-profile_button_bg text-xs text-black hover:bg-primary_blue hover:text-white focus:bg-primary_blue  focus:text-white sm:w-20"
               onClick={handleOpenModal}
               aria-label="Upload Profile Picture"
             >

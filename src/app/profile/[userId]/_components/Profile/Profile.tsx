@@ -201,7 +201,7 @@ export default function Profile() {
           <div className="mt-auto flex items-end justify-end">
             {currentUser?.id === clerkId && (
               <Button
-                className="mt-8 w-full border bg-sky-950 text-xs text-white hover:border-gray-400 hover:bg-profile_button_bg hover:text-black focus:border-gray-400 focus:bg-profile_button_bg focus:text-black sm:w-20"
+                className="mt-8 w-full border border-gray-400 bg-profile_button_bg text-xs text-black hover:bg-primary_blue hover:text-white focus:bg-primary_blue  focus:text-white sm:w-20"
                 aria-label="Edit your Profile"
                 onClick={toggleEditing}
               >
@@ -211,7 +211,8 @@ export default function Profile() {
             <SignedOut>
               <Button
                 onClick={toggleSignInPopUp}
-                className="mt-8 w-full border bg-sky-950 text-xs text-white hover:border-gray-400 hover:bg-profile_button_bg hover:text-black focus:border-gray-400 focus:bg-profile_button_bg focus:text-black sm:w-20"
+                className="mt-8 w-full border border-gray-400 bg-profile_button_bg text-xs text-black hover:bg-primary_blue hover:text-white focus:bg-primary_blue  focus:text-white sm:w-20"
+                aria-label={`Contact ${usersFullName}`}
               >
                 Contact
               </Button>
