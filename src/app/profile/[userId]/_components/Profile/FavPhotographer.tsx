@@ -67,11 +67,16 @@ export default function FavPhotographer({
   }
 
   return (
-    <main>
-      <Button onClick={toggleFavorite} variant={'ghost'}>
+    <>
+      <Button
+        aria-label={isFavorite ? 'Remove from favorites' : 'Add to favorites'}
+        className="max-w-16"
+        onClick={toggleFavorite}
+        variant={'ghost'}
+      >
         {!isFavorite && <Star />}
-        {isFavorite && <Star fill="orange" />}
+        {isFavorite && <Star fill="yellow" />}
       </Button>
-    </main>
+    </>
   );
 }
