@@ -14,7 +14,7 @@ const NodeSchema: z.ZodType<Prisma.InputJsonValue> = z.lazy(() =>
 );
 
 // Define the schema for the entire layout
-const LayoutSchema: z.ZodType<Prisma.InputJsonValue> = z.object({
+export const LayoutSchema: z.ZodType<Prisma.InputJsonValue> = z.object({
   currentNode: NodeSchema,
   currentTheme: z.string(),
 });

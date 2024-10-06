@@ -20,6 +20,9 @@ export default function RootLayout({
   return (
     <ClerkProvider>
       <html lang="en">
+        <head>
+          <link rel="icon" href="/favicon.ico" />
+        </head>
         <body className="flex min-h-screen flex-col ">
           <Provider>
             <ThemeProvider

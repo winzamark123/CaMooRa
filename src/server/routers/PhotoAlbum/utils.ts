@@ -5,6 +5,16 @@ interface createPhotoAlbumProp {
   photoAlbumName: string;
 }
 
+const mockLayout = {
+  direction: 'row',
+  first: 'a',
+  second: {
+    direction: 'column',
+    first: 'b',
+    second: 'c',
+  },
+};
+
 export async function createPhotoAlbum({
   clerkId,
   photoAlbumName,
@@ -14,6 +24,7 @@ export async function createPhotoAlbum({
       data: {
         clerkId,
         photoAlbumName,
+        layout: mockLayout,
       },
     });
     console.log('Created Photo Album');

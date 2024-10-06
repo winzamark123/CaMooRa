@@ -1,5 +1,10 @@
 import { Mosaic, MosaicWindow } from 'react-mosaic-component';
 import 'react-mosaic-component/react-mosaic-component.css';
+interface ExampleWindowProps {
+  count: number;
+  path: MosaicBranch[];
+  totalWindowCount: number;
+}
 
 export default function EditGallery() {
   type ViewId = 'a' | 'b' | 'c' | 'new';
@@ -14,11 +19,7 @@ export default function EditGallery() {
   return (
     <Mosaic<ViewId>
       renderTile={(id, path) => (
-        <MosaicWindow<ViewId>
-          path={path}
-          createNode={() => 'new'}
-          title={TITLE_MAP[id]}
-        >
+        <MosaicWindow<number> path={path} title={TITLE_MAP[id]} toolbarControls>
           <h1>{TITLE_MAP[id]}</h1>
         </MosaicWindow>
       )}
