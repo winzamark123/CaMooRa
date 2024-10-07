@@ -7,11 +7,11 @@ interface createPhotoAlbumProp {
 
 const mockLayout = {
   direction: 'row',
-  first: 'a',
+  first: 1,
   second: {
     direction: 'column',
-    first: 'b',
-    second: 'c',
+    first: 2,
+    second: 3,
   },
 };
 

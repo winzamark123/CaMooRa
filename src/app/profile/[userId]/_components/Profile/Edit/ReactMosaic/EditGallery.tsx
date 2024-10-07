@@ -7,11 +7,18 @@ import { trpc } from '@/lib/trpc/client';
 interface EditGalleryProps {
   clerkId: string;
   photoAlbumId: string;
+  initialLayout: MosaicNode<number>;
 }
 export default function EditGallery({
   clerkId,
   photoAlbumId,
+  initialLayout,
 }: EditGalleryProps) {
+  const [currentNode, setCurrentNode] = useState<MosaicNode<number> | null>(
+    initialLayout
+  );
+  const nextIdRef = useRef(4); // Starting from 4
+
   const editLayout = trpc.photoAlbum.editPhotoAlbumLayout.useMutation({
     onSuccess: () => {
       console.log('Gallery layout updated successfully');
@@ -28,21 +35,6 @@ export default function EditGallery({
     2: 'Top Right Window',
     3: 'Bottom Right Window',
   };
-
-  const INITIAL_LAYOUT: MosaicNode<ViewId> = {
-    direction: 'row',
-    first: 1,
-    second: {
-      direction: 'column',
-      first: 2,
-      second: 3,
-    },
-  };
-  const [currentNode, setCurrentNode] = useState<MosaicNode<ViewId> | null>(
-    INITIAL_LAYOUT
-  );
-
-  const nextIdRef = useRef(4); // Starting from 4
 
   const incrementNextId = () => {
     const newId = nextIdRef.current++;
@@ -62,6 +54,7 @@ export default function EditGallery({
     }
 
     //save the layout to db
+    //might make a save button to save the layout instead of mutating the db too
     editLayout.mutate({
       clerkId: clerkId,
       photoAlbumId: photoAlbumId,

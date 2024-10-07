@@ -3,6 +3,7 @@ import { trpc } from '@/lib/trpc/client';
 import Image from 'next/image';
 import CreatePostForm from '../UploadImage/CreatePostForm';
 import EditGallery from './ReactMosaic/EditGallery';
+import { MosaicNodeSchema } from '@/server/routers/PhotoAlbum/layout/mutation';
 
 export default function EditPhotoAlbum({
   albumId,
@@ -18,6 +19,17 @@ export default function EditPhotoAlbum({
     refetch: refetchImagesByAlbum,
   } = trpc.images.getImagesByAlbum.useQuery({ clerkId, albumId });
 
+  const {
+    data: layoutData,
+    isLoading: layoutLoading,
+    error: layoutError,
+  } = trpc.photoAlbum.getPhotoAlbumLayout.useQuery({
+    clerkId: clerkId,
+    photoAlbumId: albumId,
+  });
+
+  const layoutDataParse = MosaicNodeSchema.parse(layoutData);
+
   const deleteImage = trpc.images.deleteImage.useMutation();
 
   const handleDeleteImage = async (imageId: string) => {
@@ -30,6 +42,8 @@ export default function EditPhotoAlbum({
     }
   };
 
+  if (layoutLoading) return <div>Loading Layout...</div>;
+  if (layoutError) return <div>Error in the Layout</div>;
   if (isLoading) return <div>Loading...</div>;
   if (isError) return <div>Error </div>;
 
@@ -39,7 +53,11 @@ export default function EditPhotoAlbum({
         <CreatePostForm photoAlbumId={albumId} />
       </div>
       <div className="h-half-screen border border-black">
-        <EditGallery clerkId={clerkId} photoAlbumId={albumId} />
+        <EditGallery
+          clerkId={clerkId}
+          photoAlbumId={albumId}
+          initialLayout={layoutDataParse}
+        />
       </div>
       <div className="flex flex-col gap-4">
         <div className="grid grid-cols-1 gap-10 md:grid-cols-2 lg:grid-cols-4">

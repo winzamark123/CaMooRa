@@ -4,7 +4,7 @@ import prisma from '@prisma/prisma';
 import { Prisma } from '@prisma/client';
 import { MosaicNode } from 'react-mosaic-component';
 
-const MosaicNodeSchema: z.ZodSchema<MosaicNode<number>> = z.lazy(() =>
+export const MosaicNodeSchema: z.ZodSchema<MosaicNode<number>> = z.lazy(() =>
   z.union([
     z.number(),
     z.object({
