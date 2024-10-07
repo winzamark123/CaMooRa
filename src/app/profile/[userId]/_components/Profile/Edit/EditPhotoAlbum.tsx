@@ -39,7 +39,7 @@ export default function EditPhotoAlbum({
         <CreatePostForm photoAlbumId={albumId} />
       </div>
       <div className="h-half-screen border border-black">
-        <EditGallery />
+        <EditGallery clerkId={clerkId} photoAlbumId={albumId} />
       </div>
       <div className="flex flex-col gap-4">
         <div className="grid grid-cols-1 gap-10 md:grid-cols-2 lg:grid-cols-4">

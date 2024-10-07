@@ -2,8 +2,25 @@ import { Mosaic, MosaicNode } from 'react-mosaic-component';
 import { useState, useRef } from 'react';
 import MosaicWindowComponent from './MosaicWindowComponent';
 import 'react-mosaic-component/react-mosaic-component.css';
+import { trpc } from '@/lib/trpc/client';
 
-export default function EditGallery() {
+interface EditGalleryProps {
+  clerkId: string;
+  photoAlbumId: string;
+}
+export default function EditGallery({
+  clerkId,
+  photoAlbumId,
+}: EditGalleryProps) {
+  const editLayout = trpc.photoAlbum.editPhotoAlbumLayout.useMutation({
+    onSuccess: () => {
+      console.log('Gallery layout updated successfully');
+    },
+    onError: (err) => {
+      console.error('Error updating Gallery layout', err);
+    },
+  });
+
   type ViewId = number;
 
   const TITLE_MAP: Record<ViewId, string> = {
@@ -29,22 +46,31 @@ export default function EditGallery() {
 
   const incrementNextId = () => {
     const newId = nextIdRef.current++;
-    TITLE_MAP[newId] = `Window ${newId}`;
+    TITLE_MAP[newId] = `Window_${newId}`;
     return newId;
   };
 
   const onChange = (newNode: MosaicNode<ViewId> | null) => {
     setCurrentNode(newNode);
-    // Optionally, save the layout to localStorage or send to an API
   };
 
   const onRelease = (newNode: MosaicNode<ViewId> | null) => {
     console.log('Mosaic layout released:', newNode);
-    // Save the layout to localStorage or send to an API
+
+    if (!newNode) {
+      return;
+    }
+
+    //save the layout to db
+    editLayout.mutate({
+      clerkId: clerkId,
+      photoAlbumId: photoAlbumId,
+      layout: newNode,
+    });
   };
 
   return (
-    <div className="h-full w-full border border-red-300">
+    <div className="h-full w-full ">
       <Mosaic<ViewId>
         renderTile={(id, path) => (
           <MosaicWindowComponent

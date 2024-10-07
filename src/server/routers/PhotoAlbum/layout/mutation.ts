@@ -2,22 +2,32 @@ import { protectedProcedure } from '@/lib/trpc/trpc';
 import { z } from 'zod';
 import prisma from '@prisma/prisma';
 import { Prisma } from '@prisma/client';
+import { MosaicNode } from 'react-mosaic-component';
 
-// Define the schema for the node
-const NodeSchema: z.ZodType<Prisma.InputJsonValue> = z.lazy(() =>
-  z.object({
-    direction: z.enum(['row', 'column']),
-    first: z.union([z.number(), NodeSchema]),
-    second: z.union([z.number(), NodeSchema]),
-    splitPercentage: z.number().optional(),
-  })
+const MosaicNodeSchema: z.ZodSchema<MosaicNode<number>> = z.lazy(() =>
+  z.union([
+    z.number(),
+    z.object({
+      direction: z.enum(['row', 'column']),
+      first: MosaicNodeSchema,
+      second: MosaicNodeSchema,
+      splitPercentage: z.number().optional(),
+    }),
+  ])
 );
 
-// Define the schema for the entire layout
-export const LayoutSchema: z.ZodType<Prisma.InputJsonValue> = z.object({
-  currentNode: NodeSchema,
-  currentTheme: z.string(),
-});
+// Define the schema for the node
+export const NodeSchema: z.ZodType<Prisma.InputJsonValue> = z.lazy(() =>
+  z.union([
+    z.number(),
+    z.object({
+      direction: z.enum(['row', 'column']),
+      first: NodeSchema,
+      second: NodeSchema,
+      splitPercentage: z.number().optional(),
+    }),
+  ])
+);
 
 // NOTE* Photo album has to be created beforehand to edit existing layout
 export const editPhotoAlbumLayout = protectedProcedure
@@ -25,7 +35,7 @@ export const editPhotoAlbumLayout = protectedProcedure
     z.object({
       clerkId: z.string(),
       photoAlbumId: z.string(),
-      layout: LayoutSchema,
+      layout: MosaicNodeSchema,
     })
   )
   .mutation(async ({ input }) => {
@@ -46,7 +56,7 @@ export const editPhotoAlbumLayout = protectedProcedure
           id: input.photoAlbumId,
         },
         data: {
-          layout: input.layout,
+          layout: input.layout as Prisma.InputJsonValue,
         },
       });
     } else {

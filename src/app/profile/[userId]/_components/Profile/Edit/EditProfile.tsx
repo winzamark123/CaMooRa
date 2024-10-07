@@ -44,7 +44,7 @@ export default function EditProfile({
   // Calling TRPC update procedures
   const updateProfile = trpc.profile.updateProfile.useMutation({
     onSuccess: () => {
-      console.error('Profile fields updated successfully');
+      console.log('Profile fields updated successfully');
       refetchProfile();
       setIsProfileUpdateSuccessful(true);
       manageTimeout();
