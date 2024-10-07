@@ -2,19 +2,7 @@ import { protectedProcedure } from '@/lib/trpc/trpc';
 import { z } from 'zod';
 import prisma from '@prisma/prisma';
 import { Prisma } from '@prisma/client';
-import { MosaicNode } from 'react-mosaic-component';
-
-export const MosaicNodeSchema: z.ZodSchema<MosaicNode<number>> = z.lazy(() =>
-  z.union([
-    z.number(),
-    z.object({
-      direction: z.enum(['row', 'column']),
-      first: MosaicNodeSchema,
-      second: MosaicNodeSchema,
-      splitPercentage: z.number().optional(),
-    }),
-  ])
-);
+import { MosaicNodeSchema } from '@/utils/schemas/MosaicNodeSchema';
 
 // Define the schema for the node
 export const NodeSchema: z.ZodType<Prisma.InputJsonValue> = z.lazy(() =>

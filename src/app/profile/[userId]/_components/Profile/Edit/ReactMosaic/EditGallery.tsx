@@ -7,7 +7,7 @@ import { trpc } from '@/lib/trpc/client';
 interface EditGalleryProps {
   clerkId: string;
   photoAlbumId: string;
-  initialLayout: MosaicNode<number>;
+  initialLayout: MosaicNode<number> | null;
 }
 export default function EditGallery({
   clerkId,

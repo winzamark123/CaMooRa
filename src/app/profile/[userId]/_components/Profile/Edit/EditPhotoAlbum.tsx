@@ -3,7 +3,8 @@ import { trpc } from '@/lib/trpc/client';
 import Image from 'next/image';
 import CreatePostForm from '../UploadImage/CreatePostForm';
 import EditGallery from './ReactMosaic/EditGallery';
-import { MosaicNodeSchema } from '@/server/routers/PhotoAlbum/layout/mutation';
+import { MosaicNodeSchema } from '@/utils/schemas/MosaicNodeSchema';
+import { MosaicNode } from 'react-mosaic-component';
 
 export default function EditPhotoAlbum({
   albumId,
@@ -28,7 +29,14 @@ export default function EditPhotoAlbum({
     photoAlbumId: albumId,
   });
 
-  const layoutDataParse = MosaicNodeSchema.parse(layoutData);
+  let initialLayout: MosaicNode<number> | null = null;
+  try {
+    initialLayout = MosaicNodeSchema.parse(layoutData);
+  } catch (e) {
+    console.error('Error parsing layout:', e);
+    // Handle the error: set initialLayout to null or a default layout
+    initialLayout = null;
+  }
 
   const deleteImage = trpc.images.deleteImage.useMutation();
 
@@ -56,7 +64,7 @@ export default function EditPhotoAlbum({
         <EditGallery
           clerkId={clerkId}
           photoAlbumId={albumId}
-          initialLayout={layoutDataParse}
+          initialLayout={initialLayout}
         />
       </div>
       <div className="flex flex-col gap-4">
