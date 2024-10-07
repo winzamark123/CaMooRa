@@ -1,5 +1,6 @@
 import { Mosaic, MosaicNode, getLeaves } from 'react-mosaic-component';
 import { useState } from 'react';
+import MosaicWindowComponent from './MosaicWindowComponent';
 import 'react-mosaic-component/react-mosaic-component.css';
 
 export default function EditGallery() {
@@ -24,7 +25,6 @@ export default function EditGallery() {
   const [currentNode, setCurrentNode] = useState<MosaicNode<ViewId> | null>(
     INITIAL_LAYOUT
   );
-  const [currentTheme, setCurrentTheme] = useState<string>('light');
 
   const onChange = (newNode: MosaicNode<ViewId> | null) => {
     setCurrentNode(newNode);
@@ -39,7 +39,7 @@ export default function EditGallery() {
   const totalWindowCount = getLeaves(currentNode).length;
 
   return (
-    <div className={`edit-gallery ${currentTheme}`}>
+    <div className="h-full w-full border border-red-300">
       <Mosaic<ViewId>
         renderTile={(id, path) => (
           <MosaicWindowComponent
@@ -52,7 +52,7 @@ export default function EditGallery() {
         value={currentNode}
         onChange={onChange}
         onRelease={onRelease}
-        className={`mosaic-container ${currentTheme}`}
+        className="h-64 w-full border border-black"
       />
     </div>
   );
