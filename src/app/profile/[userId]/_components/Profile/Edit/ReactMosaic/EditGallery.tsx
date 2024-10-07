@@ -1,30 +1,37 @@
-import { Mosaic, MosaicNode, getLeaves } from 'react-mosaic-component';
-import { useState } from 'react';
+import { Mosaic, MosaicNode } from 'react-mosaic-component';
+import { useState, useRef } from 'react';
 import MosaicWindowComponent from './MosaicWindowComponent';
 import 'react-mosaic-component/react-mosaic-component.css';
 
 export default function EditGallery() {
-  type ViewId = 'a' | 'b' | 'c' | 'new';
+  type ViewId = number;
 
   const TITLE_MAP: Record<ViewId, string> = {
-    a: 'Left Window',
-    b: 'Top Right Window',
-    c: 'Bottom Right Window',
-    new: 'New Window',
+    1: 'Left Window',
+    2: 'Top Right Window',
+    3: 'Bottom Right Window',
   };
 
   const INITIAL_LAYOUT: MosaicNode<ViewId> = {
     direction: 'row',
-    first: 'a',
+    first: 1,
     second: {
       direction: 'column',
-      first: 'b',
-      second: 'c',
+      first: 2,
+      second: 3,
     },
   };
   const [currentNode, setCurrentNode] = useState<MosaicNode<ViewId> | null>(
     INITIAL_LAYOUT
   );
+
+  const nextIdRef = useRef(4); // Starting from 4
+
+  const incrementNextId = () => {
+    const newId = nextIdRef.current++;
+    TITLE_MAP[newId] = `Window ${newId}`;
+    return newId;
+  };
 
   const onChange = (newNode: MosaicNode<ViewId> | null) => {
     setCurrentNode(newNode);
@@ -36,8 +43,6 @@ export default function EditGallery() {
     // Save the layout to localStorage or send to an API
   };
 
-  const totalWindowCount = getLeaves(currentNode).length;
-
   return (
     <div className="h-full w-full border border-red-300">
       <Mosaic<ViewId>
@@ -46,7 +51,7 @@ export default function EditGallery() {
             id={id}
             path={path}
             title={TITLE_MAP[id]}
-            totalWindowCount={totalWindowCount}
+            incrementNextId={incrementNextId}
           />
         )}
         value={currentNode}

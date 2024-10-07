@@ -3,36 +3,33 @@ import CustomSplitButton from './CustomButtons/SplitButton';
 import CustomRemoveButton from './CustomButtons/RemoveButton';
 
 interface MosaicWindowComponentProps {
-  id: string;
+  id: number;
   path: MosaicBranch[];
   title: string;
-  totalWindowCount: number;
+  incrementNextId: () => number;
 }
 
 export default function MosaicWindowComponent({
   path,
   title,
-  totalWindowCount,
+  incrementNextId,
 }: MosaicWindowComponentProps) {
   const createNode = () => {
     // Generate a unique ID for the new window
-    const newId = `window_${totalWindowCount + 1}`;
+    const newId = incrementNextId();
     // Optionally update your title map or state
     return newId;
   };
 
   const renderToolbar = () => (
-    <div className="flex w-full gap-4">
-      {/* Include default controls */}
-      <div className="flex w-full gap-2 border border-blue-200">
-        <CustomSplitButton createNode={createNode} />
-        <CustomRemoveButton />
-      </div>
+    <div className="flex w-full justify-between gap-2 border border-blue-200">
+      <CustomSplitButton createNode={createNode} />
+      <CustomRemoveButton />
     </div>
   );
 
   return (
-    <MosaicWindow<string>
+    <MosaicWindow<number>
       path={path}
       title={title}
       createNode={createNode}
