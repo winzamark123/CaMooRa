@@ -12,6 +12,10 @@ export const MosaicNodeSchema: z.ZodSchema<MosaicNode<number>> = z.lazy(() =>
       first: z.lazy(() => MosaicNodeSchema),
       second: z.lazy(() => MosaicNodeSchema),
       splitPercentage: z.number().optional(),
+      // direction: z.enum(['row', 'column']),
+      // first: z.any(), // Use z.any() to prevent deep type inference
+      // second: z.any(),
+      // splitPercentage: z.number().optional(),
     }),
   ])
 );

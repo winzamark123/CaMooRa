@@ -224,7 +224,6 @@ export default function EditProfile({
         profilePicId={profile?.profilePic.id}
       />
       <EditLinkAccountSection form={form} onSave={onSave} />
-      <EditProjectSection clerkId={clerkId} />
       <div className="mt-4 flex flex-row-reverse">
         <Button
           className="ml-5 w-20 border border-gray-400 bg-profile_button_bg text-black hover:bg-sky-950 hover:text-white"
@@ -241,6 +240,8 @@ export default function EditProfile({
           Cancel
         </Button>
       </div>
+
+      <EditProjectSection clerkId={clerkId} />
     </div>
   );
 }

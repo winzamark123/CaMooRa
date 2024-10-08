@@ -2,9 +2,10 @@ import React from 'react';
 import { trpc } from '@/lib/trpc/client';
 import Image from 'next/image';
 import CreatePostForm from '../UploadImage/CreatePostForm';
-import EditGallery from './ReactMosaic/EditGallery';
+import EditGallery from './EditGallery/EditGallery';
 import { MosaicNodeSchema } from '@/utils/schemas/MosaicNodeSchema';
 import { MosaicNode } from 'react-mosaic-component';
+import { z } from 'zod';
 
 export default function EditPhotoAlbum({
   albumId,
@@ -20,6 +21,9 @@ export default function EditPhotoAlbum({
     refetch: refetchImagesByAlbum,
   } = trpc.images.getImagesByAlbum.useQuery({ clerkId, albumId });
 
+  if (isLoading) return <div>Loading...</div>;
+  if (isError) return <div>Error </div>;
+
   const {
     data: layoutData,
     isLoading: layoutLoading,
@@ -29,12 +33,20 @@ export default function EditPhotoAlbum({
     photoAlbumId: albumId,
   });
 
+  if (layoutLoading) return <div>Loading Layout...</div>;
+  if (layoutError) return <div>Error in the Layout</div>;
+  if (!layoutData) return <div>No layout data available</div>;
+
   let initialLayout: MosaicNode<number> | null = null;
   try {
-    initialLayout = MosaicNodeSchema.parse(layoutData);
+    initialLayout = MosaicNodeSchema.parse(layoutData.layout);
+    console.log('THIS IS INIT LAYOUT', initialLayout);
   } catch (e) {
-    console.error('Error parsing layout:', e);
-    // Handle the error: set initialLayout to null or a default layout
+    if (e instanceof z.ZodError) {
+      console.error('Error parsing layout:', e.errors);
+    } else {
+      console.error('Unknown error parsing layout:', e);
+    }
     initialLayout = null;
   }
 
@@ -49,11 +61,6 @@ export default function EditPhotoAlbum({
       console.error('Failed to refetch after delete');
     }
   };
-
-  if (layoutLoading) return <div>Loading Layout...</div>;
-  if (layoutError) return <div>Error in the Layout</div>;
-  if (isLoading) return <div>Loading...</div>;
-  if (isError) return <div>Error </div>;
 
   return (
     <main className="flex flex-col gap-4">
