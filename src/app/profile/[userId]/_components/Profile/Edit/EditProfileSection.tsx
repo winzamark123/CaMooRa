@@ -8,11 +8,11 @@ import {
   FormItem,
   FormLabel,
   FormMessage,
-} from '../../../../../../components/ui/form';
-import { Input } from '../../../../../../components/ui/input';
-import { Switch } from '../../../../../../components/ui/switch';
+} from '@/components/ui/form';
+import { Input } from '@/components/ui/input';
+import { Switch } from '@/components/ui/switch';
 import { UseFormReturn } from 'react-hook-form';
-import { Textarea } from '../../../../../../components/ui/textarea';
+import { Textarea } from '@/components/ui/textarea';
 import UpdateProfilePicForm from '../UpdateProfilePicForm';
 import { Button } from '@/components/ui/button';
 import Image from 'next/image';
@@ -78,7 +78,7 @@ export default function EditProfileSection({
           <div className="mt-2 flex flex-col gap-2">
             <span className="text-xs">Upload your Profile Picture</span>
             <Button
-              className="w-full border  bg-sky-950 text-xs text-white hover:border-gray-400 hover:bg-profile_button_bg hover:text-black sm:w-20"
+              className="w-full border  border-gray-400 bg-profile_button_bg text-xs text-black hover:bg-primary_blue hover:text-white focus:bg-primary_blue  focus:text-white sm:w-20"
               onClick={handleOpenModal}
               aria-label="Upload Profile Picture"
             >

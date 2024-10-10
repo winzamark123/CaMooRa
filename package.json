@@ -33,6 +33,7 @@
     "filepond-plugin-file-validate-type": "^1.2.9",
     "filepond-plugin-image-exif-orientation": "^1.0.11",
     "filepond-plugin-image-preview": "^4.6.12",
+    "focus-trap-react": "^10.3.0",
     "framer-motion": "^11.2.12",
     "ldrs": "^1.0.2",
     "lucide-react": "^0.379.0",
