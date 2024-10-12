@@ -3,6 +3,7 @@ import { trpc } from '@/lib/trpc/client';
 import Image from 'next/image';
 import { ImageProp } from '@/server/routers/Images/index';
 import CreatePostForm from '../UploadImage/CreatePostForm';
+import MasonryGrid from '@/components/Masonry/MasonryGrid';
 
 export default function EditPhotoAlbum({
   photoAlbumId,
@@ -27,6 +28,7 @@ export default function EditPhotoAlbum({
         <CreatePostForm photoAlbumId={photoAlbumId} />
       </div>
       <div className="flex flex-col gap-4">
+        <MasonryGrid />
         <div className="grid grid-cols-1 gap-10 md:grid-cols-2 lg:grid-cols-4">
           {images.map((image) => (
             <div key={image.id} className="relative flex h-72 gap-4 p-4">
