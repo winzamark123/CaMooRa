@@ -21,8 +21,7 @@ export default function EditPhotoAlbum({
     refetch: refetchImagesByAlbum,
   } = trpc.images.getImagesByAlbum.useQuery({ clerkId, albumId });
 
-  if (isLoading) return <div>Loading...</div>;
-  if (isError) return <div>Error </div>;
+  const deleteImage = trpc.images.deleteImage.useMutation();
 
   const {
     data: layoutData,
@@ -32,6 +31,9 @@ export default function EditPhotoAlbum({
     clerkId: clerkId,
     photoAlbumId: albumId,
   });
+
+  if (isLoading) return <div>Loading...</div>;
+  if (isError) return <div>Error </div>;
 
   if (layoutLoading) return <div>Loading Layout...</div>;
   if (layoutError) return <div>Error in the Layout</div>;
@@ -49,8 +51,6 @@ export default function EditPhotoAlbum({
     }
     initialLayout = null;
   }
-
-  const deleteImage = trpc.images.deleteImage.useMutation();
 
   const handleDeleteImage = async (imageId: string) => {
     try {
