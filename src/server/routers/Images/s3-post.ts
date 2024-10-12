@@ -12,8 +12,6 @@ interface GetSignedURLProps {
   size: number;
   checksum: string;
   clerkId: string;
-  imgWidth?: number;
-  imgHeight?: number;
   photoAlbumId?: string;
 }
 
@@ -35,8 +33,6 @@ export async function getPresignedURL({
   size,
   checksum,
   clerkId,
-  imgWidth,
-  imgHeight,
   photoAlbumId,
 }: GetSignedURLProps) {
   //check file types
@@ -73,8 +69,6 @@ export async function getPresignedURL({
       clerkId: clerkId,
       url: signedURL.split('?')[0],
       key: `${clerkId}/${generatedFileName}`,
-      imgWidth: imgWidth,
-      imgHeight: imgHeight,
     };
 
     // If photoAlbumID is provided, add it to the imageData object (Profile Pic doesn't have photoAlbumId)

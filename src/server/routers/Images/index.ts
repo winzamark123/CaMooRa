@@ -5,8 +5,6 @@ import * as mutations from './mutations';
 export interface ImageProp {
   id: string;
   url: string;
-  imgWidth: number | null;
-  imgHeight: number | null;
 }
 
 export const images_router = router({

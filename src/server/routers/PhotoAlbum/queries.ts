@@ -11,7 +11,7 @@ export const getAllPhotoAlbums = publicProcedure
         id: true,
         photoAlbumName: true,
         Images: {
-          select: { id: true, url: true, imgWidth: true, imgHeight: true },
+          select: { id: true, url: true },
         },
       },
     });

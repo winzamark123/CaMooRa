@@ -96,6 +96,4 @@ model Images {
   url       String
   createdAt DateTime  @default(now())
   Profile   Profile[]
-  imgWidth  Int?
-  imgHeight Int?
 }

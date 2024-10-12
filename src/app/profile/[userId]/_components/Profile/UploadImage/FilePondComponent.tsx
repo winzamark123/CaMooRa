@@ -54,8 +54,6 @@ const FilePondComponent: React.FC<FilePondComponentProps> = ({
 
     img.onload = async () => {
       try {
-        const imgWidth = img.width;
-        const imgHeight = img.height;
         URL.revokeObjectURL(objectUrl);
 
         // Compute the checksum
@@ -66,8 +64,6 @@ const FilePondComponent: React.FC<FilePondComponentProps> = ({
           file_type: actualFile.type,
           size: actualFile.size,
           checksum,
-          imgHeight,
-          imgWidth,
           photoAlbumId,
         });
 
