@@ -2,7 +2,8 @@
 'use client'; // Ensure this component is client-side rendered
 
 import React, { useEffect, useRef } from 'react';
-import { Isotope } from './types';
+import Isotope from 'isotope-layout';
+import IsoTopeGrid from 'react-isotope';
 
 interface GridItem {
   id: number;
