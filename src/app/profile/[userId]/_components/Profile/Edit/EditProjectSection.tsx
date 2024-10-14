@@ -236,6 +236,7 @@ export default function EditProjectSection({
         <EditPhotoAlbum
           images={photoAlbums[selectedPhotoAlbum.photoAlbumIndex].Images || []}
           photoAlbumId={selectedPhotoAlbum.photoAlbumId}
+          clerkId={clerkId}
         />
       )}
       {!selectedPhotoAlbum && <div>No Photo Albums Available</div>}

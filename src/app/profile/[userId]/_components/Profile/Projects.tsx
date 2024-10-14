@@ -2,6 +2,7 @@ import React from 'react';
 import { useEffect } from 'react';
 import { trpc } from '@/lib/trpc/client';
 import { useState } from 'react';
+import MasonryGrid from '@/components/Masonry/MasonryGrid';
 import PhotoAlbum from './PhotoAlbum';
 
 export interface SelectedPhotoAlbumProps {
@@ -55,13 +56,19 @@ export default function Projects({ clerkId }: { clerkId: string }) {
           ))}
       </div>
       {selectedPhotoAlbum && (
-        <PhotoAlbum
-          images={
-            (photoAlbums &&
-              photoAlbums[selectedPhotoAlbum.photoAlbumIndex].Images) ||
-            []
-          }
-        />
+        <>
+          <PhotoAlbum
+            images={
+              (photoAlbums &&
+                photoAlbums[selectedPhotoAlbum.photoAlbumIndex].Images) ||
+              []
+            }
+          />
+          <MasonryGrid
+            clerkId={clerkId}
+            photoAlbumId={selectedPhotoAlbum?.photoAlbumId}
+          />
+        </>
       )}
       {!selectedPhotoAlbum && <div>No Photo Albums Available</div>}
     </main>

@@ -21,3 +21,14 @@ export const getAllImages = publicProcedure
     }));
     return imageDetails;
   });
+export const getImagesByAlbum = publicProcedure
+  .input(z.object({ clerkId: z.string(), photoAlbumId: z.string() }))
+  .query(async ({ input }) => {
+    const images = await prisma.images.findMany({
+      where: {
+        clerkId: input.clerkId,
+        PhotoAlbumId: input.photoAlbumId,
+      },
+    });
+    return images;
+  });

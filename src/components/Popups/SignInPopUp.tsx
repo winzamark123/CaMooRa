@@ -5,7 +5,7 @@ import { useEffect } from 'react';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faGoogle } from '@fortawesome/free-brands-svg-icons';
 import { motion } from 'framer-motion';
-import PopupSVG from '@/public/fo-moo-pop-up.svg';
+import PopupSVG from '@public/fo-moo-pop-up.svg';
 import FocusTrap from 'focus-trap-react';
 
 export default function SignInPopUp({ onToggle }: { onToggle: () => void }) {

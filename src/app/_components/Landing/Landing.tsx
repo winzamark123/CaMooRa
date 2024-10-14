@@ -1,5 +1,5 @@
 import Image from 'next/image';
-import fomooLogo from '@/public/fo-moo-logo.svg';
+import fomooLogo from '@public/fo-moo-logo.svg';
 import { SignedOut, SignedIn } from '@clerk/nextjs';
 
 export default function Landing() {
