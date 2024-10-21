@@ -20,7 +20,6 @@ export default function MasonryWrapper({ images }: MasonryWrapperProps) {
             key={image.id}
           />
         ))}
-        {/* Children */}
       </Masonry>
     </ResponsiveMasonry>
   );
