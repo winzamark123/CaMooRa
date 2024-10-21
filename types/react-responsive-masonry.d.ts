@@ -9,6 +9,9 @@ declare module 'react-responsive-masonry' {
   export class ResponsiveMasonry extends React.Component<ResponsiveMasonryProps> {}
 
   interface MasonryProps {
+    columnCounts?: number;
+    gutter?: string;
+    containerTag?: string;
     children: React.ReactNode;
   }
 
