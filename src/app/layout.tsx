@@ -8,8 +8,10 @@ import Provider from '@/lib/trpc/Provider';
 
 export const metadata: Metadata = {
   title: 'CaMOOra',
-  description:
-    'Student Photography Platform for Graduation Photos Made by Students',
+  description: 'Student Photoshoot Marketplace',
+  icons: {
+    icon: '/favicon/favicon.ico',
+  },
 };
 
 export default function RootLayout({
@@ -20,6 +22,23 @@ export default function RootLayout({
   return (
     <ClerkProvider>
       <html lang="en">
+        <head>
+          <link
+            rel="icon"
+            type="image/png"
+            href="/favicon/favicon-48x48.png"
+            sizes="48x48"
+          />
+          <link rel="icon" type="image/svg+xml" href="/favicon.favicon.svg" />
+          <link rel="shortcut icon" href="/favicon/favicon.ico" />
+          <link
+            rel="apple-touch-icon"
+            sizes="180x180"
+            href="/favicon/apple-touch-icon.png"
+          />
+          <meta name="apple-mobile-web-app-title" content="caMOOra" />
+          <link rel="manifest" href="/favicon/site.webmanifest" />
+        </head>
         <body className="flex min-h-screen flex-col ">
           <Provider>
             <ThemeProvider

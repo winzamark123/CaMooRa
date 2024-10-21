@@ -18,8 +18,6 @@ export const getAllImages = publicProcedure
     const imageDetails = images.map((image) => ({
       url: image.url,
       id: image.id,
-      imageWidth: image.imgWidth,
-      imageHeight: image.imgHeight,
     }));
     return imageDetails;
   });

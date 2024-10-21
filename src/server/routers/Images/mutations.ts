@@ -10,8 +10,6 @@ export const updateProfilePic = protectedProcedure
       file_type: z.string(),
       size: z.number(),
       checksum: z.string(),
-      imgWidth: z.number().optional(),
-      imgHeight: z.number().optional(),
     })
   )
   .mutation(async ({ input, ctx }) => {
@@ -20,8 +18,6 @@ export const updateProfilePic = protectedProcedure
       size: input.size,
       checksum: input.checksum,
       clerkId: ctx.user.id,
-      imgHeight: input.imgHeight,
-      imgWidth: input.imgWidth,
     });
 
     if (error) {
@@ -43,8 +39,6 @@ export const uploadImage = protectedProcedure
       file_type: z.string(),
       size: z.number(),
       checksum: z.string(),
-      imgWidth: z.number(),
-      imgHeight: z.number(),
       photoAlbumId: z.string(),
     })
   )
@@ -54,8 +48,6 @@ export const uploadImage = protectedProcedure
       size: input.size,
       checksum: input.checksum,
       clerkId: ctx.user.id,
-      imgHeight: input.imgHeight,
-      imgWidth: input.imgWidth,
       photoAlbumId: input.photoAlbumId,
     });
 
