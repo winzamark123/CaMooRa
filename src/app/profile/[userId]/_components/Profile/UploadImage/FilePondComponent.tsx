@@ -4,21 +4,55 @@ import React from 'react';
 import { computeSHA256 } from '@/server/routers/Images/utils';
 import { trpc } from '@/lib/trpc/client';
 
+// Import the plugin styles
+import 'filepond-plugin-image-edit/dist/filepond-plugin-image-edit.css';
+// pintura
+import '@pqina/pintura/pintura.css';
+
 // Import FilePond and plugins
+import FilePondPluginImageEditor from '@pqina/filepond-plugin-image-editor';
+import FilePondPluginFilePoster from 'filepond-plugin-file-poster';
 import { FilePond, registerPlugin } from 'react-filepond';
 
 // Import the plugins
-import FilePondPluginImageExifOrientation from 'filepond-plugin-image-exif-orientation';
-import FilePondPluginImagePreview from 'filepond-plugin-image-preview';
+// import FilePondPluginImagePreview from 'filepond-plugin-image-preview';
 import FilePondPluginFileValidateType from 'filepond-plugin-file-validate-type';
 import './filepond_custom.css';
+import {
+  // editor
+  openEditor,
+  createDefaultImageReader,
+  createDefaultImageWriter,
+  processImage,
+  setPlugins,
+  plugin_crop,
+  plugin_annotate,
+  plugin_finetune,
+
+  // plugins
+  // locale_en_gb,
+  // plugin_crop_locale_en_gb,
+  // plugin_finetune_locale_en_gb,
+  // plugin_finetune_defaults,
+  // plugin_filter_locale_en_gb,
+  // plugin_filter_defaults,
+  // plugin_annotate_locale_en_gb,
+  // markup_editor_defaults,
+  // markup_editor_locale_en_gb,
+  // createDefaultShapePreprocessor,
+  legacyDataToImageState,
+  getEditorDefaults,
+} from '@pqina/pintura';
 
 // Register the plugins
 registerPlugin(
-  FilePondPluginImageExifOrientation,
-  FilePondPluginImagePreview,
-  FilePondPluginFileValidateType
+  // FilePondPluginImagePreview,
+  FilePondPluginFileValidateType,
+  FilePondPluginImageEditor,
+  FilePondPluginFilePoster
 );
+
+setPlugins(plugin_crop, plugin_finetune, plugin_annotate);
 
 interface FilePondComponentProps {
   photoAlbumId: string;
@@ -128,7 +162,6 @@ const FilePondComponent: React.FC<FilePondComponentProps> = ({
     <div className="flex h-full w-full items-center justify-center rounded-xl bg-stone-100 p-4">
       <div className="h-full w-1/2 overflow-auto">
         <FilePond
-          imagePreviewHeight={150}
           acceptedFileTypes={['image/*']}
           instantUpload={false}
           allowMultiple={allowMultiple}
@@ -137,6 +170,49 @@ const FilePondComponent: React.FC<FilePondComponentProps> = ({
           }}
           name="files"
           labelIdle='Drag & Drop your files or <span class="filepond--label-action">Browse</span>'
+          imageEditor={{
+            legacyDataToImageState,
+            createEditor: openEditor,
+
+            // Required, used for reading the image data
+            imageReader: [
+              createDefaultImageReader,
+              {
+                /* optional image reader options here */
+              },
+            ],
+
+            // optionally. can leave out when not generating a preview thumbnail and/or output image
+            imageWriter: [
+              createDefaultImageWriter,
+              {
+                /* optional image writer options here */
+              },
+            ],
+
+            // used to generate poster images, runs an editor in the background
+            imageProcessor: processImage,
+
+            // editor options
+            editorOptions: {
+              // // The markup editor default options, tools, shape style controls
+              // ...markup_editor_defaults,
+              // // The finetune util controls
+              // ...plugin_finetune_defaults,
+              // // This handles complex shapes like arrows / frames
+              // shapePreprocessor: createDefaultShapePreprocessor(),
+              // imageCropAspectRatio: { 16: 9 },
+              // // The icons and labels to use in the user interface (required)
+              // locale: {
+              //   ...locale_en_gb,
+              //   ...plugin_crop_locale_en_gb,
+              //   ...plugin_finetune_locale_en_gb,
+              //   ...plugin_annotate_locale_en_gb,
+              //   ...markup_editor_locale_en_gb,
+              // },
+              ...getEditorDefaults(),
+            },
+          }}
         />
       </div>
     </div>
