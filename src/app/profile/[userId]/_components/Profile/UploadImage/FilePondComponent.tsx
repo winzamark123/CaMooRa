@@ -12,7 +12,7 @@ import '@pqina/pintura/pintura.css';
 import './filepond_custom.css';
 
 // Import Pintura components and utilities
-import { PinturaEditorOverlay } from '@pqina/react-pintura';
+import { PinturaEditor } from '@pqina/react-pintura';
 import {
   locale_en_gb,
   createDefaultImageReader,
@@ -25,8 +25,7 @@ import {
   plugin_decorate,
   plugin_resize,
   plugin_crop_locale_en_gb,
-  plugin_filter_locale_en_gb,
-  plugin_finetune_locale_en_gb,
+  CropPresetOption,
 } from '@pqina/pintura';
 
 // Register FilePond plugins
@@ -88,21 +87,27 @@ export default function FilePondComponent({
     }, 100);
   };
 
+  const customCropRatioOptions: CropPresetOption[] = [
+    [1, 'Square'],
+    [4 / 3, 'Landscape'],
+    [3 / 4, 'Portrait'],
+  ];
+
   return (
     <div className="flex h-full w-full items-center justify-center rounded-xl bg-stone-100 p-4">
       {isEditorVisible && currentFile && (
         <div className="fixed inset-0 z-50 flex items-center justify-center bg-black bg-opacity-50">
           <div className="h-[80vh] w-[80vw]">
-            <PinturaEditorOverlay
+            <PinturaEditor
               src={URL.createObjectURL(currentFile.file)}
+              cropSelectPresetOptions={customCropRatioOptions}
               imageReader={createDefaultImageReader()}
               imageWriter={createDefaultImageWriter()}
               locale={{
                 ...locale_en_gb,
                 ...plugin_crop_locale_en_gb,
-                ...plugin_filter_locale_en_gb,
-                ...plugin_finetune_locale_en_gb,
               }}
+              cropImageSelectionCornerStyle="hook"
               onProcess={handleEditorProcess}
               onClose={() => setIsEditorVisible(false)}
             />
