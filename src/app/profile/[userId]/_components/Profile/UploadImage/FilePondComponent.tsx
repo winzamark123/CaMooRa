@@ -14,12 +14,11 @@ import './filepond_custom.css';
 
 import {
   // Image editor
-  appendEditor,
-  overlayEditor,
   openEditor,
   createDefaultImageReader,
   createDefaultImageWriter,
   legacyDataToImageState,
+  processImage,
 
   // The plugins we want to use
   plugin_crop,
@@ -34,22 +33,13 @@ import {
 
   // The core ui, markup editor, and plugin locale objects
   locale_en_gb,
-  markup_editor_locale_en_gb,
   plugin_crop_locale_en_gb,
   plugin_filter_locale_en_gb,
   plugin_finetune_locale_en_gb,
-  plugin_frame_locale_en_gb,
-  plugin_redact_locale_en_gb,
-  plugin_resize_locale_en_gb,
-  plugin_decorate_locale_en_gb,
-  plugin_annotate_locale_en_gb,
-  plugin_sticker_locale_en_gb,
 
   // Import the default properties
-  markup_editor_defaults,
   plugin_filter_defaults,
   plugin_finetune_defaults,
-  plugin_frame_defaults,
 } from '@pqina/pintura';
 
 interface FilePondComponentProps {
@@ -74,31 +64,46 @@ setPlugins(
   plugin_resize
 );
 
+const customCropAspectRatioOptions = [
+  {
+    label: '16:9',
+    value: 16 / 9,
+  },
+  {
+    label: '9:16',
+    value: 9 / 16,
+  },
+  {
+    label: 'Square',
+    value: 1,
+  },
+];
+
+const customEditorOptions = {
+  cropAspectRatioOptions: customCropAspectRatioOptions,
+  utils: ['crop', 'finetune', 'filter'],
+  ...plugin_finetune_defaults,
+  ...plugin_filter_defaults,
+  locale: {
+    ...locale_en_gb,
+    ...plugin_crop_locale_en_gb,
+    ...plugin_finetune_locale_en_gb,
+    ...plugin_filter_locale_en_gb,
+  },
+};
+
 const FilePondComponent: React.FC<FilePondComponentProps> = ({
   photoAlbumId,
   onUploadSuccess,
   allowMultiple = false,
 }) => {
   const processFile = createProcessFile(photoAlbumId, onUploadSuccess);
-  const customCropAspectRatioOptions = [
-    {
-      label: '16:9',
-      value: 16 / 9,
-    },
-    {
-      label: '9:16',
-      value: 9 / 16,
-    },
-    {
-      label: 'Square',
-      value: 1,
-    },
-  ];
 
   return (
     <div className="flex h-full w-full items-center justify-center rounded-xl bg-stone-100 p-4">
       <div className="h-full w-1/2 overflow-auto">
         <FilePond
+          filePosterMaxHeight={256}
           acceptedFileTypes={['image/*']}
           instantUpload={false}
           allowMultiple={allowMultiple}
@@ -108,21 +113,12 @@ const FilePondComponent: React.FC<FilePondComponentProps> = ({
           name="files"
           labelIdle='Drag & Drop your files or <span class="filepond--label-action">Browse</span>'
           imageEditor={{
-            legacyDataToImageState,
-            overlayEditor,
+            legacyDataToImageState: legacyDataToImageState,
             createEditor: openEditor,
             imageReader: [createDefaultImageReader, {}],
             imageWriter: [createDefaultImageWriter, {}],
-            editorOptions: {
-              // ...getEditorDefaults(),
-              cropAspectRatio: undefined,
-              cropAspectRatioOptions: customCropAspectRatioOptions,
-              locale: {
-                cropLabelButtonRecrop: 'Crop',
-                cropLabelButtonCrop: 'Crop',
-              },
-              tools: ['crop'],
-            },
+            imageProcessor: processImage,
+            editorOptions: customEditorOptions,
           }}
         />
       </div>

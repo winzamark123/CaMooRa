@@ -13,6 +13,7 @@ import Image from 'next/image';
 export default function NavBar() {
   const [showSignInPopUp, setShowSignInPopUp] = useState(false);
   const [isOpen, setIsOpen] = useState(false);
+  const { user } = useUser();
 
   const toggleMenu = () => {
     setIsOpen(!isOpen);
@@ -21,7 +22,6 @@ export default function NavBar() {
   const toggleSignInPopUp = () => {
     setShowSignInPopUp(!showSignInPopUp);
   };
-  const { user } = useUser();
 
   return (
     <main className="h-30 flex w-full justify-between p-8">
