@@ -7,12 +7,9 @@ import { PinturaEditorOverlay } from '@pqina/react-pintura';
 // pintura
 import '@pqina/pintura/pintura.module.css';
 import {
-  // editor
   locale_en_gb,
   createDefaultImageReader,
   createDefaultImageWriter,
-
-  // plugins
   setPlugins,
   plugin_crop,
   plugin_crop_locale_en_gb,
@@ -28,6 +25,30 @@ const editorDefaults = {
     ...locale_en_gb,
     ...plugin_crop_locale_en_gb,
   },
+  cropAspectRatioOptions: [
+    {
+      label: 'Square',
+      value: 1,
+    },
+    {
+      label: 'Portrait',
+      value: 3 / 4,
+    },
+    {
+      label: 'Landscape',
+      value: 4 / 3,
+    },
+  ],
+  cropImageSelectionCornerStyle: 'hook',
+  cropEnableButtonFlipVertical: false,
+  cropEnableButtonFlipHorizontal: false,
+  cropEnableButtonRotate: false,
+  cropEnableZoom: false,
+  cropEnableRotate: false,
+  cropEnableImageSelection: true,
+  cropEnableInfoIndicator: false,
+  cropEnableCenterIndicator: true,
+  cropEnableButtonToggleCropLimit: false,
 };
 
 interface EditorResult {
@@ -36,7 +57,6 @@ interface EditorResult {
 }
 
 export default function PinturaOverlay() {
-  // overlay
   const [visible, setVisible] = useState(false);
   const [result, setResult] = useState<EditorResult>({
     imagePreview: './image.jpeg',
@@ -66,9 +86,8 @@ export default function PinturaOverlay() {
           <PinturaEditorOverlay
             {...editorDefaults}
             src={'./image.jpeg'}
-            // className={`${pintura} ${pinturaTheme}`}
             imageState={result.imageState}
-            onLoad={(res: any) => console.log('load image', res)}
+            // onLoad={(res: any) => console.log('load image', res)}
             onProcess={({
               dest,
               imageState,
