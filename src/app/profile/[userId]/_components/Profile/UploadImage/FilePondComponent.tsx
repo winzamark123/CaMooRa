@@ -19,11 +19,6 @@ import {
   createDefaultImageWriter,
   setPlugins,
   plugin_crop,
-  plugin_filter,
-  plugin_finetune,
-  plugin_annotate,
-  plugin_decorate,
-  plugin_resize,
   plugin_crop_locale_en_gb,
   CropPresetOption,
 } from '@pqina/pintura';
@@ -36,14 +31,7 @@ registerPlugin(
 );
 
 // Set Pintura plugins
-setPlugins(
-  plugin_crop,
-  plugin_filter,
-  plugin_finetune,
-  plugin_annotate,
-  plugin_decorate,
-  plugin_resize
-);
+setPlugins(plugin_crop);
 
 // ... existing customCropAspectRatioOptions and customEditorOptions ...
 
@@ -100,13 +88,13 @@ export default function FilePondComponent({
           <div className="h-[80vh] w-[80vw]">
             <PinturaEditor
               src={URL.createObjectURL(currentFile.file)}
-              cropSelectPresetOptions={customCropRatioOptions}
               imageReader={createDefaultImageReader()}
               imageWriter={createDefaultImageWriter()}
               locale={{
                 ...locale_en_gb,
                 ...plugin_crop_locale_en_gb,
               }}
+              cropSelectPresetOptions={customCropRatioOptions}
               cropImageSelectionCornerStyle="hook"
               onProcess={handleEditorProcess}
               onClose={() => setIsEditorVisible(false)}
