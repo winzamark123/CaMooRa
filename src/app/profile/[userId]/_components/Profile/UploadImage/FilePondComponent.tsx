@@ -5,6 +5,7 @@ import { FilePond, registerPlugin } from 'react-filepond';
 import FilePondPluginImageEditor from '@pqina/filepond-plugin-image-editor';
 import FilePondPluginFilePoster from 'filepond-plugin-file-poster';
 import FilePondPluginFileValidateType from 'filepond-plugin-file-validate-type';
+import PinturaOverlay from './PinturaOverlay';
 import { createProcessFile } from './processFile';
 
 // Import the plugin styles
@@ -101,6 +102,7 @@ const FilePondComponent: React.FC<FilePondComponentProps> = ({
 
   return (
     <div className="flex h-full w-full items-center justify-center rounded-xl bg-stone-100 p-4">
+      <PinturaOverlay />
       <div className="h-full w-1/2 overflow-auto">
         <FilePond
           filePosterMaxHeight={256}
