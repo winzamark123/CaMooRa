@@ -15,7 +15,7 @@ export default function EditPhotoAlbum({
       <div className="h-half-screen">
         <CreatePostForm photoAlbumId={photoAlbumId} />
       </div>
-      <MasonryWrapper images={images} />
+      <MasonryWrapper images={images} isEditing={true} />
     </main>
   );
 }
