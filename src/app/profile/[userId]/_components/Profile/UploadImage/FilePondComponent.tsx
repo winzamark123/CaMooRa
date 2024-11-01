@@ -1,146 +1,123 @@
 'use client';
 
-import React from 'react';
-import { computeSHA256 } from '@/server/routers/Images/utils';
-import { trpc } from '@/lib/trpc/client';
-
-// Import FilePond and plugins
+import React, { useState } from 'react';
 import { FilePond, registerPlugin } from 'react-filepond';
-
-// Import the plugins
-import FilePondPluginImageExifOrientation from 'filepond-plugin-image-exif-orientation';
-import FilePondPluginImagePreview from 'filepond-plugin-image-preview';
+import FilePondPluginFilePoster from 'filepond-plugin-file-poster';
 import FilePondPluginFileValidateType from 'filepond-plugin-file-validate-type';
+import FilePondPluginImagePreview from 'filepond-plugin-image-preview';
+import { createProcessFile } from './processFile';
+
+// Import styles
+import '@pqina/pintura/pintura.css';
 import './filepond_custom.css';
 
-// Register the plugins
+// Import Pintura components and utilities
+import { PinturaEditor } from '@pqina/react-pintura';
+import {
+  locale_en_gb,
+  createDefaultImageReader,
+  createDefaultImageWriter,
+  setPlugins,
+  plugin_crop,
+  plugin_crop_locale_en_gb,
+  CropPresetOption,
+} from '@pqina/pintura';
+
+// Register FilePond plugins
 registerPlugin(
-  FilePondPluginImageExifOrientation,
-  FilePondPluginImagePreview,
-  FilePondPluginFileValidateType
+  FilePondPluginFileValidateType,
+  FilePondPluginFilePoster,
+  FilePondPluginImagePreview
 );
 
-interface FilePondComponentProps {
-  photoAlbumId: string;
-  onUploadSuccess?: (fileName: string) => void;
-  allowMultiple?: boolean;
-}
+// Set Pintura plugins
+setPlugins(plugin_crop);
 
-const FilePondComponent: React.FC<FilePondComponentProps> = ({
+// ... existing customCropAspectRatioOptions and customEditorOptions ...
+
+export default function FilePondComponent({
   photoAlbumId,
   onUploadSuccess,
   allowMultiple = false,
-}) => {
-  const signedURL = trpc.images.uploadImage.useMutation();
+}: {
+  photoAlbumId: string;
+  onUploadSuccess: (uploadedFiles: any) => void;
+  allowMultiple?: boolean;
+}): JSX.Element {
+  const [isEditorVisible, setIsEditorVisible] = useState(false);
+  const [currentFile, setCurrentFile] = useState<any>(null);
+  const [pond, setPond] = useState<any>(null);
+  const [isProcessedFile, setIsProcessedFile] = useState(false);
+  const processFile = createProcessFile(photoAlbumId, onUploadSuccess);
 
-  const processFile = (
-    fieldName: string,
-    file: Blob,
-    metadata: any,
-    load: (fileId: any) => void,
-    error: (message: string) => void,
-    progress: (isComputable: boolean, loaded: number, total: number) => void,
-    abort: () => void
-  ) => {
-    const request = new XMLHttpRequest();
-    let aborted = false;
-
-    const actualFile = file as File;
-
-    // Compute the checksum and get image dimensions
-    const objectUrl = URL.createObjectURL(actualFile);
-    const img = new Image();
-    img.src = objectUrl;
-
-    img.onload = async () => {
-      try {
-        URL.revokeObjectURL(objectUrl);
-
-        // Compute the checksum
-        const checksum = await computeSHA256(actualFile);
-
-        // Get signed URL
-        const signedURLResult = await signedURL.mutateAsync({
-          file_type: actualFile.type,
-          size: actualFile.size,
-          checksum,
-          photoAlbumId,
-        });
-
-        if (signedURLResult.error || !signedURLResult.success) {
-          error('Failed to get signed URL');
-          return;
-        }
-
-        const url = signedURLResult.success.signed_url;
-
-        // Upload the file to S3 using XMLHttpRequest
-        const xhr = new XMLHttpRequest();
-        xhr.open('PUT', url, true);
-        xhr.setRequestHeader('Content-Type', actualFile.type);
-
-        xhr.upload.onprogress = (e: ProgressEvent) => {
-          progress(e.lengthComputable, e.loaded, e.total);
-        };
-
-        xhr.onload = () => {
-          if (xhr.status === 200) {
-            load(actualFile.name); // Notify FilePond that the upload has completed
-            if (onUploadSuccess) {
-              onUploadSuccess(actualFile.name);
-            }
-          } else {
-            error('Upload failed');
-          }
-        };
-
-        xhr.onerror = () => {
-          error('Upload error');
-        };
-
-        xhr.onabort = () => {
-          abort();
-        };
-
-        xhr.send(actualFile);
-      } catch (err) {
-        if (!aborted) {
-          error('An error occurred');
-        }
-      }
-    };
-
-    img.onerror = () => {
-      if (!aborted) {
-        error('Failed to load image');
-      }
-    };
-
-    return {
-      abort: () => {
-        aborted = true;
-        request.abort();
-      },
-    };
+  const handleFileAdd = (error: any, file: any) => {
+    if (error || isProcessedFile) return;
+    setCurrentFile(file);
+    setIsEditorVisible(true);
   };
+
+  const handleEditorProcess = async ({ dest }: { dest: Blob }) => {
+    setIsEditorVisible(false);
+    setIsProcessedFile(true);
+
+    // Create a new File object from the edited Blob
+    const editedFile = new File([dest], currentFile.filename, {
+      type: dest.type,
+    });
+
+    // Remove the original file and add the edited one
+    pond.removeFile(currentFile.id);
+    pond.addFile(editedFile);
+
+    // Reset the processed flag after a short delay
+    setTimeout(() => {
+      setIsProcessedFile(false);
+    }, 100);
+  };
+
+  const customCropRatioOptions: CropPresetOption[] = [
+    [1, 'Square'],
+    [4 / 3, 'Landscape'],
+    [3 / 4, 'Portrait'],
+  ];
 
   return (
     <div className="flex h-full w-full items-center justify-center rounded-xl bg-stone-100 p-4">
+      {isEditorVisible && currentFile && (
+        <div className="fixed inset-0 z-50 flex items-center justify-center bg-black bg-opacity-50">
+          <div className="h-[80vh] w-[80vw]">
+            <PinturaEditor
+              src={URL.createObjectURL(currentFile.file)}
+              imageReader={createDefaultImageReader()}
+              imageWriter={createDefaultImageWriter()}
+              locale={{
+                ...locale_en_gb,
+                ...plugin_crop_locale_en_gb,
+              }}
+              cropSelectPresetOptions={customCropRatioOptions}
+              cropImageSelectionCornerStyle="hook"
+              onProcess={handleEditorProcess}
+              onClose={() => setIsEditorVisible(false)}
+            />
+          </div>
+        </div>
+      )}
+
       <div className="h-full w-1/2 overflow-auto">
         <FilePond
-          imagePreviewHeight={150}
+          ref={(ref) => setPond(ref)}
+          filePosterMaxHeight={256}
           acceptedFileTypes={['image/*']}
           instantUpload={false}
           allowMultiple={allowMultiple}
           server={{
             process: processFile,
           }}
+          onaddfile={handleFileAdd}
           name="files"
           labelIdle='Drag & Drop your files or <span class="filepond--label-action">Browse</span>'
         />
       </div>
     </div>
   );
-};
-
-export default FilePondComponent;
+}
