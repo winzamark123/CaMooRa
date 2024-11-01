@@ -76,6 +76,7 @@ const config: Config = {
         not_public: '#2F2F2F',
         profile_button_bg: '#FBFCF8',
         primary_blue: '#013C5A',
+        theme_grey: '#282830',
       },
       borderRadius: {
         lg: 'var(--radius)',

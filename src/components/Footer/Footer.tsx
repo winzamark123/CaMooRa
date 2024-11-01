@@ -12,18 +12,18 @@ const socials: ISocial[] = [
   {
     name: 'Instagram',
     icon: Instagram,
-    link: 'https://www.instagram.com/',
+    link: 'https://www.instagram.com/camoora_ucd/',
   },
   {
     name: 'GitHub',
     icon: Github,
-    link: 'https://www.github.com/',
+    link: 'https://github.com/winzamark123/CaMooRa',
   },
 ];
 
 export default function Footer() {
   return (
-    <main className="mt-auto flex w-full flex-col items-center justify-center bg-primary_blue p-8 text-white">
+    <main className="mt-auto flex w-full flex-col items-center justify-center bg-theme_grey p-8 text-white">
       <p>Made by UCDavis Students for UCDavis Students &lt;3</p>
       <div className="flex items-center justify-center gap-2 p-4 ">
         {socials.map((social) => {
