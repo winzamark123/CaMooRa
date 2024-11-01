@@ -23,7 +23,7 @@ const socials: ISocial[] = [
 
 export default function Footer() {
   return (
-    <main className="bg-theme_grey mt-auto flex w-full flex-col items-center justify-center p-8 text-white">
+    <main className="mt-auto flex w-full flex-col items-center justify-center bg-theme_grey p-8 text-white">
       <p>Made by UCDavis Students for UCDavis Students &lt;3</p>
       <div className="flex items-center justify-center gap-2 p-4 ">
         {socials.map((social) => {
