@@ -6,13 +6,12 @@ import SignInPopUp from '@/components/Popups/SignInPopUp';
 import { trpc } from '@/lib/trpc/client';
 import { usePathname } from 'next/navigation';
 import { Button } from '../../../../../components/ui/button';
-import Bio from './Bio';
-import Image from 'next/image';
+import Bio from './Bio/Bio';
 import Projects from './Projects';
 import type { Contact } from '@/server/routers/Contact/index';
 import type { Profile } from '@/server/routers/Profile/index';
-import FavPhotographer from './FavPhotographer';
 import IconComponents from './IconComponents';
+import ProfilePic from './ProfilePic/ProfilePic';
 
 interface IProfilePic {
   id: string;
@@ -102,121 +101,96 @@ export default function Profile() {
   return (
     <div className="flex flex-col">
       <div className="max-w-full px-4 sm:flex sm:px-10 md:px-12  2xl:px-0">
-        <div className="flex">
-          <div className="relative h-28 w-28 rounded-full md:h-32 md:w-32 lg:h-36 lg:w-36 xl:h-48 xl:w-48">
-            {profile?.profilePic?.url && (
-              <Image
-                src={profile.profilePic.url}
-                alt={`Profile Picture of ${usersFullName}`}
-                objectFit="cover"
-                layout="fill"
-                className="rounded-full border border-black"
-              />
-            )}
-          </div>
-          <div className="flex max-h-48 flex-grow flex-col pl-3 md:pl-10">
-            <h1 className="flex flex-col items-center text-lg font-extrabold xs:flex-row lg:text-xl 2xl:text-2xl">
-              {usersFullName}
-              {profile?.additionalName && (
-                <span className="text-xs xs:pl-2">
-                  ({profile.additionalName})
-                </span>
-              )}
-              {currentUser && (
-                <FavPhotographer
-                  userId={currentUser.id}
-                  photographerId={clerkId}
-                />
-              )}
-            </h1>
-
-            {/* Bio for bigger screen than sm */}
-            <div className="hidden h-full max-w-xs flex-col justify-between pt-2 sm:flex lg:max-w-lg lg:pt-5 xl:max-w-xl">
-              <Bio
-                bio={profile?.bio}
-                equipment={profile?.equipment}
-                usersFullName={usersFullName}
-              />
-            </div>
-          </div>
-        </div>
-        {/* Bio for smaller screen than sm */}
-        <div className="max-w flex flex-col gap-y-10 pt-5 sm:hidden">
-          <Bio
-            bio={profile?.bio}
-            equipment={profile?.equipment}
-            usersFullName={usersFullName}
-          />
-        </div>
-
-        <div className="flex flex-grow flex-col">
-          {isSignedIn && contact?.isContactPublic && (
-            <div className="flex pt-5 sm:justify-end sm:pt-0">
-              <div className="flex flex-col space-y-4 xl:space-y-6">
-                <h2 className="text-sm font-semibold lg:text-lg 2xl:text-xl">
-                  Contact
-                </h2>
-                <ul className="grid list-none grid-cols-2 gap-5 break-all sm:grid-cols-1">
-                  {userLinks.map((link, index) => {
-                    if (!link) return null;
-
-                    const IconComponent = IconComponents[link.type];
-
-                    if (IconComponent) {
-                      return (
-                        <li key={index} className="flex items-center space-x-3">
-                          <div className="flex items-center space-x-3">
-                            {IconComponent}
-                            {/* Checks for Links  */}
-                            {typeof link.data === 'object' &&
-                            (link.type === 'portfolio' ||
-                              link.type === 'instagram') ? (
-                              <a
-                                className="cursor-pointer text-sm underline hover:text-blue-800"
-                                aria-label={`Link to ${usersFullName} ${link.type}`}
-                                href={link.data.link}
-                              >
-                                {link.data.title
-                                  ? link.data.title
-                                  : link.type[0].toUpperCase() +
-                                    link.type.slice(1)}
-                              </a>
-                            ) : (
-                              // No Links
-                              <span className="text-sm">
-                                {typeof link.data === 'string'
-                                  ? link.data
-                                  : link.data.link}
-                              </span>
-                            )}
-                          </div>
-                        </li>
-                      );
-                    }
-                  })}
-                </ul>
-              </div>
-            </div>
+        <div className="flex w-full gap-10 border">
+          {profile?.profilePic?.url && (
+            <ProfilePic imageURL={profile?.profilePic.url} />
           )}
-          <div className="mt-auto flex items-end justify-end">
-            {currentUser?.id === clerkId && (
-              <Button
-                className="mt-8 w-full border border-gray-400 bg-profile_button_bg text-xs text-black hover:bg-primary_blue hover:text-white focus:bg-primary_blue  focus:text-white sm:w-20"
-                aria-label="Edit your Profile"
-                onClick={toggleEditing}
-              >
-                Edit
-              </Button>
+          <div
+            className="max-w flex-col gap-y-10 
+            pt-5 sm:flex sm:h-full sm:max-w-xs sm:justify-between sm:pt-2
+            lg:max-w-lg lg:pt-5 xl:max-w-xl 
+            "
+          >
+            <Bio
+              bio={profile?.bio}
+              equipment={profile?.equipment}
+              usersFullName={usersFullName}
+              additionalName={profile?.additionalName}
+              clerkId={clerkId}
+            />
+          </div>
+          <div className="flex flex-grow flex-col">
+            {isSignedIn && contact?.isContactPublic && (
+              <div className="flex pt-5 sm:justify-end sm:pt-0">
+                <div className="flex flex-col space-y-4 xl:space-y-6">
+                  <h2 className="text-sm font-semibold lg:text-lg 2xl:text-xl">
+                    Contact
+                  </h2>
+                  <ul className="grid list-none grid-cols-2 gap-5 break-all sm:grid-cols-1">
+                    {userLinks.map((link, index) => {
+                      if (!link) return null;
+
+                      const IconComponent = IconComponents[link.type];
+
+                      if (IconComponent) {
+                        return (
+                          <li
+                            key={index}
+                            className="flex items-center space-x-3"
+                          >
+                            <div className="flex items-center space-x-3">
+                              {IconComponent}
+                              {/* Checks for Links  */}
+                              {typeof link.data === 'object' &&
+                              (link.type === 'portfolio' ||
+                                link.type === 'instagram') ? (
+                                <a
+                                  className="cursor-pointer text-sm underline hover:text-blue-800"
+                                  aria-label={`Link to ${usersFullName} ${link.type}`}
+                                  href={link.data.link}
+                                >
+                                  {link.data.title
+                                    ? link.data.title
+                                    : link.type[0].toUpperCase() +
+                                      link.type.slice(1)}
+                                </a>
+                              ) : (
+                                // No Links
+                                <span className="text-sm">
+                                  {typeof link.data === 'string'
+                                    ? link.data
+                                    : link.data.link}
+                                </span>
+                              )}
+                            </div>
+                          </li>
+                        );
+                      }
+                    })}
+                  </ul>
+                </div>
+              </div>
             )}
-            <SignedOut>
-              <Button
-                onClick={toggleSignInPopUp}
-                className="mt-8 w-full border border-gray-400 bg-profile_button_bg text-xs text-black hover:bg-primary_blue hover:text-white focus:bg-primary_blue  focus:text-white sm:w-20"
-                aria-label={`Contact ${usersFullName}`}
-              >
-                Contact
-              </Button>
-            </SignedOut>
+            <div className="mt-auto flex items-end justify-end">
+              {currentUser?.id === clerkId && (
+                <Button
+                  className="mt-8 w-full border border-gray-400 bg-profile_button_bg text-xs text-black hover:bg-primary_blue hover:text-white focus:bg-primary_blue  focus:text-white sm:w-20"
+                  aria-label="Edit your Profile"
+                  onClick={toggleEditing}
+                >
+                  Edit
+                </Button>
+              )}
+              <SignedOut>
+                <Button
+                  onClick={toggleSignInPopUp}
+                  className="mt-8 w-full border border-gray-400 bg-profile_button_bg text-xs text-black hover:bg-primary_blue hover:text-white focus:bg-primary_blue  focus:text-white sm:w-20"
+                  aria-label={`Contact ${usersFullName}`}
+                >
+                  Contact
+                </Button>
+              </SignedOut>
+            </div>
           </div>
         </div>
       </div>
