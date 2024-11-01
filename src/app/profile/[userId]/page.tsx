@@ -1,3 +1,5 @@
+// use client is necessary to propogate the user onto the navbar (somehow)
+'use client';
 import Profile from '@/app/profile/[userId]/_components/Profile/Profile';
 
 export default function Page() {
