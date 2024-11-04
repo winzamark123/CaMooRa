@@ -17,6 +17,7 @@ export default function MasonryWrapper({
 }: MasonryWrapperProps) {
   const [loadingImages, setLoadingImages] = useState<string[]>([]);
   const deleteImage = trpc.images.deleteImage.useMutation();
+  console.log('Test test');
 
   const handleDeleteImage = async (imageId: string) => {
     const res = await deleteImage.mutate({ imageId: imageId });
