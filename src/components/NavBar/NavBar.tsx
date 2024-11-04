@@ -40,7 +40,10 @@ export default function NavBar() {
         </Link>
       </div>
       <div className="hidden items-center justify-between gap-4 p-4 sm:flex">
-        <a href="https://forms.gle/fN61sHJFh9nBeXwy5" className="font-bold">
+        <a
+          href="https://forms.gle/fN61sHJFh9nBeXwy5"
+          className="font-bold hover:underline"
+        >
           Feedback
         </a>
         <ModeToggle />

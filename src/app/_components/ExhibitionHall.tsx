@@ -4,6 +4,7 @@ import { useState } from 'react';
 import { trpc } from '@/lib/trpc/client';
 import { HoverEffect } from '../../components/ui/card-hover-effect';
 import { useUser } from '@clerk/nextjs';
+import SkeletonCard from '@/components/Loading/SkeletonCard';
 import {
   DropdownMenu,
   DropdownMenuContent,
@@ -43,7 +44,13 @@ export default function ExhibitionHall() {
   );
 
   if (isLoading || fav_users_loading) {
-    return <div>Loading...</div>;
+    return (
+      <div className="flex justify-center gap-4">
+        <SkeletonCard />
+        <SkeletonCard />
+        <SkeletonCard />
+      </div>
+    );
   }
 
   if (error) {
@@ -52,8 +59,6 @@ export default function ExhibitionHall() {
   if (fav_users_error) {
     return <div>Error: {fav_users_error.message}</div>;
   }
-
-  console.log('FAV USERS', fav_users);
 
   return (
     <main className="flex flex-col ">

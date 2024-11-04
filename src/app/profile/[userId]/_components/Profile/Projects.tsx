@@ -2,7 +2,7 @@ import React from 'react';
 import { useEffect } from 'react';
 import { trpc } from '@/lib/trpc/client';
 import { useState } from 'react';
-import PhotoAlbum from './PhotoAlbum';
+import PhotoAlbum from './PhotoAlbum/PhotoAlbum';
 
 export interface SelectedPhotoAlbumProps {
   photoAlbumId: string;
@@ -56,11 +56,8 @@ export default function Projects({ clerkId }: { clerkId: string }) {
       </div>
       {selectedPhotoAlbum && (
         <PhotoAlbum
-          images={
-            (photoAlbums &&
-              photoAlbums[selectedPhotoAlbum.photoAlbumIndex].Images) ||
-            []
-          }
+          clerkId={clerkId}
+          photoAlbumId={selectedPhotoAlbum.photoAlbumId}
         />
       )}
       {!selectedPhotoAlbum && <div>No Photo Albums Available</div>}

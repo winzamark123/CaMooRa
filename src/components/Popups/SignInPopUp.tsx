@@ -46,7 +46,7 @@ export default function SignInPopUp({ onToggle }: { onToggle: () => void }) {
           onClick={(event) => event.stopPropagation()}
         >
           <div className="absolute left-8 top-20 flex flex-col gap-4 sm:left-10 sm:top-0 sm:p-20">
-            <h4>Welcome to FoMoo!</h4>
+            <h4>Welcome to caMOOra!</h4>
             <p>Please Sign in with your UCDavis account</p>
             <SignInButton>
               <Button
@@ -59,7 +59,7 @@ export default function SignInPopUp({ onToggle }: { onToggle: () => void }) {
             </SignInButton>
           </div>
           <div className="flex items-end">
-            <Image src={PopupSVG} alt="FoMoo Pop Up" />
+            <Image src={PopupSVG} alt="caMOOra Pop Up" />
           </div>
           <button
             onClick={onToggle}
