@@ -40,7 +40,9 @@ export default function NavBar() {
         </Link>
       </div>
       <div className="hidden items-center justify-between gap-4 p-4 sm:flex">
-        <p>Feedback</p>
+        <a href="https://forms.gle/fN61sHJFh9nBeXwy5" className="font-bold">
+          Feedback
+        </a>
         <ModeToggle />
         <SignedIn>{user && <DropDownProfile userId={user.id} />}</SignedIn>
         <div className="flex">
@@ -78,7 +80,9 @@ export default function NavBar() {
           className="fixed left-0 top-0 z-20 flex h-full w-full flex-col items-center 
         justify-center  gap-4 border border-black bg-white p-4 sm:hidden"
         >
-          <p>Feedback</p>
+          <a href="https://forms.gle/fN61sHJFh9nBeXwy5" className="font-bold">
+            Feedback
+          </a>
           <ModeToggle />
           <SignedIn>{user && <DropDownProfile userId={user.id} />}</SignedIn>
           <div className="flex">

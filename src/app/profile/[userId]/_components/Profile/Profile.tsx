@@ -77,7 +77,7 @@ export default function Profile() {
   return (
     <div className="flex flex-col">
       <div className="max-w-full px-4 sm:flex  sm:px-10 md:px-12 2xl:px-0">
-        <div className="flex w-full gap-10 border">
+        <div className="flex w-full gap-10">
           {profile?.profilePic?.url && (
             <ProfilePic imageURL={profile?.profilePic.url} />
           )}
