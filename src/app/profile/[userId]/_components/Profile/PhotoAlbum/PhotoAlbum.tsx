@@ -1,9 +1,38 @@
 import React from 'react';
-import { ImageProp } from '@/server/routers/Images/index';
 import MasonryWrapper from '@/components/Masonry/MasonryGrid';
+import { trpc } from '@/lib/trpc/client';
+import SkeletonCard from '@/components/Loading/SkeletonCard';
 
-export default function PhotoAlbum({ images }: { images: Array<ImageProp> }) {
-  if (images.length === 0) {
+interface PhotoAlbumProps {
+  clerkId: string;
+  photoAlbumId: string;
+}
+export default function PhotoAlbum({ clerkId, photoAlbumId }: PhotoAlbumProps) {
+  const {
+    data: user_images,
+    isLoading,
+    error,
+  } = trpc.images.getImagesByAlbumId.useQuery({
+    clerkId: clerkId,
+    photoAlbumId: photoAlbumId,
+  });
+
+  if (isLoading) {
+    return (
+      <div className="flex flex-wrap justify-center gap-4 p-4">
+        <SkeletonCard />
+        <SkeletonCard />
+        <SkeletonCard />
+        <SkeletonCard />
+      </div>
+    );
+  }
+
+  if (error) {
+    return <div>Error: {error.message}</div>;
+  }
+
+  if (user_images && user_images.length === 0) {
     return (
       <div
         className="flex min-h-80 items-center justify-center rounded-b-xl rounded-tr-xl"
@@ -18,7 +47,7 @@ export default function PhotoAlbum({ images }: { images: Array<ImageProp> }) {
       className="flex flex-col gap-4 rounded-b-xl rounded-tr-xl p-10"
       style={{ backgroundColor: '#F7F5EF' }}
     >
-      <MasonryWrapper images={images} />
+      {user_images && <MasonryWrapper images={user_images} />}
     </main>
   );
 }

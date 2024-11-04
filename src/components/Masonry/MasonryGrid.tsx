@@ -1,8 +1,9 @@
-import React from 'react';
+import React, { useState } from 'react';
 import Masonry, { ResponsiveMasonry } from 'react-responsive-masonry';
 import { ImageProp } from '@/server/routers/Images';
 import { trpc } from '@/lib/trpc/client';
 import Image from 'next/image';
+import SkeletonCard from '../Loading/SkeletonCard';
 
 interface MasonryWrapperProps {
   images: ImageProp[];
@@ -14,11 +15,16 @@ export default function MasonryWrapper({
   images,
   isEditing = false,
 }: MasonryWrapperProps) {
+  const [loadingImages, setLoadingImages] = useState<string[]>([]);
   const deleteImage = trpc.images.deleteImage.useMutation();
 
   const handleDeleteImage = async (imageId: string) => {
     const res = await deleteImage.mutate({ imageId: imageId });
     console.log(res);
+  };
+
+  const handleImageLoad = (imageId: string) => {
+    setLoadingImages((prev) => ({ ...prev, [imageId]: false }));
   };
 
   return (
@@ -33,6 +39,7 @@ export default function MasonryWrapper({
             which helps with the masonry. But this DOES NOT MEAN it is responsive. It just loads at that
             size which makes it seems responsive. Hacky solution for now.
             */}
+            {loadingImages[image.id as any] && <SkeletonCard />}
             <Image
               className="rounded-sm"
               src={image.url}
@@ -45,6 +52,7 @@ export default function MasonryWrapper({
                      25vw"
               style={{ width: '100%', height: 'auto' }}
               priority={false}
+              onLoad={() => handleImageLoad(image.id)}
             />
             {isEditing && (
               <div

@@ -56,11 +56,8 @@ export default function Projects({ clerkId }: { clerkId: string }) {
       </div>
       {selectedPhotoAlbum && (
         <PhotoAlbum
-          images={
-            (photoAlbums &&
-              photoAlbums[selectedPhotoAlbum.photoAlbumIndex].Images) ||
-            []
-          }
+          clerkId={clerkId}
+          photoAlbumId={selectedPhotoAlbum.photoAlbumId}
         />
       )}
       {!selectedPhotoAlbum && <div>No Photo Albums Available</div>}
