@@ -2,6 +2,7 @@ import React from 'react';
 import Masonry, { ResponsiveMasonry } from 'react-responsive-masonry';
 import { ImageProp } from '@/server/routers/Images';
 import { trpc } from '@/lib/trpc/client';
+import Image from 'next/image';
 
 interface MasonryWrapperProps {
   images: ImageProp[];
@@ -27,7 +28,24 @@ export default function MasonryWrapper({
       <Masonry gutter="10px">
         {images.map((image: ImageProp) => (
           <div key={image.id} className="group relative">
-            <img className="rounded-sm" src={image.url} alt="Album Image" />
+            {/* <img className="rounded-sm" src={image.url} alt="Album Image" /> */}
+            {/* Luckily this by using next/image, the image is loaded fast and also at a certain size
+            which helps with the masonry. But this DOES NOT MEAN it is responsive. It just loads at that
+            size which makes it seems responsive. Hacky solution for now.
+            */}
+            <Image
+              className="rounded-sm"
+              src={image.url}
+              alt="Album Image"
+              width={0}
+              height={0}
+              sizes="(max-width: 750px) 100vw,
+                     (max-width: 900px) 50vw,
+                     (max-width: 1240px) 33vw,
+                     25vw"
+              style={{ width: '100%', height: 'auto' }}
+              priority={false}
+            />
             {isEditing && (
               <div
                 onClick={() => handleDeleteImage(image.id)}
