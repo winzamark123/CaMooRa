@@ -1,4 +1,5 @@
-import EditPhotoAlbum from './EditPhotoAlbum';
+// import EditPhotoAlbum from './EditPhotoAlbum';
+import PhotoAlbum from '../PhotoAlbum/PhotoAlbum';
 import { trpc } from '@/lib/trpc/client';
 import { useEffect, useState, useRef } from 'react';
 import { Button } from '@/components/ui/button';
@@ -233,9 +234,14 @@ export default function EditProjectSection({
       </div>
 
       {selectedPhotoAlbum && photoAlbums && (
-        <EditPhotoAlbum
-          images={photoAlbums[selectedPhotoAlbum.photoAlbumIndex].Images || []}
+        // <EditPhotoAlbum
+        //   images={photoAlbums[selectedPhotoAlbum.photoAlbumIndex].Images || []}
+        //   photoAlbumId={selectedPhotoAlbum.photoAlbumId}
+        // />
+        <PhotoAlbum
           photoAlbumId={selectedPhotoAlbum.photoAlbumId}
+          clerkId={clerkId}
+          isEditing={true}
         />
       )}
       {!selectedPhotoAlbum && <div>No Photo Albums Available</div>}

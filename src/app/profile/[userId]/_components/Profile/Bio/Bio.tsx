@@ -19,7 +19,7 @@ const Bio: React.FC<BioProps> = ({
 }) => {
   const { user: currentUser } = useUser();
   return (
-    <>
+    <main className="flex flex-col gap-4">
       <h1 className="flex flex-col items-center text-lg font-extrabold xs:flex-row lg:text-xl 2xl:text-2xl">
         {usersFullName}
         {additionalName && (
@@ -40,7 +40,7 @@ const Bio: React.FC<BioProps> = ({
           <p className="text-sm">{equipment}</p>
         </div>
       )}
-    </>
+    </main>
   );
 };
 
