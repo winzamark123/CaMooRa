@@ -2,12 +2,19 @@ import React from 'react';
 import MasonryWrapper from '@/components/Masonry/MasonryGrid';
 import { trpc } from '@/lib/trpc/client';
 import SkeletonCard from '@/components/Loading/SkeletonCard';
+import CreatePostForm from '../UploadImage/CreatePostForm';
 
 interface PhotoAlbumProps {
   clerkId: string;
   photoAlbumId: string;
+  isEditing?: boolean;
 }
-export default function PhotoAlbum({ clerkId, photoAlbumId }: PhotoAlbumProps) {
+
+export default function PhotoAlbum({
+  clerkId,
+  photoAlbumId,
+  isEditing = false,
+}: PhotoAlbumProps) {
   const {
     data: user_images,
     isLoading,
@@ -42,12 +49,20 @@ export default function PhotoAlbum({ clerkId, photoAlbumId }: PhotoAlbumProps) {
       </div>
     );
   }
+
   return (
     <main
       className="flex flex-col gap-4 rounded-b-xl rounded-tr-xl p-10"
       style={{ backgroundColor: '#F7F5EF' }}
     >
-      {user_images && <MasonryWrapper images={user_images} />}
+      {isEditing && (
+        <div className="h-half-screen">
+          <CreatePostForm photoAlbumId={photoAlbumId} />
+        </div>
+      )}
+      {user_images && (
+        <MasonryWrapper images={user_images} isEditing={isEditing} />
+      )}
     </main>
   );
 }

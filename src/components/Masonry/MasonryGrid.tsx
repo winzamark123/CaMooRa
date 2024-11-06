@@ -16,12 +16,15 @@ export default function MasonryWrapper({
   isEditing = false,
 }: MasonryWrapperProps) {
   const [loadingImages, setLoadingImages] = useState<string[]>([]);
-  const deleteImage = trpc.images.deleteImage.useMutation();
-  console.log('Test test');
+  const utils = trpc.useUtils();
+  const deleteImage = trpc.images.deleteImage.useMutation({
+    onSuccess: () => {
+      utils.images.getImagesByAlbumId.invalidate();
+    },
+  });
 
   const handleDeleteImage = async (imageId: string) => {
-    const res = await deleteImage.mutate({ imageId: imageId });
-    console.log(res);
+    await deleteImage.mutate({ imageId: imageId });
   };
 
   const handleImageLoad = (imageId: string) => {
@@ -34,12 +37,7 @@ export default function MasonryWrapper({
     >
       <Masonry gutter="10px">
         {images.map((image: ImageProp) => (
-          <div key={image.id} className="group relative">
-            {/* <img className="rounded-sm" src={image.url} alt="Album Image" /> */}
-            {/* Luckily this by using next/image, the image is loaded fast and also at a certain size
-            which helps with the masonry. But this DOES NOT MEAN it is responsive. It just loads at that
-            size which makes it seems responsive. Hacky solution for now.
-            */}
+          <div key={image.id} className="group relative cursor-pointer">
             {loadingImages[image.id as any] && <SkeletonCard />}
             <Image
               className="rounded-sm"
@@ -53,12 +51,16 @@ export default function MasonryWrapper({
                      25vw"
               style={{ width: '100%', height: 'auto' }}
               priority={false}
+              loading="lazy"
               onLoad={() => handleImageLoad(image.id)}
             />
             {isEditing && (
               <div
                 onClick={() => handleDeleteImage(image.id)}
-                className="absolute inset-0 flex cursor-pointer items-center justify-center bg-black/50 opacity-0 transition-opacity hover:opacity-100"
+                className="absolute inset-0 z-30 flex items-center justify-center 
+                          bg-black/50 opacity-0 
+                          transition-opacity duration-300 ease-in-out
+                          group-hover:opacity-100"
               >
                 <svg
                   xmlns="http://www.w3.org/2000/svg"
