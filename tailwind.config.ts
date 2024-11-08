@@ -31,6 +31,13 @@ const config: Config = {
       },
       width: {
         '5-xl': '64rem',
+        '4-xl': '48rem',
+        '3-xl': '36rem',
+      },
+      minWidth: {
+        '5-xl': '64rem',
+        '4-xl': '48rem',
+        '3-xl': '36rem',
       },
       height: {
         'third-screen': '33.333vh',

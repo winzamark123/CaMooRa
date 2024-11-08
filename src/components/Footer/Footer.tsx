@@ -1,6 +1,8 @@
 import React from 'react';
 import { Instagram, Github } from 'lucide-react';
 import Link from 'next/link';
+import Image from 'next/image';
+import Logo from '@public/logo.svg';
 
 interface ISocial {
   name: string;
@@ -23,7 +25,8 @@ const socials: ISocial[] = [
 
 export default function Footer() {
   return (
-    <main className="mt-auto flex w-full flex-col items-center justify-center bg-theme_grey p-8 text-white">
+    <main className="mt-auto flex w-full flex-col items-center justify-center gap-2 bg-theme_grey p-8 text-white">
+      <Image className="flex" src={Logo} alt="Camoora Logo"></Image>
       <p>Made by UCDavis Students for UCDavis Students &lt;3</p>
       <div className="flex items-center justify-center gap-2 p-4 ">
         {socials.map((social) => {

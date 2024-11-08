@@ -1,32 +1,9 @@
-import { z } from 'zod';
 import { protectedProcedure } from '@/lib/trpc/trpc';
 import prisma from '@prisma/prisma';
+import { contactSchema } from '@/server/routers/Schemas/schema';
 
-const contact_object = z.object({
-  clerkId: z.string(),
-  email: z.string().optional(),
-  discord: z.string().optional(),
-  instagramTitle: z
-    .string()
-    .max(15, 'Instagram Title must be 15 characters or less')
-    .optional(),
-  instagramLink: z.string().optional(),
-  phone: z.string().optional(),
-  whatsApp: z.string().optional(),
-  portfolioTitle: z
-    .string()
-    .max(15, 'Portfolio Title must be 15 characters or less')
-    .optional(),
-  portfolioLink: z.string().optional(),
-  isContactPublic: z
-    .boolean({ invalid_type_error: 'isContactPublic must be a boolean' })
-    .optional(),
-  isPhotographer: z
-    .boolean({ invalid_type_error: 'isPhotographer must be a boolean' })
-    .optional(),
-});
 export const updateContact = protectedProcedure
-  .input(contact_object)
+  .input(contactSchema)
   .mutation(async ({ input, ctx }) => {
     if (ctx.user?.id !== input.clerkId) {
       throw new Error('You do not have permission to update this contact');

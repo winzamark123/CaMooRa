@@ -9,6 +9,7 @@ import {
 } from '../../../../../../components/ui/form';
 import { Input } from '../../../../../../components/ui/input';
 import { EditProfileSectionProps } from './EditProfileSection';
+import { Button } from '@/components/ui/button';
 
 type EditLinkAccountSectionProps = Omit<
   EditProfileSectionProps,
@@ -22,7 +23,7 @@ export default function EditLinkAccountSection({
   return (
     <div>
       <h4 className="mb-5 border-b-2 pb-4 font-bold">Link Account</h4>
-      <div className="flex flex-row items-center justify-between">
+      <div className="flex flex-row items-center justify-center ">
         <Form {...form}>
           <form
             onSubmit={form.handleSubmit(onSave)}
@@ -159,6 +160,15 @@ export default function EditLinkAccountSection({
                   )}
                 />
               </div>
+            </div>
+            <div className="flex justify-end gap-4">
+              <Button
+                type="submit"
+                className="w-20 border border-gray-400 bg-profile_button_bg text-xs text-black hover:bg-primary_blue hover:text-white focus:bg-primary_blue focus:text-white"
+                aria-label="Save Link Account Section"
+              >
+                Save
+              </Button>
             </div>
           </form>
         </Form>

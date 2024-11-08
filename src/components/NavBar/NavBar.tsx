@@ -6,8 +6,8 @@ import Link from 'next/link';
 import { DropDownProfile } from './DropDownProfile';
 import { Button } from '../ui/button';
 import SignInPopUp from '../Popups/SignInPopUp';
-import LogoBlack from '@/public/logo-black.svg';
-import LogoWhite from '@/public/logo-white.svg';
+import LogoBlack from '@public/logo_black.svg';
+import LogoWhite from '@public/logo_white.svg';
 import Image from 'next/image';
 
 export default function NavBar() {
@@ -24,7 +24,7 @@ export default function NavBar() {
   };
 
   return (
-    <main className="h-30 flex w-full justify-between p-8">
+    <main className="h-30 flex w-full max-w-5xl justify-between p-8">
       <div className="p-4">
         <Link href="/">
           <Image
