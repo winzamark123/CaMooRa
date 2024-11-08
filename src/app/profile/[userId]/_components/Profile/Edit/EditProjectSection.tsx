@@ -234,10 +234,6 @@ export default function EditProjectSection({
       </div>
 
       {selectedPhotoAlbum && photoAlbums && (
-        // <EditPhotoAlbum
-        //   images={photoAlbums[selectedPhotoAlbum.photoAlbumIndex].Images || []}
-        //   photoAlbumId={selectedPhotoAlbum.photoAlbumId}
-        // />
         <PhotoAlbum
           photoAlbumId={selectedPhotoAlbum.photoAlbumId}
           clerkId={clerkId}
