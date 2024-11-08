@@ -30,8 +30,8 @@ function ProfileCardContent({ id }: ProfileCardProps) {
 
   return (
     <Card
-      className="relative flex h-80 w-64 flex-col justify-end 
-    overflow-hidden p-2 sm:rounded-2xl sm:border-slate-400"
+      className="relative flex aspect-portrait h-full w-full flex-col 
+    justify-end overflow-hidden p-2 sm:rounded-2xl sm:border-slate-400"
     >
       {user_images && user_images.length > 0 && (
         // <PhotoImage src={user_images[0].url} alt="profile" />
