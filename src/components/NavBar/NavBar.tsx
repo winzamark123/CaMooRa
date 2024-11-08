@@ -24,7 +24,7 @@ export default function NavBar() {
   };
 
   return (
-    <main className="h-30 flex w-full justify-between p-8">
+    <main className="h-30 flex w-full max-w-5xl justify-between p-8">
       <div className="p-4">
         <Link href="/">
           <Image

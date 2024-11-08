@@ -8,7 +8,6 @@ import { z } from 'zod';
 import EditProfileSection from './EditProfileSection';
 import EditLinkAccountSection from './EditLinkAccountSection';
 import EditProjectSection from './EditProjectSection';
-import { Button } from '../../../../../../components/ui/button';
 
 interface UpdateProfileVariableType
   extends Omit<ProfileProps, 'firstName' | 'lastName' | 'profilePic'> {
@@ -39,7 +38,7 @@ export default function EditProfile({
   clerkId,
   refetchProfile,
   refetchContact,
-  setIsEditing,
+  // setIsEditing,
 }: EditProfileProps) {
   // Calling TRPC update procedures
   const updateProfile = trpc.profile.updateProfile.useMutation({
@@ -225,7 +224,7 @@ export default function EditProfile({
       />
       <EditLinkAccountSection form={form} onSave={onSave} />
       <EditProjectSection clerkId={clerkId} />
-      <div className="mt-4 flex flex-row-reverse">
+      {/* <div className="mt-4 flex flex-row-reverse">
         <Button
           className="ml-5 w-20 border border-gray-400 bg-profile_button_bg text-xs text-black hover:bg-primary_blue hover:text-white focus:bg-primary_blue  focus:text-white sm:w-20"
           onClick={form.handleSubmit(onSave)}
@@ -240,7 +239,7 @@ export default function EditProfile({
         >
           Cancel
         </Button>
-      </div>
+      </div> */}
     </div>
   );
 }

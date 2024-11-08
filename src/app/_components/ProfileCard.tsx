@@ -3,8 +3,8 @@
 import React, { Suspense } from 'react';
 import { Card } from '@/components/ui/card';
 import { trpc } from '@/lib/trpc/client';
-import { PhotoImage } from '@/components/PhotoImage';
 import SkeletonCard from '@/components/Loading/SkeletonCard';
+import Image from 'next/image';
 
 interface ProfileCardProps {
   id: string;
@@ -29,11 +29,32 @@ function ProfileCardContent({ id }: ProfileCardProps) {
   }
 
   return (
-    <Card className="flex flex-col justify-end sm:rounded-2xl sm:border-slate-400">
+    <Card
+      className="relative flex h-80 w-64 flex-col justify-end 
+    overflow-hidden p-2 sm:rounded-2xl sm:border-slate-400"
+    >
       {user_images && user_images.length > 0 && (
-        <PhotoImage src={user_images[0].url} alt="profile" />
+        // <PhotoImage src={user_images[0].url} alt="profile" />
+        <Image
+          src={user_images[0].url}
+          alt="profile"
+          fill
+          objectFit="cover"
+          className="brightness-50 filter"
+        />
       )}
-      <div className="absolute z-10 flex gap-2 p-6 text-white">
+      <div
+        className="absolute bottom-2 left-2 right-2 z-10 flex w-auto items-center 
+      gap-2 rounded-2xl  bg-primary_blue p-2 text-white"
+      >
+        <div className="relative h-8 w-8 overflow-hidden rounded-full">
+          <Image
+            src={user_profile.profilePic?.url || '/default-profile.jpg'}
+            alt="profile"
+            fill
+            className="object-cover"
+          />
+        </div>
         <p>{user_profile.firstName}</p>
         <p>{user_profile.lastName}</p>
       </div>

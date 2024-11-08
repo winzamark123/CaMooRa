@@ -12,6 +12,7 @@ import {
   DropdownMenuTrigger,
 } from '@/components/ui/dropdown-menu';
 import { Button } from '@/components/ui/button';
+import { ChevronDown } from 'lucide-react';
 
 export default function ExhibitionHall() {
   const { user } = useUser();
@@ -43,16 +44,6 @@ export default function ExhibitionHall() {
     }
   );
 
-  if (isLoading || fav_users_loading) {
-    return (
-      <div className="flex justify-center gap-4">
-        <SkeletonCard />
-        <SkeletonCard />
-        <SkeletonCard />
-      </div>
-    );
-  }
-
   if (error) {
     return <div>Error: {error.message}</div>;
   }
@@ -61,27 +52,42 @@ export default function ExhibitionHall() {
   }
 
   return (
-    <main className="flex flex-col ">
-      <div className="flex justify-end ">
-        <DropdownMenu>
-          <DropdownMenuTrigger asChild>
-            <Button variant="outline">{dropdownText}</Button>
-          </DropdownMenuTrigger>
-          <DropdownMenuContent align="end">
-            <DropdownMenuItem onClick={() => setDropdownText(otherOption)}>
-              {otherOption}
-            </DropdownMenuItem>
-          </DropdownMenuContent>
-        </DropdownMenu>
+    <main className="flex min-w-3-xl flex-col">
+      <div className="flex">
+        <div className="flex w-full max-w-4xl justify-between">
+          <h3 className="font-mono">PHOTOGRAPHERS @ UC DAVIS</h3>
+          <DropdownMenu>
+            <DropdownMenuTrigger asChild>
+              <Button variant="outline" className="flex items-center gap-2">
+                {dropdownText}
+                <ChevronDown className="h-4 w-4" />
+              </Button>
+            </DropdownMenuTrigger>
+            <DropdownMenuContent align="end">
+              <DropdownMenuItem onClick={() => setDropdownText(otherOption)}>
+                {otherOption}
+              </DropdownMenuItem>
+            </DropdownMenuContent>
+          </DropdownMenu>
+        </div>
       </div>
-      <div className="">
-        {dropdownText === options[1] && user && fav_users && (
-          <HoverEffect items={fav_users} />
-        )}
-        {dropdownText === options[0] && all_users && (
-          <HoverEffect items={all_users} />
-        )}
-      </div>
+      {isLoading || fav_users_loading ? (
+        <div className="flex justify-center gap-4 py-6">
+          <SkeletonCard />
+          <SkeletonCard />
+          <SkeletonCard />
+          <SkeletonCard />
+        </div>
+      ) : (
+        <>
+          {dropdownText === options[1] && user && fav_users && (
+            <HoverEffect items={fav_users} />
+          )}
+          {dropdownText === options[0] && all_users && (
+            <HoverEffect items={all_users} />
+          )}
+        </>
+      )}
     </main>
   );
 }

@@ -222,7 +222,7 @@ export default function EditProfileSection({
                   name="isPhotographer"
                   render={({ field }) => (
                     <FormItem className="mb-4 flex flex-col space-y-3">
-                      <FormLabel>Activate Photographer’s Account</FormLabel>
+                      <FormLabel>Activate Photographer's Account</FormLabel>
                       <FormControl>
                         <Switch
                           checked={field.value}
@@ -236,6 +236,15 @@ export default function EditProfileSection({
                   )}
                 />
               </div>
+            </div>
+            <div className="flex justify-end pr-12">
+              <Button
+                type="submit"
+                className="w-20 border border-gray-400 bg-profile_button_bg text-xs text-black hover:bg-primary_blue hover:text-white focus:bg-primary_blue focus:text-white"
+                aria-label="Save Profile Section"
+              >
+                Save
+              </Button>
             </div>
           </form>
         </Form>
