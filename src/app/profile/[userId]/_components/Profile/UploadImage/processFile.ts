@@ -39,6 +39,8 @@ export const createProcessFile = (
           size: actualFile.size,
           checksum,
           photoAlbumId,
+          width: metadata.dimensions.width,
+          height: metadata.dimensions.height,
         });
 
         if (signedURLResult.error || !signedURLResult.success) {
