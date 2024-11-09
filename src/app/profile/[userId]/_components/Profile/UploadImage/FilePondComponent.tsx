@@ -33,7 +33,17 @@ registerPlugin(
 // Set Pintura plugins
 setPlugins(plugin_crop);
 
-// ... existing customCropAspectRatioOptions and customEditorOptions ...
+const getImageDimensions = (
+  file: File
+): Promise<{ width: number; height: number }> => {
+  return new Promise((resolve) => {
+    const img = new Image();
+    img.onload = () => {
+      resolve({ width: img.width, height: img.height });
+    };
+    img.src = URL.createObjectURL(file);
+  });
+};
 
 export default function FilePondComponent({
   photoAlbumId,
@@ -50,8 +60,12 @@ export default function FilePondComponent({
   const [isProcessedFile, setIsProcessedFile] = useState(false);
   const processFile = createProcessFile(photoAlbumId, onUploadSuccess);
 
-  const handleFileAdd = (error: any, file: any) => {
+  const handleFileAdd = async (error: any, file: any) => {
     if (error || isProcessedFile) return;
+
+    const dimensions = await getImageDimensions(file.file);
+    file.dimensions = dimensions;
+
     setCurrentFile(file);
     setIsEditorVisible(true);
   };
@@ -65,9 +79,15 @@ export default function FilePondComponent({
       type: dest.type,
     });
 
+    // get dimensions of the edited file
+    const dimensions = await getImageDimensions(editedFile);
+
     // Remove the original file and add the edited one
     pond.removeFile(currentFile.id);
     pond.addFile(editedFile);
+
+    // Store the dimensions with the file
+    pond.getFile(editedFile).dimensions = dimensions;
 
     // Reset the processed flag after a short delay
     setTimeout(() => {

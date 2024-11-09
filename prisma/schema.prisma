@@ -97,4 +97,8 @@ model Images {
   url       String
   createdAt DateTime  @default(now())
   Profile   Profile[]
+
+  // Image dimensions for Masonry layout
+  width  Int?
+  height Int?
 }

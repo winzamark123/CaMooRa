@@ -224,22 +224,6 @@ export default function EditProfile({
       />
       <EditLinkAccountSection form={form} onSave={onSave} />
       <EditProjectSection clerkId={clerkId} />
-      {/* <div className="mt-4 flex flex-row-reverse">
-        <Button
-          className="ml-5 w-20 border border-gray-400 bg-profile_button_bg text-xs text-black hover:bg-primary_blue hover:text-white focus:bg-primary_blue  focus:text-white sm:w-20"
-          onClick={form.handleSubmit(onSave)}
-          aria-label="Save Profile edits"
-        >
-          Save
-        </Button>
-        <Button
-          className="w-20 border border-gray-400 bg-profile_button_bg text-xs text-black hover:bg-primary_blue hover:text-white focus:bg-primary_blue  focus:text-white sm:w-20"
-          onClick={() => setIsEditing(false)}
-          aria-label="Cancel Profile edits"
-        >
-          Cancel
-        </Button>
-      </div> */}
     </div>
   );
 }

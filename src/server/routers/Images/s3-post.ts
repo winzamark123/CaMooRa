@@ -13,6 +13,8 @@ interface GetSignedURLProps {
   checksum: string;
   clerkId: string;
   photoAlbumId?: string;
+  width?: number;
+  height?: number;
 }
 
 const s3 = new S3Client({
@@ -34,6 +36,8 @@ export async function getPresignedURL({
   checksum,
   clerkId,
   photoAlbumId,
+  width,
+  height,
 }: GetSignedURLProps) {
   //check file types
   if (!acceptedTypes.includes(file_type)) {
@@ -70,6 +74,11 @@ export async function getPresignedURL({
       url: signedURL.split('?')[0],
       key: `${clerkId}/${generatedFileName}`,
     };
+
+    if (width && height) {
+      imageData.width = width;
+      imageData.height = height;
+    }
 
     // If photoAlbumID is provided, add it to the imageData object (Profile Pic doesn't have photoAlbumId)
     if (photoAlbumId) {

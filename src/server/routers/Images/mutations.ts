@@ -40,6 +40,8 @@ export const uploadImage = protectedProcedure
       size: z.number(),
       checksum: z.string(),
       photoAlbumId: z.string(),
+      width: z.number(),
+      height: z.number(),
     })
   )
   .mutation(async ({ input, ctx }) => {
@@ -49,6 +51,8 @@ export const uploadImage = protectedProcedure
       checksum: input.checksum,
       clerkId: ctx.user.id,
       photoAlbumId: input.photoAlbumId,
+      width: input.width,
+      height: input.height,
     });
 
     if (error) {
