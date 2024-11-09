@@ -39,7 +39,7 @@ export default function PhotoAlbum({
     return <div>Error: {error.message}</div>;
   }
 
-  if (user_images && user_images.length === 0) {
+  if (!isEditing && user_images && user_images.length === 0) {
     return (
       <div
         className="flex min-h-80 items-center justify-center rounded-b-xl rounded-tr-xl"
@@ -56,7 +56,7 @@ export default function PhotoAlbum({
       style={{ backgroundColor: '#F7F5EF' }}
     >
       {isEditing && (
-        <div className="h-half-screen">
+        <div className="h-third-screen overflow-y-auto">
           <CreatePostForm photoAlbumId={photoAlbumId} />
         </div>
       )}

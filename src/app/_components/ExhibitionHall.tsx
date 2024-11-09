@@ -52,9 +52,9 @@ export default function ExhibitionHall() {
   }
 
   return (
-    <main className="flex min-w-3-xl flex-col">
-      <div className="flex">
-        <div className="flex w-full max-w-4xl justify-between">
+    <main className="flex w-full flex-col">
+      <div className="flex w-full">
+        <div className="flex w-full justify-between sm:min-w-[48rem]">
           <h3 className="font-mono">PHOTOGRAPHERS @ UC DAVIS</h3>
           <DropdownMenu>
             <DropdownMenuTrigger asChild>
@@ -79,14 +79,14 @@ export default function ExhibitionHall() {
           <SkeletonCard />
         </div>
       ) : (
-        <>
+        <div className="w-full">
           {dropdownText === options[1] && user && fav_users && (
             <HoverEffect items={fav_users} />
           )}
           {dropdownText === options[0] && all_users && (
             <HoverEffect items={all_users} />
           )}
-        </>
+        </div>
       )}
     </main>
   );

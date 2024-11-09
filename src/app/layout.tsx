@@ -39,7 +39,7 @@ export default function RootLayout({
           <meta name="apple-mobile-web-app-title" content="caMOOra" />
           <link rel="manifest" href="/favicon/site.webmanifest" />
         </head>
-        <body className="flex min-h-screen flex-col items-center">
+        <body className="flex min-h-screen flex-col">
           <Provider>
             <ThemeProvider
               attribute="class"
