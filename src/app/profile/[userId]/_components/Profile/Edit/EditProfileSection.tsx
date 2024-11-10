@@ -205,7 +205,6 @@ export default function EditProfileSection({
                         <Switch
                           checked={field.value}
                           onCheckedChange={field.onChange}
-                          isPublic={true}
                         />
                       </FormControl>
                       <small className="text-xs text-gray-400">
