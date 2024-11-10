@@ -82,7 +82,7 @@ export default function FilePondComponent({
   ];
 
   return (
-    <div className="flex h-full w-full items-center justify-center rounded-xl bg-stone-100 p-4">
+    <div className="flex h-full w-full items-center justify-center overflow-hidden rounded-xl bg-stone-100 p-4">
       {isEditorVisible && currentFile && (
         <div className="fixed inset-0 z-50 flex items-center justify-center bg-black bg-opacity-50">
           <div className="h-[80vh] w-[80vw]">
@@ -108,7 +108,7 @@ export default function FilePondComponent({
           ref={(ref) => setPond(ref)}
           filePosterMaxHeight={256}
           acceptedFileTypes={['image/*']}
-          instantUpload={false}
+          instantUpload={true}
           allowMultiple={allowMultiple}
           server={{
             process: processFile,
