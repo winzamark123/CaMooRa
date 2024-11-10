@@ -12,7 +12,9 @@ import {
 } from '@/components/ui/dropdown-menu';
 import UsernameProfilePic from './User/UsernameProfilePic';
 import Link from 'next/link';
-import Settings from '@/components/Settings/Settings';
+import SettingsModal from '../SettingsModal/SettingsModal';
+import { LogOut } from 'lucide-react';
+import { User } from 'lucide-react';
 export function DropDownProfile({ userId }: { userId: string }) {
   return (
     <>
@@ -24,14 +26,20 @@ export function DropDownProfile({ userId }: { userId: string }) {
         </DropdownMenuTrigger>
         <DropdownMenuContent align="end">
           <Link href={`/profile/${userId}`}>
-            <DropdownMenuItem>Profile</DropdownMenuItem>
+            <DropdownMenuItem>
+              <User className="mr-2 h-4 w-4" />
+              Profile
+            </DropdownMenuItem>
           </Link>
-          <SignOutButton>
-            <DropdownMenuItem>Sign out</DropdownMenuItem>
-          </SignOutButton>
           <DropdownMenuItem onSelect={(e) => e.preventDefault()}>
-            <Settings />
+            <SettingsModal />
           </DropdownMenuItem>
+          <SignOutButton>
+            <DropdownMenuItem className="flex bg-red-700 text-white hover:bg-red-800">
+              <LogOut className="mr-2 h-4 w-4" />
+              Sign out
+            </DropdownMenuItem>
+          </SignOutButton>
         </DropdownMenuContent>
       </DropdownMenu>
     </>
