@@ -1,7 +1,6 @@
 'use client';
 import { useState } from 'react';
 import { SignedIn, SignedOut, useUser } from '@clerk/nextjs';
-import { ModeToggle } from '../Theme/mode-toggle';
 import Link from 'next/link';
 import { DropDownProfile } from './DropDownProfile';
 import { Button } from '../ui/button';
@@ -46,7 +45,6 @@ export default function NavBar() {
         >
           Feedback
         </a>
-        <ModeToggle />
         <SignedIn>{user && <DropDownProfile userId={user.id} />}</SignedIn>
         <div className="flex">
           <SignedOut>
@@ -86,7 +84,6 @@ export default function NavBar() {
           <a href="https://forms.gle/fN61sHJFh9nBeXwy5" className="font-bold">
             Feedback
           </a>
-          <ModeToggle />
           <SignedIn>{user && <DropDownProfile userId={user.id} />}</SignedIn>
           <div className="flex">
             <SignedOut>

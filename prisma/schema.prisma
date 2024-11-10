@@ -22,6 +22,7 @@ model User {
   photoAlbums  PhotoAlbum[]
   Favorites    Favorites[]  @relation("favorites")
   savedByUsers Favorites[]  @relation("favoritedBy")
+  Images       Images[]
 }
 
 model Favorites {
@@ -90,6 +91,7 @@ model Images {
   id           String      @id @default(cuid())
   PhotoAlbum   PhotoAlbum? @relation(fields: [PhotoAlbumId], references: [id], onDelete: Cascade)
   PhotoAlbumId String?
+  user         User        @relation(fields: [clerkId], references: [clerkId], onDelete: Cascade)
   clerkId      String
 
   // Image Information

@@ -79,7 +79,7 @@ export async function getPresignedURL({
     const images_result = await prisma.images.create({
       data: imageData,
     });
-    console.log('images_result:', images_result);
+    // console.log('images_result:', images_result);
     return { success: { signed_url: signedURL, image_id: images_result.id } };
   } catch (error) {
     console.error('Failed to create image record in database', error);
