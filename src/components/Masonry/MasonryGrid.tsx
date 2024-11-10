@@ -1,9 +1,9 @@
-import React, { useState } from 'react';
+'use client';
+import React from 'react';
 import Masonry, { ResponsiveMasonry } from 'react-responsive-masonry';
 import { ImageProp } from '@/server/routers/Images';
 import { trpc } from '@/lib/trpc/client';
 import Image from 'next/image';
-import SkeletonCard from '../Loading/SkeletonCard';
 
 interface MasonryWrapperProps {
   images: ImageProp[];
@@ -15,7 +15,6 @@ export default function MasonryWrapper({
   images,
   isEditing = false,
 }: MasonryWrapperProps) {
-  const [loadingImages, setLoadingImages] = useState<string[]>([]);
   const utils = trpc.useUtils();
   const deleteImage = trpc.images.deleteImage.useMutation({
     onSuccess: () => {
@@ -27,18 +26,14 @@ export default function MasonryWrapper({
     await deleteImage.mutate({ imageId: imageId });
   };
 
-  const handleImageLoad = (imageId: string) => {
-    setLoadingImages((prev) => ({ ...prev, [imageId]: false }));
-  };
-
   return (
     <ResponsiveMasonry
       columnsCountBreakPoints={{ 350: 1, 750: 2, 900: 3, 1240: 4 }}
     >
       <Masonry gutter="10px">
         {images.map((image: ImageProp) => (
-          <div key={image.id} className="group relative cursor-pointer">
-            {loadingImages[image.id as any] && <SkeletonCard />}
+          <div key={image.id} className="group relative">
+            {/* {loadingImages.includes(image.id) && <SkeletonCard />} */}
             <Image
               className="rounded-sm"
               src={image.url}
@@ -52,15 +47,14 @@ export default function MasonryWrapper({
               style={{ width: '100%', height: 'auto' }}
               priority={false}
               loading="lazy"
-              onLoad={() => handleImageLoad(image.id)}
             />
             {isEditing && (
               <div
                 onClick={() => handleDeleteImage(image.id)}
-                className="absolute inset-0 z-30 flex items-center justify-center 
-                          bg-black/50 opacity-0 
-                          transition-opacity duration-300 ease-in-out
-                          group-hover:opacity-100"
+                className="absolute inset-0 z-30 flex cursor-pointer items-center 
+                          justify-center bg-black/50 
+                          opacity-0 transition-opacity duration-300
+                          ease-in-out group-hover:opacity-100"
               >
                 <svg
                   xmlns="http://www.w3.org/2000/svg"
