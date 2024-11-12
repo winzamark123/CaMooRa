@@ -76,7 +76,7 @@ export default function FavPhotographer({
         variant={'ghost'}
       >
         {!isFavorite && <Star />}
-        {isFavorite && <Star fill="yellow" />}
+        {isFavorite && <Star fill="orange" />}
       </Button>
     </>
   );
