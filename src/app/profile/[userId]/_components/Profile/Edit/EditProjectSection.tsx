@@ -19,15 +19,11 @@ interface EditProjectSectionProps {
 export default function EditProjectSection({
   clerkId,
 }: EditProjectSectionProps) {
-  // State and Refs
-  const [newPhotoAlbumName, setNewPhotoAlbumName] = useState('');
-  const [isCreatingPhotoAlbum, setIsCreatingPhotoAlbum] = useState(false);
-  const [selectedPhotoAlbum, setSelectedPhotoAlbum] =
-    useState<SelectedPhotoAlbumProps>();
-  const hasSetSelectedAlbumRef = useRef(false);
-  const inputRef = useRef<HTMLInputElement>(null);
+  // 1. TRPC Queries and Mutations
 
-  // TRPC Queries and Mutations
+  // tRPC utils provide methods to: Manage query cache, Handle data mutations, Control data fetching
+  const utils = trpc.useUtils();
+
   const {
     data: photoAlbums,
     isLoading: isLoadingSections,
@@ -43,6 +39,51 @@ export default function EditProjectSection({
       console.error('Error creating Photo Album', err);
     },
   });
+
+  const updatePhotoAlbumName = trpc.photoAlbum.updatePhotoAlbumName.useMutation(
+    {
+      onMutate: async (newAlbum) => {
+        // Cancel any outgoing fetches
+        await utils.photoAlbum.getAllPhotoAlbums.cancel();
+
+        // Save current albums state (backup)
+        const previousAlbums = utils.photoAlbum.getAllPhotoAlbums.getData({
+          clerkId,
+        });
+
+        // Update UI immediately with new name
+        utils.photoAlbum.getAllPhotoAlbums.setData({ clerkId }, (old) => {
+          if (!old) return previousAlbums;
+          return old.map((album) =>
+            album.id === updatedPhotoAlbumNameId
+              ? { ...album, photoAlbumName: newAlbum.newPhotoAlbumName }
+              : album
+          );
+        });
+
+        return { previousAlbums };
+      },
+
+      onSuccess: () => {
+        console.log('Photo Album updated successfully');
+      },
+
+      // If Server Update fails, revert back to old names
+      onError: (err, newAlbum, context) => {
+        console.error('Error updating Photo Album', err);
+        utils.photoAlbum.getAllPhotoAlbums.setData(
+          { clerkId },
+          context?.previousAlbums
+        );
+      },
+
+      onSettled: () => {
+        // Ensure data is synced with server
+        utils.photoAlbum.getAllPhotoAlbums.invalidate({ clerkId });
+        console.log(photoAlbums);
+      },
+    }
+  );
 
   const deletePhotoAlbum = trpc.photoAlbum.deletePhotoAlbum.useMutation({
     onSuccess: () => {
@@ -71,19 +112,27 @@ export default function EditProjectSection({
     },
   });
 
-  // Utility Functions
-  const resetCreatingState = () => {
-    setIsCreatingPhotoAlbum(false);
-    setNewPhotoAlbumName('');
-  };
+  // 2. State Management & Refs
+  // Creation of Albums State and Refs
+  const [newPhotoAlbumName, setNewPhotoAlbumName] = useState('');
+  const [isCreatingPhotoAlbum, setIsCreatingPhotoAlbum] = useState(false);
+  const createInputRef = useRef<HTMLInputElement>(null);
 
-  const resetSelectedAlbum = () => {
-    hasSetSelectedAlbumRef.current = false;
-    setSelectedPhotoAlbum(undefined);
-  };
+  // Update Photo Album Name State and Refs
+  const [updatedPhotoAlbumName, setUpdatedPhotoAlbumName] = useState('');
+  const [updatedPhotoAlbumNameId, setUpdatedPhotoAlbumNameId] = useState('');
+  const [isUpdatingPhotoAlbumName, setIsUpdatingPhotoAlbumName] =
+    useState(false);
+  const updateInputRef = useRef<HTMLInputElement>(null);
 
-  // When Photo Albums are loaded
+  // Selected Album State and Refs
+  const [selectedPhotoAlbum, setSelectedPhotoAlbum] =
+    useState<SelectedPhotoAlbumProps>();
+  const hasSetSelectedAlbumRef = useRef(false);
+
+  // 3. Effects
   useEffect(() => {
+    // When Photo Albums are loaded for the first time
     if (photoAlbums?.length === 0) {
       resetSelectedAlbum();
     } else if (!hasSetSelectedAlbumRef.current && photoAlbums) {
@@ -97,23 +146,79 @@ export default function EditProjectSection({
 
   // Focus on input when creating a new photo album (Accessibility)
   useEffect(() => {
-    if (isCreatingPhotoAlbum && inputRef.current) {
-      inputRef.current.focus();
+    if (isCreatingPhotoAlbum && createInputRef.current) {
+      createInputRef.current.focus();
     }
   }, [isCreatingPhotoAlbum]);
 
-  // Event Handlers
-  const handleKeyDown = (event: React.KeyboardEvent<HTMLInputElement>) => {
+  // Focus on input when updating a photo album name (Accessibility)
+  useEffect(() => {
+    if (isUpdatingPhotoAlbumName && updateInputRef.current) {
+      updateInputRef.current.focus();
+    }
+  }, [isUpdatingPhotoAlbumName]);
+
+  // 4. Event Handlers
+  const handleCreateAlbumKeyDown = (
+    event: React.KeyboardEvent<HTMLInputElement>
+  ) => {
     if (event.key === 'Enter') {
-      createPhotoAlbum.mutate({ photoAlbumName: newPhotoAlbumName });
-      resetCreatingState();
+      handleCreateNewAlbum();
     } else if (event.key === 'Escape') {
       resetCreatingState();
+    }
+  };
+  const handleUpdateAlbumKeyDown = (
+    event: React.KeyboardEvent<HTMLInputElement>,
+    oldPhotoAlbumName: string
+  ) => {
+    if (event.key === 'Enter') {
+      handleUpdateAlbumName(oldPhotoAlbumName);
+    } else if (event.key === 'Escape') {
+      resetUpdatingState();
     }
   };
 
   const handleDeletePhotoAlbum = (photoAlbumName: string) => {
     deletePhotoAlbum.mutate({ photoAlbumName });
+  };
+
+  const handleCreateNewAlbum = () => {
+    createPhotoAlbum.mutate({ photoAlbumName: newPhotoAlbumName });
+    resetCreatingState();
+  };
+
+  const handleUpdateAlbumName = (oldPhotoAlbumName: string) => {
+    const trimmedUpdatePhotoAlbumName = updatedPhotoAlbumName.trim();
+    if (
+      trimmedUpdatePhotoAlbumName !== '' &&
+      trimmedUpdatePhotoAlbumName !== oldPhotoAlbumName
+    ) {
+      updatePhotoAlbumName.mutate({
+        newPhotoAlbumName: updatedPhotoAlbumName,
+        oldPhotoAlbumName,
+      });
+      resetUpdatingState();
+    } else {
+      console.log('Please enter a valid name');
+    }
+  };
+
+  // 5. Utility Functions
+  const resetCreatingState = () => {
+    setIsCreatingPhotoAlbum(false);
+    setNewPhotoAlbumName('');
+  };
+
+  const resetUpdatingState = () => {
+    setIsUpdatingPhotoAlbumName(false);
+    setUpdatedPhotoAlbumName('');
+    setUpdatedPhotoAlbumNameId('');
+  };
+
+  const resetSelectedAlbum = () => {
+    hasSetSelectedAlbumRef.current = false;
+    setSelectedPhotoAlbum(undefined);
   };
 
   // Render
@@ -133,89 +238,151 @@ export default function EditProjectSection({
         Upload your photos. The first image will be used as the cover photo on
         feeds.
       </p>
-      {/* TODO: Allow user to update their Photo Album names */}
       <div className="mb-5 flex flex-row flex-wrap gap-x-4">
         {/* Display All Photo Albums Buttons */}
         {photoAlbums &&
           photoAlbums.map((photoAlbum, index) => (
-            <div key={photoAlbum.id} className="flex">
-              <Button
-                className={` h-9 w-32 rounded-none rounded-l-lg border-y border-l border-gray-400 bg-primary_blue p-2 text-white hover:contrast-75  active:contrast-75 ${
-                  selectedPhotoAlbum?.photoAlbumId === photoAlbum.id
-                    ? 'bg-[#56647E]'
-                    : ''
-                }`}
-                aria-label={`Photo Album ${photoAlbum.photoAlbumName} (${photoAlbum.Images.length} Images)`}
-                onClick={() =>
-                  setSelectedPhotoAlbum({
-                    photoAlbumId: photoAlbum.id,
-                    photoAlbumIndex: index,
-                  })
-                }
-              >
-                <span className="text-xs ">{photoAlbum.photoAlbumName}</span>
-                <span className="sr-only">{`Photo Album ${photoAlbum.photoAlbumName} (${photoAlbum.Images.length} Images)`}</span>
-              </Button>
-              <DropdownMenu>
-                {/* Edit Button (Open Pop-Up) */}
-                <DropdownMenuTrigger asChild>
-                  <Button
-                    aria-haspopup="true"
-                    size="icon"
-                    className="h-9 rounded-none rounded-r-lg border-y border-r border-gray-400 bg-[#C2C4C6] hover:bg-[#C2C4C6] "
-                    aria-label={`Toggle Menu for ${photoAlbum.photoAlbumName}`}
-                  >
-                    <Pencil color="rgb(1,60,90)" className="h-4 w-4" />
-                    <span className="sr-only">Toggle menu</span>
-                  </Button>
-                </DropdownMenuTrigger>
-                <DropdownMenuContent className="space-y-1">
-                  {/* Delete Album Button */}
-                  <DropdownMenuItem asChild>
+            <>
+              <div key={photoAlbum.id} className="flex">
+                <Button
+                  className={` h-9 w-32 rounded-none rounded-l-lg border-y border-l border-gray-400 bg-primary_blue p-2 text-white hover:contrast-75  active:contrast-75 ${
+                    selectedPhotoAlbum?.photoAlbumId === photoAlbum.id
+                      ? 'bg-[#56647E]'
+                      : ''
+                  }`}
+                  aria-label={`Photo Album ${photoAlbum.photoAlbumName} (${photoAlbum.Images.length} Images)`}
+                  onClick={() =>
+                    setSelectedPhotoAlbum({
+                      photoAlbumId: photoAlbum.id,
+                      photoAlbumIndex: index,
+                    })
+                  }
+                >
+                  <span className="text-xs ">{photoAlbum.photoAlbumName}</span>
+                  <span className="sr-only">{`Photo Album ${photoAlbum.photoAlbumName} (${photoAlbum.Images.length} Images)`}</span>
+                </Button>
+                <DropdownMenu>
+                  {/* Edit Button (Open Pop-Up) */}
+                  <DropdownMenuTrigger asChild>
                     <Button
-                      onClick={() => {
-                        handleDeletePhotoAlbum(photoAlbum.photoAlbumName);
+                      aria-haspopup="true"
+                      size="icon"
+                      className="h-9 rounded-none rounded-r-lg border-y border-r border-gray-400 bg-[#C2C4C6] hover:bg-[#C2C4C6] "
+                      aria-label={`Toggle Menu for ${photoAlbum.photoAlbumName}`}
+                    >
+                      <Pencil color="rgb(1,60,90)" className="h-4 w-4" />
+                      <span className="sr-only">Toggle menu</span>
+                    </Button>
+                  </DropdownMenuTrigger>
+                  <DropdownMenuContent className="space-y-1">
+                    {/* Delete Album Button */}
+                    <DropdownMenuItem asChild>
+                      <Button
+                        onClick={() => {
+                          handleDeletePhotoAlbum(photoAlbum.photoAlbumName);
+                        }}
+                        className="flex w-full cursor-pointer space-x-2 bg-white text-black focus:bg-red-600  focus:text-white"
+                        aria-label={`Delete ${photoAlbum.photoAlbumName}`}
+                      >
+                        <Trash2 className="h-4 w-4" />
+                        <span className="text-xs">Delete Album</span>
+                        <span className="sr-only">
+                          Delete {photoAlbum.photoAlbumName}
+                        </span>
+                      </Button>
+                    </DropdownMenuItem>
+                    {/* Update Album Name Button */}
+                    <DropdownMenuItem asChild>
+                      <Button
+                        className="flex w-full cursor-pointer space-x-2 bg-white text-black focus:bg-blue-600 focus:text-white"
+                        aria-label={`Update Name for ${photoAlbum.photoAlbumName}`}
+                        onClick={() => {
+                          setIsUpdatingPhotoAlbumName(true);
+                          setUpdatedPhotoAlbumNameId(photoAlbum.id);
+                        }}
+                      >
+                        <Pencil className="h-4 w-4" />
+                        <span className="text-xs">Update Name</span>
+                        <span className="sr-only">
+                          Update Name for {photoAlbum.photoAlbumName}
+                        </span>
+                      </Button>
+                    </DropdownMenuItem>
+                  </DropdownMenuContent>
+                </DropdownMenu>
+              </div>
+              {isUpdatingPhotoAlbumName &&
+                updatedPhotoAlbumNameId === photoAlbum.id && (
+                  <div key={0}>
+                    <input
+                      ref={updateInputRef}
+                      id="add-photo-album-name"
+                      className="rounded-full border-2 border-blue-700 bg-profile_button_bg text-center text-xs placeholder-slate-400"
+                      type="text"
+                      placeholder="Enter Album Name"
+                      title="Please enter a name for you new photo album"
+                      onKeyDown={(event) => {
+                        handleUpdateAlbumKeyDown(
+                          event,
+                          photoAlbum.photoAlbumName
+                        );
                       }}
-                      className="flex w-full cursor-pointer space-x-2 bg-white text-black focus:bg-red-600  focus:text-white"
-                      aria-label={`Delete ${photoAlbum.photoAlbumName}`}
-                    >
-                      <Trash2 className="h-4 w-4" />
-                      <span className="text-xs">Delete Album</span>
-                      <span className="sr-only">
-                        Delete {photoAlbum.photoAlbumName}
-                      </span>
-                    </Button>
-                  </DropdownMenuItem>
-                  {/* Update Album Name Button */}
-                  <DropdownMenuItem asChild>
+                      value={updatedPhotoAlbumName}
+                      onChange={(e) => setUpdatedPhotoAlbumName(e.target.value)}
+                    />
+
                     <Button
-                      className="flex w-full cursor-pointer space-x-2 bg-white text-black focus:bg-blue-600 focus:text-white"
-                      aria-label={`Update Name for ${photoAlbum.photoAlbumName}`}
+                      className="h-9 w-9 rounded-lg border border-gray-400"
+                      onClick={resetUpdatingState}
+                      title="Cancel"
+                      aria-label="Cancel creating a new photo album"
                     >
-                      <Pencil className="h-4 w-4" />
-                      <span className="text-xs">Update Name</span>
-                      <span className="sr-only">
-                        Update Name for {photoAlbum.photoAlbumName}
-                      </span>
+                      ✕
                     </Button>
-                  </DropdownMenuItem>
-                </DropdownMenuContent>
-              </DropdownMenu>
-            </div>
+                    <Button
+                      className="h-9 w-9 rounded-lg bg-primary_blue text-white"
+                      onClick={() => {
+                        handleUpdateAlbumName(photoAlbum.photoAlbumName);
+                      }}
+                      title="Save"
+                      aria-label="Save the new photo album with the name entered in the input field"
+                    >
+                      ✓
+                    </Button>
+                  </div>
+                )}
+            </>
           ))}
         {isCreatingPhotoAlbum && (
           <>
             <input
-              ref={inputRef}
+              ref={createInputRef}
               id="add-photo-album-name"
               className="rounded-full border-2 border-blue-700 bg-profile_button_bg text-center text-xs placeholder-slate-400"
               type="text"
               placeholder="Enter Album Name"
               title="Please enter a name for you new photo album"
-              onKeyDown={handleKeyDown}
+              onKeyDown={handleCreateAlbumKeyDown}
               value={newPhotoAlbumName}
               onChange={(e) => setNewPhotoAlbumName(e.target.value)}
             />
+
+            <Button
+              className="h-9 w-9 rounded-lg border border-gray-400"
+              onClick={resetCreatingState}
+              title="Cancel"
+              aria-label="Cancel creating a new photo album"
+            >
+              ✕
+            </Button>
+            <Button
+              className="h-9 w-9 rounded-lg bg-primary_blue text-white"
+              onClick={handleCreateNewAlbum}
+              title="Save"
+              aria-label="Save the new photo album with the name entered in the input field"
+            >
+              ✓
+            </Button>
           </>
         )}
         <Button
@@ -227,10 +394,11 @@ export default function EditProjectSection({
         >
           +
         </Button>
+        {/* Commented out because not sure what they will preview */}
         {/* TODO: Add functionality to Preview button */}
-        <Button className="ml-auto w-32 border border-gray-400 bg-profile_button_bg text-xs text-black hover:bg-primary_blue hover:text-white focus:bg-primary_blue  focus:text-white">
+        {/* <Button className="ml-auto w-32 border border-gray-400 bg-profile_button_bg text-xs text-black hover:bg-primary_blue hover:text-white focus:bg-primary_blue  focus:text-white">
           Preview
-        </Button>
+        </Button> */}
       </div>
 
       {selectedPhotoAlbum && photoAlbums && (
