@@ -48,11 +48,11 @@ export default function Contacts({
 
   return (
     <div className="flex flex-grow flex-col">
-      {isSignedIn && contact?.isContactPublic && (
+      {(isSignedIn || contact?.isContactPublic) && (
         <div className="flex pt-5 sm:justify-end sm:pt-0">
           <div className="flex flex-col space-y-4 xl:space-y-6">
             <h2 className="text-sm font-semibold lg:text-lg 2xl:text-xl">
-              Contact
+              Contacts
             </h2>
             <ul className="grid list-none grid-cols-2 gap-5 break-all sm:grid-cols-1">
               {userLinks.map((link, index) => {
@@ -105,15 +105,17 @@ export default function Contacts({
             Edit
           </Button>
         )}
-        <SignedOut>
-          <Button
-            onClick={() => toggleSignInPopUp(true)}
-            className="mt-8 w-full border border-gray-400 bg-profile_button_bg text-xs text-black hover:bg-primary_blue hover:text-white focus:bg-primary_blue  focus:text-white sm:w-20"
-            aria-label={`Contact`}
-          >
-            Contact
-          </Button>
-        </SignedOut>
+        {!contact?.isContactPublic && (
+          <SignedOut>
+            <Button
+              onClick={() => toggleSignInPopUp(true)}
+              className="mt-8 w-full border border-gray-400 bg-profile_button_bg text-xs text-black hover:bg-primary_blue hover:text-white focus:bg-primary_blue  focus:text-white sm:w-20"
+              aria-label={`Contact`}
+            >
+              Contacts
+            </Button>
+          </SignedOut>
+        )}
       </div>
     </div>
   );
