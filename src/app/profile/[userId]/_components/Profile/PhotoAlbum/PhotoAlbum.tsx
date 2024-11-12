@@ -1,7 +1,7 @@
 import React from 'react';
 import MasonryWrapper from '@/components/Masonry/MasonryGrid';
 import { trpc } from '@/lib/trpc/client';
-import SkeletonCard from '@/components/Loading/SkeletonCard';
+import { PhotoSkeleton } from '@/components/Loading/SkeletonCard';
 import CreatePostForm from '../UploadImage/CreatePostForm';
 
 interface PhotoAlbumProps {
@@ -27,10 +27,10 @@ export default function PhotoAlbum({
   if (isLoading) {
     return (
       <div className="flex flex-wrap justify-center gap-4 p-4">
-        <SkeletonCard />
-        <SkeletonCard />
-        <SkeletonCard />
-        <SkeletonCard />
+        <PhotoSkeleton />
+        <PhotoSkeleton />
+        <PhotoSkeleton />
+        <PhotoSkeleton />
       </div>
     );
   }

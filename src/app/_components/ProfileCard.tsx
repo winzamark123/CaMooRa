@@ -3,7 +3,7 @@
 import React, { Suspense } from 'react';
 import { Card } from '@/components/ui/card';
 import { trpc } from '@/lib/trpc/client';
-import SkeletonCard from '@/components/Loading/SkeletonCard';
+import { PhotoSkeleton } from '@/components/Loading/SkeletonCard';
 import Image from 'next/image';
 
 interface ProfileCardProps {
@@ -65,7 +65,7 @@ function ProfileCardContent({ id }: ProfileCardProps) {
 // Main component just handles the Suspense wrapper
 export default function ProfileCard({ id }: ProfileCardProps) {
   return (
-    <Suspense fallback={<SkeletonCard />}>
+    <Suspense fallback={<PhotoSkeleton />}>
       <ProfileCardContent id={id} />
     </Suspense>
   );
