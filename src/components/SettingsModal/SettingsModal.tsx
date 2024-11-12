@@ -1,4 +1,4 @@
-import { trpc } from '@/lib/trpc/client';
+// import { trpc } from '@/lib/trpc/client';
 import {
   Dialog,
   DialogContent,
@@ -6,12 +6,12 @@ import {
   DialogTitle,
   DialogTrigger,
 } from '@/components/ui/dialog';
-import { Button } from '@/components/ui/button';
+// import { Button } from '@/components/ui/button';
 import { ModeToggle } from '../Theme/mode-toggle';
 import { Settings } from 'lucide-react';
 
 export default function SettingsModal() {
-  const { mutate: deleteUser } = trpc.user.deleteUser.useMutation();
+  // const { mutate: deleteUser } = trpc.user.deleteUser.useMutation();
 
   return (
     <Dialog>
@@ -31,12 +31,12 @@ export default function SettingsModal() {
         {/* Add your settings content here */}
         <div className="flex justify-between">
           <ModeToggle />
-          <Button
+          {/* <Button
             className="bg-rose-500 hover:bg-rose-600"
             onClick={() => deleteUser()}
           >
             Delete Account
-          </Button>
+          </Button> */}
         </div>
       </DialogContent>
     </Dialog>
