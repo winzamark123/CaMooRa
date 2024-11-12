@@ -4,7 +4,7 @@ import { useState } from 'react';
 import { trpc } from '@/lib/trpc/client';
 import { HoverEffect } from '../../components/ui/card-hover-effect';
 import { useUser } from '@clerk/nextjs';
-import SkeletonCard from '@/components/Loading/SkeletonCard';
+import { PhotoSkeleton } from '@/components/Loading/SkeletonCard';
 import {
   DropdownMenu,
   DropdownMenuContent,
@@ -73,10 +73,10 @@ export default function ExhibitionHall() {
       </div>
       {isLoading || fav_users_loading ? (
         <div className="flex justify-center gap-4 py-6">
-          <SkeletonCard />
-          <SkeletonCard />
-          <SkeletonCard />
-          <SkeletonCard />
+          <PhotoSkeleton />
+          <PhotoSkeleton />
+          <PhotoSkeleton />
+          <PhotoSkeleton />
         </div>
       ) : (
         <div className="w-full">
