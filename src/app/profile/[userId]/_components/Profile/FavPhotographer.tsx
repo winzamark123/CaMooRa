@@ -3,6 +3,7 @@ import { trpc } from '@/lib/trpc/client';
 import { Button } from '@/components/ui/button';
 import { useState } from 'react';
 import { Star } from 'lucide-react';
+import { Skeleton } from '@/components/ui/skeleton';
 
 interface FavPhotographerProps {
   userId: string;
@@ -49,7 +50,7 @@ export default function FavPhotographer({
   });
 
   if (isLoading) {
-    return <div> Loading...</div>;
+    return <Skeleton className="h-4 w-4 rounded-full" />;
   }
 
   function toggleFavorite() {

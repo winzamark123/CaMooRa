@@ -27,3 +27,14 @@ export function ProfileSkeleton() {
     </div>
   );
 }
+
+export function DropDownSkeleton() {
+  return (
+    <div className="flex">
+      <Skeleton className="h-11 w-11 rounded-full" />
+      <div className="flex flex-col items-center justify-center">
+        <Skeleton className="h-4 w-[100px]" />
+      </div>
+    </div>
+  );
+}
