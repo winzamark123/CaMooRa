@@ -122,7 +122,7 @@ export default function EditProjectSection({
   }
 
   return (
-    <div>
+    <div className="relative overflow-hidden">
       <h4 className="mb-5 border-b-2 pb-4 font-bold">
         My Albums{' '}
         <span className="text-xs font-normal">
@@ -134,103 +134,101 @@ export default function EditProjectSection({
         feeds.
       </p>
       {/* TODO: Allow user to update their Photo Album names */}
-      <div className="mb-5 flex flex-row flex-wrap gap-x-4">
-        {/* Display All Photo Albums Buttons */}
-        {photoAlbums &&
-          photoAlbums.map((photoAlbum, index) => (
-            <div key={photoAlbum.id} className="flex">
-              <Button
-                className={` h-9 w-32 rounded-none rounded-l-lg border-y border-l border-gray-400 bg-primary_blue p-2 text-white hover:contrast-75  active:contrast-75 ${
-                  selectedPhotoAlbum?.photoAlbumId === photoAlbum.id
-                    ? 'bg-[#56647E]'
-                    : ''
-                }`}
-                aria-label={`Photo Album ${photoAlbum.photoAlbumName} (${photoAlbum.Images.length} Images)`}
-                onClick={() =>
-                  setSelectedPhotoAlbum({
-                    photoAlbumId: photoAlbum.id,
-                    photoAlbumIndex: index,
-                  })
-                }
-              >
-                <span className="text-xs ">{photoAlbum.photoAlbumName}</span>
-                <span className="sr-only">{`Photo Album ${photoAlbum.photoAlbumName} (${photoAlbum.Images.length} Images)`}</span>
-              </Button>
-              <DropdownMenu>
-                {/* Edit Button (Open Pop-Up) */}
-                <DropdownMenuTrigger asChild>
-                  <Button
-                    aria-haspopup="true"
-                    size="icon"
-                    className="h-9 rounded-none rounded-r-lg border-y border-r border-gray-400 bg-[#C2C4C6] hover:bg-[#C2C4C6] "
-                    aria-label={`Toggle Menu for ${photoAlbum.photoAlbumName}`}
-                  >
-                    <Pencil color="rgb(1,60,90)" className="h-4 w-4" />
-                    <span className="sr-only">Toggle menu</span>
-                  </Button>
-                </DropdownMenuTrigger>
-                <DropdownMenuContent className="space-y-1">
-                  {/* Delete Album Button */}
-                  <DropdownMenuItem asChild>
+      <div className="mb-5 overflow-hidden">
+        <div className="scrollbar-hide flex flex-nowrap gap-x-4 overflow-x-auto">
+          {/* Display All Photo Albums Buttons */}
+          {photoAlbums &&
+            photoAlbums.map((photoAlbum, index) => (
+              <div key={photoAlbum.id} className="flex shrink-0">
+                <Button
+                  className={` h-9 w-32 rounded-none rounded-l-lg border-y border-l border-gray-400 bg-primary_blue p-2 text-white hover:contrast-75  active:contrast-75 ${
+                    selectedPhotoAlbum?.photoAlbumId === photoAlbum.id
+                      ? 'bg-[#56647E]'
+                      : ''
+                  }`}
+                  aria-label={`Photo Album ${photoAlbum.photoAlbumName} (${photoAlbum.Images.length} Images)`}
+                  onClick={() =>
+                    setSelectedPhotoAlbum({
+                      photoAlbumId: photoAlbum.id,
+                      photoAlbumIndex: index,
+                    })
+                  }
+                >
+                  <span className="text-xs ">{photoAlbum.photoAlbumName}</span>
+                  <span className="sr-only">{`Photo Album ${photoAlbum.photoAlbumName} (${photoAlbum.Images.length} Images)`}</span>
+                </Button>
+                <DropdownMenu>
+                  {/* Edit Button (Open Pop-Up) */}
+                  <DropdownMenuTrigger asChild>
                     <Button
-                      onClick={() => {
-                        handleDeletePhotoAlbum(photoAlbum.photoAlbumName);
-                      }}
-                      className="flex w-full cursor-pointer space-x-2 bg-white text-black focus:bg-red-600  focus:text-white"
-                      aria-label={`Delete ${photoAlbum.photoAlbumName}`}
+                      aria-haspopup="true"
+                      size="icon"
+                      className="h-9 rounded-none rounded-r-lg border-y border-r border-gray-400 bg-[#C2C4C6] hover:bg-[#C2C4C6] "
+                      aria-label={`Toggle Menu for ${photoAlbum.photoAlbumName}`}
                     >
-                      <Trash2 className="h-4 w-4" />
-                      <span className="text-xs">Delete Album</span>
-                      <span className="sr-only">
-                        Delete {photoAlbum.photoAlbumName}
-                      </span>
+                      <Pencil color="rgb(1,60,90)" className="h-4 w-4" />
+                      <span className="sr-only">Toggle menu</span>
                     </Button>
-                  </DropdownMenuItem>
-                  {/* Update Album Name Button */}
-                  <DropdownMenuItem asChild>
-                    <Button
-                      className="flex w-full cursor-pointer space-x-2 bg-white text-black focus:bg-blue-600 focus:text-white"
-                      aria-label={`Update Name for ${photoAlbum.photoAlbumName}`}
-                    >
-                      <Pencil className="h-4 w-4" />
-                      <span className="text-xs">Update Name</span>
-                      <span className="sr-only">
-                        Update Name for {photoAlbum.photoAlbumName}
-                      </span>
-                    </Button>
-                  </DropdownMenuItem>
-                </DropdownMenuContent>
-              </DropdownMenu>
+                  </DropdownMenuTrigger>
+                  <DropdownMenuContent className="space-y-1">
+                    {/* Delete Album Button */}
+                    <DropdownMenuItem asChild>
+                      <Button
+                        onClick={() => {
+                          handleDeletePhotoAlbum(photoAlbum.photoAlbumName);
+                        }}
+                        className="flex w-full cursor-pointer space-x-2 bg-white text-black focus:bg-red-600  focus:text-white"
+                        aria-label={`Delete ${photoAlbum.photoAlbumName}`}
+                      >
+                        <Trash2 className="h-4 w-4" />
+                        <span className="text-xs">Delete Album</span>
+                        <span className="sr-only">
+                          Delete {photoAlbum.photoAlbumName}
+                        </span>
+                      </Button>
+                    </DropdownMenuItem>
+                    {/* Update Album Name Button */}
+                    <DropdownMenuItem asChild>
+                      <Button
+                        className="flex w-full cursor-pointer space-x-2 bg-white text-black focus:bg-blue-600 focus:text-white"
+                        aria-label={`Update Name for ${photoAlbum.photoAlbumName}`}
+                      >
+                        <Pencil className="h-4 w-4" />
+                        <span className="text-xs">Update Name</span>
+                        <span className="sr-only">
+                          Update Name for {photoAlbum.photoAlbumName}
+                        </span>
+                      </Button>
+                    </DropdownMenuItem>
+                  </DropdownMenuContent>
+                </DropdownMenu>
+              </div>
+            ))}
+          {isCreatingPhotoAlbum && (
+            <div className="shrink-0">
+              <input
+                ref={inputRef}
+                id="add-photo-album-name"
+                className="rounded-full border-2 border-blue-700 bg-profile_button_bg text-center text-xs placeholder-slate-400"
+                type="text"
+                placeholder="Enter Album Name"
+                title="Please enter a name for you new photo album"
+                onKeyDown={handleKeyDown}
+                value={newPhotoAlbumName}
+                onChange={(e) => setNewPhotoAlbumName(e.target.value)}
+              />
             </div>
-          ))}
-        {isCreatingPhotoAlbum && (
-          <>
-            <input
-              ref={inputRef}
-              id="add-photo-album-name"
-              className="rounded-full border-2 border-blue-700 bg-profile_button_bg text-center text-xs placeholder-slate-400"
-              type="text"
-              placeholder="Enter Album Name"
-              title="Please enter a name for you new photo album"
-              onKeyDown={handleKeyDown}
-              value={newPhotoAlbumName}
-              onChange={(e) => setNewPhotoAlbumName(e.target.value)}
-            />
-          </>
-        )}
-        <Button
-          className="rounded-lg border border-gray-400 bg-profile_button_bg text-xs text-black hover:bg-primary_blue hover:text-white focus:bg-primary_blue  focus:text-white"
-          aria-label="Create a New Photo Album"
-          onClick={() => {
-            setIsCreatingPhotoAlbum(true);
-          }}
-        >
-          +
-        </Button>
-        {/* TODO: Add functionality to Preview button */}
-        <Button className="ml-auto w-32 border border-gray-400 bg-profile_button_bg text-xs text-black hover:bg-primary_blue hover:text-white focus:bg-primary_blue  focus:text-white">
-          Preview
-        </Button>
+          )}
+          <Button
+            className="shrink-0 rounded-lg border border-gray-400 bg-profile_button_bg text-xs text-black hover:bg-primary_blue hover:text-white focus:bg-primary_blue  focus:text-white"
+            aria-label="Create a New Photo Album"
+            onClick={() => {
+              setIsCreatingPhotoAlbum(true);
+            }}
+          >
+            +
+          </Button>
+        </div>
       </div>
 
       {selectedPhotoAlbum && photoAlbums && (

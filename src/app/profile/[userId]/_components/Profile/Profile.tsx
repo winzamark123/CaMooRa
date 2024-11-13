@@ -110,7 +110,7 @@ export default function Profile() {
       </div>
 
       {/* Projects section */}
-      <div className="mt-8 w-full">
+      <div className="w-full">
         <Projects clerkId={clerkId} />
       </div>
 
