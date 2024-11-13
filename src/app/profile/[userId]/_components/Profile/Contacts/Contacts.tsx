@@ -14,7 +14,8 @@ export default function Contacts({
   toggleSignInPopUp,
   toggleEditing,
 }: ContactsProps) {
-  const { isSignedIn, user: currentUser } = useUser();
+  const { isSignedIn } = useUser();
+  const { data: current_user } = trpc.user.getCurrentUser.useQuery();
   const {
     data: contact,
     isLoading: isContactLoading,
@@ -104,7 +105,7 @@ export default function Contacts({
         </div>
       )}
       <div className="mt-auto flex items-end justify-end p-4">
-        {currentUser?.id === userId && (
+        {current_user?.id === userId && (
           <Button
             className="w-full border border-gray-400 bg-profile_button_bg text-xs text-black hover:bg-primary_blue hover:text-white focus:bg-primary_blue focus:text-white sm:w-20"
             aria-label="Edit your Profile"

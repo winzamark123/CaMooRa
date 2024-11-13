@@ -1,4 +1,4 @@
-import { publicProcedure } from '@/lib/trpc/trpc';
+import { protectedProcedure, publicProcedure } from '@/lib/trpc/trpc';
 import { z } from 'zod';
 import prisma from '@prisma/prisma';
 import type { Profile } from '../Profile/index';
@@ -27,12 +27,21 @@ export const getAllUsers = publicProcedure.query(async () => {
 });
 
 export const getUser = publicProcedure
-  .input(z.object({ clerkId: z.string() }))
+  .input(z.object({ userId: z.string() }))
   .query(async ({ input }) => {
     const user = await prisma.user.findUnique({
       where: {
-        clerkId: input.clerkId,
+        id: input.userId,
       },
     });
     return user as User;
   });
+
+export const getCurrentUser = protectedProcedure.query(async ({ ctx }) => {
+  const user = await prisma.user.findUnique({
+    where: {
+      clerkId: ctx.user.id,
+    },
+  });
+  return user;
+});

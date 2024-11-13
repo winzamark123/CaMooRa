@@ -1,14 +1,10 @@
-import { protectedProcedure } from '@/lib/trpc/trpc';
+import { protectedOwnerProcedure } from '@/lib/trpc/trpc';
 import prisma from '@prisma/prisma';
 import { profileSchema } from '@/server/routers/Schemas/schema';
 
-export const updateProfile = protectedProcedure
+export const updateProfile = protectedOwnerProcedure
   .input(profileSchema)
-  .mutation(async ({ input, ctx }) => {
-    if (ctx.user?.id !== input.userId) {
-      throw new Error('You do not have permission to update this profile');
-    }
-
+  .mutation(async ({ input }) => {
     await prisma.profile.update({
       where: {
         userId: input.userId,

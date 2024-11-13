@@ -5,6 +5,7 @@ export const user_router = router({
   getAllPhotographers: queries.getAllPhotographers,
   getAllUsers: queries.getAllUsers,
   getUser: queries.getUser,
+  getCurrentUser: queries.getCurrentUser,
   deleteUser: mutations.deleteUser,
 });
 
