@@ -49,12 +49,12 @@ export default function Contacts({
   return (
     <div className="flex flex-grow flex-col">
       {(isSignedIn || contact?.isContactPublic) && (
-        <div className="flex pt-5 sm:justify-end sm:pt-0">
-          <div className="flex flex-col space-y-4 xl:space-y-6">
+        <div className="flex w-full p-4 sm:justify-end">
+          <div className="flex w-full flex-col space-y-4 xl:space-y-6">
             <h2 className="text-sm font-semibold lg:text-lg 2xl:text-xl">
               Contacts
             </h2>
-            <ul className="grid list-none grid-cols-2 gap-5 break-all sm:grid-cols-1">
+            <ul className="flex w-full flex-col gap-4">
               {userLinks.map((link, index) => {
                 if (!link) return null;
 
@@ -62,17 +62,18 @@ export default function Contacts({
 
                 if (IconComponent) {
                   return (
-                    <li key={index} className="flex items-center space-x-3">
-                      <div className="flex items-center space-x-3">
-                        {IconComponent}
+                    <li key={index} className="flex min-w-0">
+                      <div className="flex min-w-0 items-center gap-3">
+                        <div className="flex-shrink-0">{IconComponent}</div>
                         {/* Checks for Links  */}
                         {typeof link.data === 'object' &&
                         (link.type === 'portfolio' ||
                           link.type === 'instagram') ? (
                           <a
-                            className="cursor-pointer text-sm underline hover:text-blue-800"
+                            className="truncate text-sm underline hover:text-blue-800"
                             aria-label={`Link to ${link.type}`}
                             href={link.data.link}
+                            title={link.data.title || link.type}
                           >
                             {link.data.title
                               ? link.data.title
@@ -80,7 +81,14 @@ export default function Contacts({
                           </a>
                         ) : (
                           // No Links
-                          <span className="text-sm">
+                          <span
+                            className="truncate text-sm"
+                            title={
+                              typeof link.data === 'string'
+                                ? link.data
+                                : link.data.link
+                            }
+                          >
                             {typeof link.data === 'string'
                               ? link.data
                               : link.data.link}
@@ -95,10 +103,10 @@ export default function Contacts({
           </div>
         </div>
       )}
-      <div className="mt-auto flex items-end justify-end">
+      <div className="mt-auto flex items-end justify-end p-4">
         {currentUser?.id === clerkId && (
           <Button
-            className="mt-8 w-full border border-gray-400 bg-profile_button_bg text-xs text-black hover:bg-primary_blue hover:text-white focus:bg-primary_blue  focus:text-white sm:w-20"
+            className="w-full border border-gray-400 bg-profile_button_bg text-xs text-black hover:bg-primary_blue hover:text-white focus:bg-primary_blue focus:text-white sm:w-20"
             aria-label="Edit your Profile"
             onClick={() => toggleEditing(true)}
           >
@@ -109,7 +117,7 @@ export default function Contacts({
           <SignedOut>
             <Button
               onClick={() => toggleSignInPopUp(true)}
-              className="mt-8 w-full border border-gray-400 bg-profile_button_bg text-xs text-black hover:bg-primary_blue hover:text-white focus:bg-primary_blue  focus:text-white sm:w-20"
+              className="w-full border border-gray-400 bg-profile_button_bg text-xs text-black hover:bg-primary_blue hover:text-white focus:bg-primary_blue focus:text-white sm:w-20"
               aria-label={`Contact`}
             >
               Contacts

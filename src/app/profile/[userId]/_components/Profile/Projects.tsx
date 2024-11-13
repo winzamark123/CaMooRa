@@ -30,7 +30,7 @@ export default function Projects({ clerkId }: { clerkId: string }) {
   }
 
   return (
-    <main className="mt-20 flex flex-col">
+    <main className="mt-8 flex flex-col">
       <div className="overflow-hidden">
         <div className="scrollbar-hide flex overflow-x-auto">
           {photoAlbums &&
