@@ -13,11 +13,11 @@ import {
 import { Trash2, Pencil } from 'lucide-react';
 
 interface EditProjectSectionProps {
-  clerkId: string;
+  userId: string;
 }
 
 export default function EditProjectSection({
-  clerkId,
+  userId,
 }: EditProjectSectionProps) {
   // State and Refs
   const [newPhotoAlbumName, setNewPhotoAlbumName] = useState('');
@@ -32,7 +32,7 @@ export default function EditProjectSection({
     data: photoAlbums,
     isLoading: isLoadingSections,
     refetch: refetchPhotoAlbums,
-  } = trpc.photoAlbum.getAllPhotoAlbums.useQuery({ clerkId });
+  } = trpc.photoAlbum.getAllPhotoAlbums.useQuery({ userId });
 
   const createPhotoAlbum = trpc.photoAlbum.createPhotoAlbum.useMutation({
     onSuccess: () => {
@@ -234,7 +234,7 @@ export default function EditProjectSection({
       {selectedPhotoAlbum && photoAlbums && (
         <PhotoAlbum
           photoAlbumId={selectedPhotoAlbum.photoAlbumId}
-          clerkId={clerkId}
+          userId={userId}
           isEditing={true}
         />
       )}

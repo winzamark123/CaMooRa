@@ -13,7 +13,7 @@ export default function UsernameProfilePic({ id }: UsernameProfilePicProps) {
     data: user_profile,
     isLoading,
     error,
-  } = trpc.profile.getProfile.useQuery({ clerkId: id });
+  } = trpc.profile.getPublicProfile.useQuery({ userId: id });
 
   if (isLoading) {
     return <DropDownSkeleton />;

@@ -26,7 +26,7 @@ export const updateProfilePic = protectedProcedure
 
     // Update the profile to remove the reference to the previous profile picture
     await prisma.profile.update({
-      where: { clerkId: ctx.user.id },
+      where: { userId: ctx.user.id },
       data: { profilePicId: success?.image_id },
     });
 
@@ -65,7 +65,7 @@ export const deleteImage = protectedProcedure
       where: { id: input.imageId },
     });
 
-    if (image?.clerkId !== ctx.user.id) {
+    if (image?.userId !== ctx.user.id) {
       throw new Error('Unauthorized');
     }
 

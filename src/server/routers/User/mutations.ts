@@ -8,7 +8,7 @@ export const deleteUser = protectedProcedure.mutation(async ({ ctx }) => {
   try {
     // First get all images associated with the user
     const userImages = await prisma.images.findMany({
-      where: { clerkId: ctx.user.id },
+      where: { userId: ctx.user.id },
       select: { key: true },
     });
 

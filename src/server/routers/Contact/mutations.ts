@@ -5,13 +5,13 @@ import { contactSchema } from '@/server/routers/Schemas/schema';
 export const updateContact = protectedProcedure
   .input(contactSchema)
   .mutation(async ({ input, ctx }) => {
-    if (ctx.user?.id !== input.clerkId) {
+    if (ctx.user?.id !== input.userId) {
       throw new Error('You do not have permission to update this contact');
     }
     console.log(input);
     await prisma.contact.update({
       where: {
-        clerkId: input.clerkId,
+        userId: input.userId,
       },
       data: {
         email: input.email,

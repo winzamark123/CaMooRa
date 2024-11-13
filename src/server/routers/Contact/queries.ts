@@ -3,12 +3,12 @@ import { publicProcedure } from '@/lib/trpc/trpc';
 import prisma from '@prisma/prisma';
 
 export const getContact = publicProcedure
-  .input(z.object({ clerkId: z.string() }))
+  .input(z.object({ userId: z.string() }))
   .query(async ({ input, ctx }) => {
     console.log(ctx.user?.id);
     return await prisma.contact.findUnique({
       where: {
-        clerkId: input.clerkId,
+        userId: input.userId,
       },
       select: {
         email: true,

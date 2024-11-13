@@ -15,8 +15,8 @@ export default function FavPhotographer({
   photographerId,
 }: FavPhotographerProps) {
   const isFavoriteQuery = trpc.favorites.isFavorite.useQuery({
-    clerkId: userId,
-    favoriteClerkId: photographerId,
+    userId: userId,
+    favoriteUserId: photographerId,
   });
 
   const [isFavorite, setIsFavorite] = useState(isFavoriteQuery.data);

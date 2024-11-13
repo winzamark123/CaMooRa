@@ -3,7 +3,7 @@ import * as queries from './queries';
 import * as mutations from './mutations';
 
 export interface Profile {
-  clerkId: string;
+  userId: string;
   firstName: string;
   lastName: string;
   additionalName?: string;
@@ -12,6 +12,7 @@ export interface Profile {
   bio?: string;
 }
 export const profileRouter = router({
-  getProfile: queries.getProfile,
+  getMyProfile: queries.getMyProfile,
+  getPublicProfile: queries.getPublicProfile,
   updateProfile: mutations.updateProfile,
 });

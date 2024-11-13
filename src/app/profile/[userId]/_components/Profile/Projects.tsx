@@ -8,10 +8,10 @@ export interface SelectedPhotoAlbumProps {
   photoAlbumId: string;
   photoAlbumIndex: number;
 }
-export default function Projects({ clerkId }: { clerkId: string }) {
+export default function Projects({ userId }: { userId: string }) {
   const { data: photoAlbums, isLoading } =
     trpc.photoAlbum.getAllPhotoAlbums.useQuery({
-      clerkId,
+      userId,
     });
 
   const [selectedPhotoAlbum, setSelectedPhotoAlbum] =
@@ -58,7 +58,7 @@ export default function Projects({ clerkId }: { clerkId: string }) {
       </div>
       {selectedPhotoAlbum && (
         <PhotoAlbum
-          clerkId={clerkId}
+          userId={userId}
           photoAlbumId={selectedPhotoAlbum.photoAlbumId}
         />
       )}

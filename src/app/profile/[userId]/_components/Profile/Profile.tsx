@@ -24,7 +24,7 @@ export interface ProfileProps extends Profile {
 export default function Profile() {
   const [isEditing, setIsEditing] = useState(false);
   const pathname = usePathname();
-  const clerkId = pathname.split('/').pop() || '';
+  const userId = pathname.split('/').pop() || '';
   const [showSignInPopUp, setShowSignInPopUp] = useState(false);
 
   const {
@@ -32,14 +32,14 @@ export default function Profile() {
     isLoading: isProfileLoading,
     error: profileError,
     refetch: refetchProfile,
-  } = trpc.profile.getProfile.useQuery({ clerkId });
+  } = trpc.profile.getPublicProfile.useQuery({ userId });
 
   const {
     data: contact,
     isLoading: isContactLoading,
     error: contactError,
     refetch: refetchContact,
-  } = trpc.contact.getContact.useQuery({ clerkId });
+  } = trpc.contact.getContact.useQuery({ userId });
 
   if (isProfileLoading || isContactLoading) {
     return <ProfileSkeleton />;
@@ -64,7 +64,7 @@ export default function Profile() {
         <EditProfile
           contact={contact as Contact}
           profile={profile as ProfileProps}
-          clerkId={clerkId}
+          userId={userId}
           refetchProfile={refetchProfile}
           refetchContact={refetchContact}
           setIsEditing={setIsEditing}
@@ -93,7 +93,7 @@ export default function Profile() {
                 equipment={profile?.equipment}
                 usersFullName={usersFullName}
                 additionalName={profile?.additionalName}
-                clerkId={clerkId}
+                userId={userId}
               />
             </div>
           </div>
@@ -101,7 +101,7 @@ export default function Profile() {
           {/* Contacts section */}
           <div className="w-full md:w-auto">
             <Contacts
-              clerkId={clerkId}
+              userId={userId}
               toggleSignInPopUp={toggleSignInPopUp}
               toggleEditing={toggleEditing}
             />
@@ -111,7 +111,7 @@ export default function Profile() {
 
       {/* Projects section */}
       <div className="w-full">
-        <Projects clerkId={clerkId} />
+        <Projects userId={userId} />
       </div>
 
       {showSignInPopUp && <SignInPopUp onToggle={toggleSignInPopUp} />}

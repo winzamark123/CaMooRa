@@ -10,8 +10,8 @@ export const createPhotoAlbum = protectedProcedure
     // checking if the photo album exists (if it does, throw an error)
     const existingPhotoAlbum = await prisma.photoAlbum.findUnique({
       where: {
-        clerkId_photoAlbumName: {
-          clerkId: ctx.user.id,
+        userId_photoAlbumName: {
+          userId: ctx.user.id,
           photoAlbumName: input.photoAlbumName,
         },
       },
@@ -23,7 +23,7 @@ export const createPhotoAlbum = protectedProcedure
 
     // creating the photo album
     await create({
-      clerkId: ctx.user.id,
+      userId: ctx.user.id,
       photoAlbumName: input.photoAlbumName,
     });
   });
@@ -39,8 +39,8 @@ export const updatePhotoAlbumName = protectedProcedure
     // checking if the photo album exists (if it doesn't, throw an error)
     const existingPhotoAlbum = await prisma.photoAlbum.findUnique({
       where: {
-        clerkId_photoAlbumName: {
-          clerkId: ctx.user.id,
+        userId_photoAlbumName: {
+          userId: ctx.user.id,
           photoAlbumName: input.oldPhotoAlbumName,
         },
       },
@@ -53,8 +53,8 @@ export const updatePhotoAlbumName = protectedProcedure
     // updating the photo album name
     await prisma.photoAlbum.update({
       where: {
-        clerkId_photoAlbumName: {
-          clerkId: ctx.user.id,
+        userId_photoAlbumName: {
+          userId: ctx.user.id,
           photoAlbumName: input.oldPhotoAlbumName,
         },
       },
@@ -72,8 +72,8 @@ export const deletePhotoAlbum = protectedProcedure
     // checking if the photo album exists (if it doesn't, throw an error)
     const existingPhotoAlbum = await prisma.photoAlbum.findUnique({
       where: {
-        clerkId_photoAlbumName: {
-          clerkId: ctx.user.id,
+        userId_photoAlbumName: {
+          userId: ctx.user.id,
           photoAlbumName: input.photoAlbumName,
         },
       },
@@ -86,8 +86,8 @@ export const deletePhotoAlbum = protectedProcedure
     // deleting the photo album
     await prisma.photoAlbum.delete({
       where: {
-        clerkId_photoAlbumName: {
-          clerkId: ctx.user.id,
+        userId_photoAlbumName: {
+          userId: ctx.user.id,
           photoAlbumName: input.photoAlbumName,
         },
       },

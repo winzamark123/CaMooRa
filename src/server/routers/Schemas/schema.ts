@@ -2,7 +2,7 @@
 import { z } from 'zod';
 
 export const profileSchema = z.object({
-  clerkId: z.string(),
+  userId: z.string(),
   firstName: z
     .string()
     .min(1, { message: 'First Name required' })
@@ -33,7 +33,7 @@ export const profileSchema = z.object({
 });
 
 export const contactSchema = z.object({
-  clerkId: z.string(),
+  userId: z.string(),
   email: z.string().optional(),
   discord: z.string().optional(),
   instagramTitle: z

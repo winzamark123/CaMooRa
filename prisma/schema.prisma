@@ -14,8 +14,8 @@ datasource db {
 }
 
 model User {
-  // use Id or encrypt this
-  clerkId String @id @unique
+  id      String @id @default(cuid())
+  clerkId String @unique
 
   profile      Profile?
   contact      Contact?
@@ -26,12 +26,10 @@ model User {
 }
 
 model Favorites {
-  // user = user who saved the photographer
-  // photographer = user who is saved
   id             String @id @default(cuid())
-  user           User   @relation("favorites", fields: [userId], references: [clerkId], onDelete: Cascade)
+  user           User   @relation("favorites", fields: [userId], references: [id], onDelete: Cascade)
   userId         String
-  photographer   User   @relation("favoritedBy", fields: [photographerId], references: [clerkId], onDelete: Cascade)
+  photographer   User   @relation("favoritedBy", fields: [photographerId], references: [id], onDelete: Cascade)
   photographerId String
 
   @@unique([userId, photographerId])
@@ -39,8 +37,8 @@ model Favorites {
 
 model Profile {
   // Identifiers
-  user    User   @relation(fields: [clerkId], references: [clerkId], onDelete: Cascade)
-  clerkId String @unique
+  user    User   @relation(fields: [userId], references: [id], onDelete: Cascade)
+  userId  String @unique
 
   // Personal Information
   additionalName String?
@@ -55,9 +53,9 @@ model Profile {
 }
 
 model Contact {
-  // Indentifiers
-  user    User   @relation(fields: [clerkId], references: [clerkId], onDelete: Cascade)
-  clerkId String @unique
+  // Identifiers
+  user    User   @relation(fields: [userId], references: [id], onDelete: Cascade)
+  userId  String @unique
 
   // Contact Information
   email    String  @unique
@@ -78,12 +76,12 @@ model Contact {
 model PhotoAlbum {
   // Identifiers
   id             String   @id @default(cuid())
-  user           User     @relation(fields: [clerkId], references: [clerkId], onDelete: Cascade)
-  clerkId        String
+  user           User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+  userId         String
   photoAlbumName String
   Images         Images[]
 
-  @@unique([clerkId, photoAlbumName])
+  @@unique([userId, photoAlbumName])
 }
 
 model Images {
@@ -91,8 +89,8 @@ model Images {
   id           String      @id @default(cuid())
   PhotoAlbum   PhotoAlbum? @relation(fields: [PhotoAlbumId], references: [id], onDelete: Cascade)
   PhotoAlbumId String?
-  user         User        @relation(fields: [clerkId], references: [clerkId], onDelete: Cascade)
-  clerkId      String
+  user         User        @relation(fields: [userId], references: [id], onDelete: Cascade)
+  userId       String
 
   // Image Information
   key       String

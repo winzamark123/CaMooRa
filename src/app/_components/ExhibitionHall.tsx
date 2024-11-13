@@ -38,7 +38,7 @@ export default function ExhibitionHall() {
     isLoading: fav_users_loading,
     error: fav_users_error,
   } = trpc.favorites.getFavorite.useQuery(
-    { clerkId: user?.id as string },
+    { userId: user?.id as string },
     {
       enabled: !!user, // only fetch if the user is logged in
     }
