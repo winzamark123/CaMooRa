@@ -31,28 +31,30 @@ export default function Projects({ clerkId }: { clerkId: string }) {
 
   return (
     <main className="mt-20 flex flex-col">
-      <div className="flex flex-row">
-        {photoAlbums &&
-          photoAlbums.map((photoAlbum, index) => (
-            <button
-              key={photoAlbum.id}
-              className="rounded-t-2xl px-10 py-2.5 text-sm text-black shadow-md hover:contrast-75"
-              style={
-                selectedPhotoAlbum?.photoAlbumId === photoAlbum.id
-                  ? { backgroundColor: '#F7F5EF' }
-                  : { backgroundColor: '#E6E8E9' }
-              }
-              aria-label={`Photo Album ${photoAlbum.photoAlbumName}`}
-              onClick={() =>
-                setSelectedPhotoAlbum({
-                  photoAlbumId: photoAlbum.id,
-                  photoAlbumIndex: index,
-                })
-              }
-            >
-              {photoAlbum.photoAlbumName}
-            </button>
-          ))}
+      <div className="overflow-hidden">
+        <div className="scrollbar-hide flex overflow-x-auto">
+          {photoAlbums &&
+            photoAlbums.map((photoAlbum, index) => (
+              <button
+                key={photoAlbum.id}
+                className="shrink-0 rounded-t-2xl px-10 py-2.5 text-sm text-black shadow-md hover:contrast-75"
+                style={
+                  selectedPhotoAlbum?.photoAlbumId === photoAlbum.id
+                    ? { backgroundColor: '#F7F5EF' }
+                    : { backgroundColor: '#E6E8E9' }
+                }
+                aria-label={`Photo Album ${photoAlbum.photoAlbumName}`}
+                onClick={() =>
+                  setSelectedPhotoAlbum({
+                    photoAlbumId: photoAlbum.id,
+                    photoAlbumIndex: index,
+                  })
+                }
+              >
+                {photoAlbum.photoAlbumName}
+              </button>
+            ))}
+        </div>
       </div>
       {selectedPhotoAlbum && (
         <PhotoAlbum

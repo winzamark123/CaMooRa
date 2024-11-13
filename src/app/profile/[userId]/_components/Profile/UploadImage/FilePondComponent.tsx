@@ -85,7 +85,7 @@ export default function FilePondComponent({
     <div className="flex h-full w-full items-center justify-center overflow-hidden rounded-xl bg-stone-100 p-4">
       {isEditorVisible && currentFile && (
         <div className="fixed inset-0 z-50 flex items-center justify-center bg-black bg-opacity-50">
-          <div className="h-[80vh] w-[80vw]">
+          <div className="relative h-[90vh] w-[90vw] max-w-[1200px]">
             <PinturaEditor
               src={URL.createObjectURL(currentFile.file)}
               imageReader={createDefaultImageReader()}
@@ -103,12 +103,12 @@ export default function FilePondComponent({
         </div>
       )}
 
-      <div className="h-full w-1/2 overflow-auto">
+      <div className="h-full w-full overflow-auto">
         <FilePond
           ref={(ref) => setPond(ref)}
           filePosterMaxHeight={256}
           acceptedFileTypes={['image/*']}
-          instantUpload={true}
+          instantUpload={false}
           allowMultiple={allowMultiple}
           server={{
             process: processFile,
