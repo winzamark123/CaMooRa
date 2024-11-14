@@ -2,6 +2,7 @@ import { protectedProcedure } from '@/lib/trpc/trpc';
 import { z } from 'zod';
 import prisma from '@prisma/prisma';
 import { createPhotoAlbum as create } from './utils';
+import { deletePhotoCommand } from '../Images/s3-delete';
 
 // TODO: Add limit to the amount of characters in the photo album name (Both create and update for backend and frontend)
 export const createPhotoAlbum = protectedProcedure
@@ -69,27 +70,34 @@ export const deletePhotoAlbum = protectedProcedure
     })
   )
   .mutation(async ({ input, ctx }) => {
-    // checking if the photo album exists (if it doesn't, throw an error)
-    const existingPhotoAlbum = await prisma.photoAlbum.findUnique({
-      where: {
-        userId_photoAlbumName: {
+    try {
+      // First get all images associated with the album
+      const albumImages = await prisma.images.findMany({
+        where: {
           userId: ctx.user.id,
-          photoAlbumName: input.photoAlbumName,
+          PhotoAlbum: {
+            photoAlbumName: input.photoAlbumName,
+          },
         },
-      },
-    });
+        select: { key: true },
+      });
 
-    if (!existingPhotoAlbum) {
-      throw new Error('PhotoAlbum not found');
+      // Delete all images from S3
+      await Promise.all(
+        albumImages.map((image) => deletePhotoCommand({ key: image.key }))
+      );
+
+      // Delete the photo album (this will cascade delete the images from the database)
+      await prisma.photoAlbum.delete({
+        where: {
+          userId_photoAlbumName: {
+            userId: ctx.user.id,
+            photoAlbumName: input.photoAlbumName,
+          },
+        },
+      });
+    } catch (error) {
+      console.error('Error deleting photo album:', error);
+      throw new Error('Failed to delete photo album. Please try again later.');
     }
-
-    // deleting the photo album
-    await prisma.photoAlbum.delete({
-      where: {
-        userId_photoAlbumName: {
-          userId: ctx.user.id,
-          photoAlbumName: input.photoAlbumName,
-        },
-      },
-    });
   });
