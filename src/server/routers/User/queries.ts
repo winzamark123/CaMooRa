@@ -40,7 +40,7 @@ export const getUser = publicProcedure
 export const getCurrentUser = protectedProcedure.query(async ({ ctx }) => {
   const user = await prisma.user.findUnique({
     where: {
-      clerkId: ctx.user.id,
+      clerkId: ctx.user.clerk.id,
     },
   });
   return user;

@@ -16,7 +16,6 @@ export async function createPhotoAlbum({
         photoAlbumName,
       },
     });
-    console.log('Created Photo Album');
   } catch (err) {
     console.error('ERROR CREATING PHOTO ALBUM' + err);
     throw new Error('ERROR CREATING PHOTO ALBUM');
