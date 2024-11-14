@@ -2,6 +2,7 @@
 import Image from 'next/image';
 import React from 'react';
 import { trpc } from '@/lib/trpc/client';
+import { DropDownSkeleton } from '@/components/Loading/SkeletonCard';
 
 interface UsernameProfilePicProps {
   id: string;
@@ -15,7 +16,7 @@ export default function UsernameProfilePic({ id }: UsernameProfilePicProps) {
   } = trpc.profile.getProfile.useQuery({ clerkId: id });
 
   if (isLoading) {
-    return <div>Loading...</div>;
+    return <DropDownSkeleton />;
   }
 
   if (error) {

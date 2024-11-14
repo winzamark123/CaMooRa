@@ -6,7 +6,7 @@ interface ProfilePicProps {
 
 export default function ProfilePic({ imageURL }: ProfilePicProps) {
   return (
-    <div className="relative h-28 w-28 rounded-full md:h-32 md:w-32 lg:h-36 lg:w-36 xl:h-48 xl:w-48">
+    <div className="relative h-40 w-40 rounded-full md:h-32 md:w-32 lg:h-36 lg:w-36 xl:h-48 xl:w-48">
       {imageURL && (
         <Image
           src={imageURL}

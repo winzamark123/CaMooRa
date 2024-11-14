@@ -227,7 +227,7 @@ export default function EditProjectSection({
   }
 
   return (
-    <div>
+    <div className="relative overflow-hidden">
       <h4 className="mb-5 border-b-2 pb-4 font-bold">
         My Albums{' '}
         <span className="text-xs font-normal">
@@ -238,12 +238,13 @@ export default function EditProjectSection({
         Upload your photos. The first image will be used as the cover photo on
         feeds.
       </p>
-      <div className="mb-5 flex flex-row flex-wrap gap-x-4">
-        {/* Display All Photo Albums Buttons */}
-        {photoAlbums &&
-          photoAlbums.map((photoAlbum, index) => (
-            <>
-              <div key={photoAlbum.id} className="flex">
+      {/* TODO: Allow user to update their Photo Album names */}
+      <div className="mb-5 overflow-hidden">
+        <div className="scrollbar-hide flex flex-nowrap gap-x-4 overflow-x-auto">
+          {/* Display All Photo Albums Buttons */}
+          {photoAlbums &&
+            photoAlbums.map((photoAlbum, index) => (
+              <div key={photoAlbum.id} className="flex shrink-0">
                 <Button
                   className={` h-9 w-32 rounded-none rounded-l-lg border-y border-l border-gray-400 bg-primary_blue p-2 text-white hover:contrast-75  active:contrast-75 ${
                     selectedPhotoAlbum?.photoAlbumId === photoAlbum.id
@@ -296,10 +297,6 @@ export default function EditProjectSection({
                       <Button
                         className="flex w-full cursor-pointer space-x-2 bg-white text-black focus:bg-blue-600 focus:text-white"
                         aria-label={`Update Name for ${photoAlbum.photoAlbumName}`}
-                        onClick={() => {
-                          setIsUpdatingPhotoAlbumName(true);
-                          setUpdatedPhotoAlbumNameId(photoAlbum.id);
-                        }}
                       >
                         <Pencil className="h-4 w-4" />
                         <span className="text-xs">Update Name</span>
@@ -311,94 +308,32 @@ export default function EditProjectSection({
                   </DropdownMenuContent>
                 </DropdownMenu>
               </div>
-              {isUpdatingPhotoAlbumName &&
-                updatedPhotoAlbumNameId === photoAlbum.id && (
-                  <div key={0}>
-                    <input
-                      ref={updateInputRef}
-                      id="add-photo-album-name"
-                      className="rounded-full border-2 border-blue-700 bg-profile_button_bg text-center text-xs placeholder-slate-400"
-                      type="text"
-                      placeholder="Enter Album Name"
-                      title="Please enter a name for you new photo album"
-                      onKeyDown={(event) => {
-                        handleUpdateAlbumKeyDown(
-                          event,
-                          photoAlbum.photoAlbumName
-                        );
-                      }}
-                      value={updatedPhotoAlbumName}
-                      onChange={(e) => setUpdatedPhotoAlbumName(e.target.value)}
-                    />
-
-                    <Button
-                      className="h-9 w-9 rounded-lg border border-gray-400"
-                      onClick={resetUpdatingState}
-                      title="Cancel"
-                      aria-label="Cancel creating a new photo album"
-                    >
-                      ✕
-                    </Button>
-                    <Button
-                      className="h-9 w-9 rounded-lg bg-primary_blue text-white"
-                      onClick={() => {
-                        handleUpdateAlbumName(photoAlbum.photoAlbumName);
-                      }}
-                      title="Save"
-                      aria-label="Save the new photo album with the name entered in the input field"
-                    >
-                      ✓
-                    </Button>
-                  </div>
-                )}
-            </>
-          ))}
-        {isCreatingPhotoAlbum && (
-          <>
-            <input
-              ref={createInputRef}
-              id="add-photo-album-name"
-              className="rounded-full border-2 border-blue-700 bg-profile_button_bg text-center text-xs placeholder-slate-400"
-              type="text"
-              placeholder="Enter Album Name"
-              title="Please enter a name for you new photo album"
-              onKeyDown={handleCreateAlbumKeyDown}
-              value={newPhotoAlbumName}
-              onChange={(e) => setNewPhotoAlbumName(e.target.value)}
-            />
-
-            <Button
-              className="h-9 w-9 rounded-lg border border-gray-400"
-              onClick={resetCreatingState}
-              title="Cancel"
-              aria-label="Cancel creating a new photo album"
-            >
-              ✕
-            </Button>
-            <Button
-              className="h-9 w-9 rounded-lg bg-primary_blue text-white"
-              onClick={handleCreateNewAlbum}
-              title="Save"
-              aria-label="Save the new photo album with the name entered in the input field"
-            >
-              ✓
-            </Button>
-          </>
-        )}
-        <Button
-          className="rounded-lg border border-gray-400 bg-profile_button_bg text-xs text-black hover:bg-primary_blue hover:text-white focus:bg-primary_blue  focus:text-white"
-          aria-label="Create a New Photo Album"
-          onClick={() => {
-            setIsCreatingPhotoAlbum(true);
-          }}
-        >
-          +
-        </Button>
-        {/* Commented out because not sure what they will preview */}
-        {/* TODO: Add functionality to Preview button */}
-        {/* <Button className="ml-auto w-32 border border-gray-400 bg-profile_button_bg text-xs text-black hover:bg-primary_blue hover:text-white focus:bg-primary_blue  focus:text-white">
-          Preview
-        </Button> */}
+            ))}
+          {isCreatingPhotoAlbum && (
+            <div className="shrink-0">
+              <input
+                ref={inputRef}
+                id="add-photo-album-name"
+                className="rounded-full border-2 border-blue-700 bg-profile_button_bg text-center text-xs placeholder-slate-400"
+                type="text"
+                placeholder="Enter Album Name"
+                title="Please enter a name for you new photo album"
+                onKeyDown={handleKeyDown}
+                value={newPhotoAlbumName}
+                onChange={(e) => setNewPhotoAlbumName(e.target.value)}
+              />
+            </div>
+          )}
+          <Button
+            className="shrink-0 rounded-lg border border-gray-400 bg-profile_button_bg text-xs text-black hover:bg-primary_blue hover:text-white focus:bg-primary_blue  focus:text-white"
+            aria-label="Create a New Photo Album"
+            onClick={() => {
+              setIsCreatingPhotoAlbum(true);
+            }}
+          >
+            +
+          </Button>
+        </div>
       </div>
 
       {selectedPhotoAlbum && photoAlbums && (

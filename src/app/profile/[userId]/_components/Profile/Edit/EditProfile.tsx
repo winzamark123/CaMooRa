@@ -210,7 +210,7 @@ export default function EditProfile({
   }
 
   return (
-    <div className="xl-space-y-16 flex flex-col space-y-5 md:space-y-10">
+    <div className="xl-space-y-16 flex flex-col space-y-5 overflow-hidden p-4 sm:p-0 md:space-y-10">
       {isProfileUpdateSuccessful && (
         <div className="rounded-md bg-green-500 p-2 text-center text-white shadow">
           Profile Updated Successfully!

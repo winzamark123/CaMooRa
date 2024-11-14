@@ -19,25 +19,33 @@ const Bio: React.FC<BioProps> = ({
 }) => {
   const { user: currentUser } = useUser();
   return (
-    <main className="flex flex-col gap-4">
-      <h1 className="flex flex-col items-center text-lg font-extrabold xs:flex-row lg:text-xl 2xl:text-2xl">
-        {usersFullName}
-        {additionalName && (
-          <span className="text-xs xs:pl-2">({additionalName})</span>
-        )}
+    <main className="flex w-full flex-col gap-4 p-4">
+      <div className="flex flex-col items-center space-y-2 md:flex-row md:items-start md:space-x-4 md:space-y-0">
+        <h1 className="flex flex-col items-center text-base font-extrabold sm:text-lg md:flex-row lg:text-xl 2xl:text-2xl">
+          <span>{usersFullName}</span>
+          {additionalName && (
+            <span className="text-xs md:ml-2">({additionalName})</span>
+          )}
+        </h1>
         {currentUser && (
-          <FavPhotographer userId={currentUser.id} photographerId={clerkId} />
+          <div className="md:ml-auto">
+            <FavPhotographer userId={currentUser.id} photographerId={clerkId} />
+          </div>
         )}
-      </h1>
-      <p className="text-xs sm:text-sm">
-        {bio || `${usersFullName} has no bio.`}
-      </p>
+      </div>
+
+      <div className="mt-4 md:mt-6">
+        <p className="text-xs sm:text-sm md:text-base">
+          {bio || `${usersFullName} has no bio.`}
+        </p>
+      </div>
+
       {equipment && (
-        <div className="flex flex-col space-y-4">
-          <h2 className="text-sm font-semibold lg:text-lg 2xl:text-xl">
+        <div className="mt-6 flex flex-col space-y-2 md:mt-8 md:space-y-4">
+          <h2 className="text-sm font-semibold sm:text-base lg:text-lg 2xl:text-xl">
             Equipments
           </h2>
-          <p className="text-sm">{equipment}</p>
+          <p className="text-xs sm:text-sm md:text-base">{equipment}</p>
         </div>
       )}
     </main>

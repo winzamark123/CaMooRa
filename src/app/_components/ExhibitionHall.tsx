@@ -4,7 +4,7 @@ import { useState } from 'react';
 import { trpc } from '@/lib/trpc/client';
 import { HoverEffect } from '../../components/ui/card-hover-effect';
 import { useUser } from '@clerk/nextjs';
-import SkeletonCard from '@/components/Loading/SkeletonCard';
+import { PhotoSkeleton } from '@/components/Loading/SkeletonCard';
 import {
   DropdownMenu,
   DropdownMenuContent,
@@ -52,31 +52,33 @@ export default function ExhibitionHall() {
   }
 
   return (
-    <main className="flex w-full flex-col">
+    <main className="flex w-full flex-col p-4 sm:p-0">
       <div className="flex w-full">
-        <div className="flex w-full justify-between sm:min-w-[48rem]">
+        <div className="flex w-full max-w-5xl flex-col justify-between sm:flex-row">
           <h3 className="font-mono">PHOTOGRAPHERS @ UC DAVIS</h3>
-          <DropdownMenu>
-            <DropdownMenuTrigger asChild>
-              <Button variant="outline" className="flex items-center gap-2">
-                {dropdownText}
-                <ChevronDown className="h-4 w-4" />
-              </Button>
-            </DropdownMenuTrigger>
-            <DropdownMenuContent align="end">
-              <DropdownMenuItem onClick={() => setDropdownText(otherOption)}>
-                {otherOption}
-              </DropdownMenuItem>
-            </DropdownMenuContent>
-          </DropdownMenu>
+          <div className="flex items-end justify-end ">
+            <DropdownMenu>
+              <DropdownMenuTrigger asChild>
+                <Button variant="outline" className="flex items-center gap-2">
+                  {dropdownText}
+                  <ChevronDown className="h-4 w-4" />
+                </Button>
+              </DropdownMenuTrigger>
+              <DropdownMenuContent align="end">
+                <DropdownMenuItem onClick={() => setDropdownText(otherOption)}>
+                  {otherOption}
+                </DropdownMenuItem>
+              </DropdownMenuContent>
+            </DropdownMenu>
+          </div>
         </div>
       </div>
       {isLoading || fav_users_loading ? (
         <div className="flex justify-center gap-4 py-6">
-          <SkeletonCard />
-          <SkeletonCard />
-          <SkeletonCard />
-          <SkeletonCard />
+          <PhotoSkeleton />
+          <PhotoSkeleton />
+          <PhotoSkeleton />
+          <PhotoSkeleton />
         </div>
       ) : (
         <div className="w-full">
