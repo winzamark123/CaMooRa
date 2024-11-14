@@ -56,7 +56,7 @@ export default function PhotoAlbum({
       style={{ backgroundColor: '#F7F5EF' }}
     >
       {isEditing && (
-        <div className="h-third-screen overflow-y-auto">
+        <div className="h-half-screen overflow-y-auto border-b-2">
           <CreatePostForm photoAlbumId={photoAlbumId} />
         </div>
       )}
