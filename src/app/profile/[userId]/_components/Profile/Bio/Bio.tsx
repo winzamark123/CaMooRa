@@ -7,7 +7,7 @@ export interface BioProps {
   equipment?: string | null;
   usersFullName: string;
   additionalName: string | null | undefined;
-  clerkId: string;
+  userId: string;
 }
 
 const Bio: React.FC<BioProps> = ({
@@ -15,7 +15,7 @@ const Bio: React.FC<BioProps> = ({
   equipment,
   usersFullName,
   additionalName,
-  clerkId,
+  userId,
 }) => {
   const { user: currentUser } = useUser();
   return (
@@ -29,7 +29,7 @@ const Bio: React.FC<BioProps> = ({
         </h1>
         {currentUser && (
           <div className="md:ml-auto">
-            <FavPhotographer userId={currentUser.id} photographerId={clerkId} />
+            <FavPhotographer userId={currentUser.id} photographerId={userId} />
           </div>
         )}
       </div>

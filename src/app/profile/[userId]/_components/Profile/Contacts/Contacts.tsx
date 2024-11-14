@@ -4,23 +4,24 @@ import { Button } from '@/components/ui/button';
 import IconComponents from '../IconComponents';
 
 interface ContactsProps {
-  clerkId: string;
+  userId: string;
   toggleSignInPopUp: React.Dispatch<React.SetStateAction<boolean>>;
   toggleEditing: React.Dispatch<React.SetStateAction<boolean>>;
 }
 
 export default function Contacts({
-  clerkId,
+  userId,
   toggleSignInPopUp,
   toggleEditing,
 }: ContactsProps) {
-  const { isSignedIn, user: currentUser } = useUser();
+  const { isSignedIn } = useUser();
+  const { data: current_user } = trpc.user.getCurrentUser.useQuery();
   const {
     data: contact,
     isLoading: isContactLoading,
     error: contactError,
     // refetch: refetchContact,
-  } = trpc.contact.getContact.useQuery({ clerkId });
+  } = trpc.contact.getContact.useQuery({ userId });
 
   if (isContactLoading) return <div className="">Contact Loading</div>;
   if (contactError) return <div className="">{contactError.message}</div>;
@@ -104,7 +105,7 @@ export default function Contacts({
         </div>
       )}
       <div className="mt-auto flex items-end justify-end p-4">
-        {currentUser?.id === clerkId && (
+        {current_user?.id === userId && (
           <Button
             className="w-full border border-gray-400 bg-profile_button_bg text-xs text-black hover:bg-primary_blue hover:text-white focus:bg-primary_blue focus:text-white sm:w-20"
             aria-label="Edit your Profile"

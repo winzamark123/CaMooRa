@@ -19,7 +19,7 @@ export async function createUser({
   userProfilePicURL,
 }: createUserProp) {
   try {
-    // Check if user already exists, might not need this in production
+    // Check if user already exists
     const existingUser = await prisma.user.findUnique({
       where: {
         clerkId,
@@ -32,23 +32,28 @@ export async function createUser({
     }
 
     const newUser = await prisma.user.create({
-      data: { clerkId },
+      data: {
+        clerkId,
+      },
     });
 
     // create profile for the user
     await createProfile({
-      clerkId: newUser.clerkId,
+      userId: newUser.id,
       userFirstName,
       userLastName,
       userProfilePicURL,
     });
 
     // create contact for the user
-    await createContact({ clerkId: newUser.clerkId, userEmail: userEmail });
+    await createContact({
+      userId: newUser.id,
+      userEmail: userEmail,
+    });
 
     // create default photo album for the user
     await createPhotoAlbum({
-      clerkId: newUser.clerkId,
+      userId: newUser.id,
       photoAlbumName: 'Untitled Album',
     });
   } catch (err) {

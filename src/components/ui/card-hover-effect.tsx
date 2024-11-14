@@ -10,7 +10,7 @@ export const HoverEffect = ({
 }: {
   items:
     | {
-        clerkId: string;
+        userId: string;
       }[]
     | undefined;
   className?: string;
@@ -26,8 +26,8 @@ export const HoverEffect = ({
     >
       {items?.map((item, idx) => (
         <Link
-          key={item.clerkId}
-          href={`/profile/${item.clerkId}`}
+          key={item.userId}
+          href={`/profile/${item.userId}`}
           className="group relative block h-full w-full"
           onMouseEnter={() => setHoveredIndex(idx)}
           onMouseLeave={() => setHoveredIndex(null)}
@@ -51,7 +51,7 @@ export const HoverEffect = ({
             )}
           </AnimatePresence>
           <div className="relative z-10">
-            <ProfileCard id={item.clerkId} />
+            <ProfileCard id={item.userId} />
           </div>
         </Link>
       ))}

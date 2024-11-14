@@ -3,11 +3,11 @@ import { z } from 'zod';
 import prisma from '@prisma/prisma';
 
 export const getAllImages = publicProcedure
-  .input(z.object({ clerkId: z.string() }))
+  .input(z.object({ userId: z.string() }))
   .query(async ({ input }) => {
     const images = await prisma.images.findMany({
       where: {
-        clerkId: input.clerkId,
+        userId: input.userId,
         // not associated with a profile (hence not a profile pic)
         Profile: {
           none: {},
@@ -23,12 +23,12 @@ export const getAllImages = publicProcedure
   });
 
 export const getImagesByAlbumId = publicProcedure
-  .input(z.object({ clerkId: z.string(), photoAlbumId: z.string() }))
+  .input(z.object({ userId: z.string(), photoAlbumId: z.string() }))
   .query(async ({ input }) => {
     const images = await prisma.images.findMany({
       where: {
         PhotoAlbumId: input.photoAlbumId,
-        clerkId: input.clerkId,
+        userId: input.userId,
       },
     });
 

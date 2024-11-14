@@ -8,11 +8,15 @@ import SignInPopUp from '../Popups/SignInPopUp';
 import LogoBlack from '@public/logo_black.svg';
 import LogoWhite from '@public/logo_white.svg';
 import Image from 'next/image';
+import { trpc } from '@/lib/trpc/client';
 
 export default function NavBar() {
   const [showSignInPopUp, setShowSignInPopUp] = useState(false);
   const [isOpen, setIsOpen] = useState(false);
   const { user } = useUser();
+  const { data: my_user } = trpc.profile.getMyProfile.useQuery({
+    clerkId: user?.id || '',
+  });
 
   const toggleMenu = () => setIsOpen(!isOpen);
   const toggleSignInPopUp = () => setShowSignInPopUp(!showSignInPopUp);
@@ -25,7 +29,9 @@ export default function NavBar() {
       >
         Feedback
       </a>
-      <SignedIn>{user && <DropDownProfile userId={user.id} />}</SignedIn>
+      <SignedIn>
+        {my_user && <DropDownProfile userId={my_user.userId} />}
+      </SignedIn>
       <div className="flex">
         <SignedOut>
           <Button className="px-6 py-3" onClick={toggleSignInPopUp}>

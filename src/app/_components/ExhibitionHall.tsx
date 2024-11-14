@@ -38,7 +38,7 @@ export default function ExhibitionHall() {
     isLoading: fav_users_loading,
     error: fav_users_error,
   } = trpc.favorites.getFavorite.useQuery(
-    { clerkId: user?.id as string },
+    { userId: user?.id as string },
     {
       enabled: !!user, // only fetch if the user is logged in
     }
@@ -56,6 +56,7 @@ export default function ExhibitionHall() {
       <div className="flex w-full">
         <div className="flex w-full max-w-5xl flex-col justify-between sm:flex-row">
           <h3 className="font-mono">PHOTOGRAPHERS @ UC DAVIS</h3>
+          {/* <div className="">{all_users?.[0]?.id}</div> */}
           <div className="flex items-end justify-end ">
             <DropdownMenu>
               <DropdownMenuTrigger asChild>
@@ -83,10 +84,14 @@ export default function ExhibitionHall() {
       ) : (
         <div className="w-full">
           {dropdownText === options[1] && user && fav_users && (
-            <HoverEffect items={fav_users} />
+            <HoverEffect
+              items={fav_users.map((user) => ({ userId: user.id }))}
+            />
           )}
           {dropdownText === options[0] && all_users && (
-            <HoverEffect items={all_users} />
+            <HoverEffect
+              items={all_users.map((user) => ({ userId: user.id }))}
+            />
           )}
         </div>
       )}

@@ -5,13 +5,13 @@ import { PhotoSkeleton } from '@/components/Loading/SkeletonCard';
 import CreatePostForm from '../UploadImage/CreatePostForm';
 
 interface PhotoAlbumProps {
-  clerkId: string;
+  userId: string;
   photoAlbumId: string;
   isEditing?: boolean;
 }
 
 export default function PhotoAlbum({
-  clerkId,
+  userId,
   photoAlbumId,
   isEditing = false,
 }: PhotoAlbumProps) {
@@ -20,7 +20,7 @@ export default function PhotoAlbum({
     isLoading,
     error,
   } = trpc.images.getImagesByAlbumId.useQuery({
-    clerkId: clerkId,
+    userId: userId,
     photoAlbumId: photoAlbumId,
   });
 
@@ -56,7 +56,7 @@ export default function PhotoAlbum({
       style={{ backgroundColor: '#F7F5EF' }}
     >
       {isEditing && (
-        <div className="h-third-screen overflow-y-auto">
+        <div className="h-half-screen overflow-y-auto border-b-2">
           <CreatePostForm photoAlbumId={photoAlbumId} />
         </div>
       )}

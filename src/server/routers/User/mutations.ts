@@ -8,12 +8,12 @@ export const deleteUser = protectedProcedure.mutation(async ({ ctx }) => {
   try {
     // First get all images associated with the user
     const userImages = await prisma.images.findMany({
-      where: { clerkId: ctx.user.id },
+      where: { userId: ctx.user.id },
       select: { key: true },
     });
 
     // Delete from Clerk first
-    await clerkClient.users.deleteUser(ctx.user.id);
+    await clerkClient.users.deleteUser(ctx.user.clerk.id);
 
     // Delete all images from S3
     await Promise.all(
@@ -22,7 +22,7 @@ export const deleteUser = protectedProcedure.mutation(async ({ ctx }) => {
 
     // Then delete from your database
     await prisma.user.delete({
-      where: { clerkId: ctx.user.id },
+      where: { clerkId: ctx.user.clerk.id },
     });
   } catch (error) {
     // Log the error for debugging (you might want to use your logging solution)

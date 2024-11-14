@@ -3,11 +3,11 @@ import { z } from 'zod';
 import prisma from '@prisma/prisma';
 
 export const getFavorite = protectedProcedure
-  .input(z.object({ clerkId: z.string() }))
+  .input(z.object({ userId: z.string() }))
   .query(async ({ input }) => {
     const favoritePhotographers = await prisma.favorites.findMany({
       where: {
-        userId: input.clerkId,
+        userId: input.userId,
       },
       include: {
         photographer: true,
@@ -17,13 +17,13 @@ export const getFavorite = protectedProcedure
   });
 
 export const isFavorite = protectedProcedure
-  .input(z.object({ clerkId: z.string(), favoriteClerkId: z.string() }))
+  .input(z.object({ userId: z.string(), favoriteUserId: z.string() }))
   .query(async ({ input }) => {
     const existingFavorite = await prisma.favorites.findUnique({
       where: {
         userId_photographerId: {
-          userId: input.clerkId,
-          photographerId: input.favoriteClerkId,
+          userId: input.userId,
+          photographerId: input.favoriteUserId,
         },
       },
     });

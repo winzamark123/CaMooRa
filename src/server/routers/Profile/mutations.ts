@@ -5,13 +5,13 @@ import { profileSchema } from '@/server/routers/Schemas/schema';
 export const updateProfile = protectedProcedure
   .input(profileSchema)
   .mutation(async ({ input, ctx }) => {
-    if (ctx.user?.id !== input.clerkId) {
+    if (ctx.user.id !== input.userId) {
       throw new Error('You do not have permission to update this profile');
     }
 
     await prisma.profile.update({
       where: {
-        clerkId: input.clerkId,
+        userId: ctx.user.id,
       },
       data: {
         firstName: input.firstName,

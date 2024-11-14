@@ -11,7 +11,7 @@ interface GetSignedURLProps {
   file_type: string;
   size: number;
   checksum: string;
-  clerkId: string;
+  userId: string;
   photoAlbumId?: string;
 }
 
@@ -32,7 +32,7 @@ export async function getPresignedURL({
   file_type,
   size,
   checksum,
-  clerkId,
+  userId,
   photoAlbumId,
 }: GetSignedURLProps) {
   //check file types
@@ -51,12 +51,12 @@ export async function getPresignedURL({
 
   const putObjectCommand = new PutObjectCommand({
     Bucket: process.env.AWS_S3_BUCKET_NAME as string,
-    Key: `${clerkId}/${generatedFileName}`,
+    Key: `${userId}/${generatedFileName}`,
     ContentType: file_type,
     ContentLength: size,
     ChecksumSHA256: checksum,
     Metadata: {
-      clerkId: clerkId,
+      userId: userId,
     },
   });
 
@@ -64,11 +64,13 @@ export async function getPresignedURL({
     expiresIn: 3600,
   });
 
+  console.log('signedURL:', signedURL);
+
   try {
     const imageData: any = {
-      clerkId: clerkId,
+      userId: userId,
       url: signedURL.split('?')[0],
-      key: `${clerkId}/${generatedFileName}`,
+      key: `${userId}/${generatedFileName}`,
     };
 
     // If photoAlbumID is provided, add it to the imageData object (Profile Pic doesn't have photoAlbumId)

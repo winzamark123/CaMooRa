@@ -18,7 +18,7 @@ interface UpdateProfileVariableType
 
 interface UpdateContactVariableType
   extends Omit<Contact, 'isContactPublic' | 'isPhotographer'> {
-  clerkId: string;
+  userId: string;
   isContactPublic?: boolean;
   isPhotographer?: boolean;
 }
@@ -26,7 +26,7 @@ interface UpdateContactVariableType
 interface EditProfileProps {
   profile: ProfileProps;
   contact: Contact;
-  clerkId: string;
+  userId: string;
   refetchProfile: () => void;
   refetchContact: () => void;
   setIsEditing: (value: SetStateAction<boolean>) => void;
@@ -35,7 +35,7 @@ interface EditProfileProps {
 export default function EditProfile({
   contact,
   profile,
-  clerkId,
+  userId,
   refetchProfile,
   refetchContact,
   // setIsEditing,
@@ -168,7 +168,7 @@ export default function EditProfile({
     const trimmedAdditionalName = values.additionalName?.trim();
 
     // Checks Profile fields (checks if state variable doesn't equal saved variable in db)
-    const updatedProfileData: UpdateProfileVariableType = { clerkId };
+    const updatedProfileData: UpdateProfileVariableType = { userId };
     if (trimmedFirstName !== profile.firstName)
       updatedProfileData.firstName = trimmedFirstName;
     if (trimmedLastName !== profile.lastName)
@@ -180,7 +180,7 @@ export default function EditProfile({
       updatedProfileData.additionalName = trimmedAdditionalName;
 
     // Checks Contact fields (checks if state variable doesn't equal saved variable in db)
-    const updatedContactData: UpdateContactVariableType = { clerkId };
+    const updatedContactData: UpdateContactVariableType = { userId };
     if (values.isContactPublic !== contact.isContactPublic)
       updatedContactData.isContactPublic = values.isContactPublic;
     if (values.isPhotographer !== contact.isPhotographer)
@@ -202,10 +202,10 @@ export default function EditProfile({
 
     // Update Profile and Contact fields
     if (Object.keys(updatedProfileData).length > 1) {
-      updateProfile.mutate(updatedProfileData);
+      updateProfile.mutate({ ...updatedProfileData, userId });
     }
     if (Object.keys(updatedContactData).length > 1) {
-      updateContact.mutate(updatedContactData);
+      updateContact.mutate({ ...updatedContactData, userId });
     }
   }
 
@@ -223,7 +223,7 @@ export default function EditProfile({
         profilePicId={profile?.profilePic.id}
       />
       <EditLinkAccountSection form={form} onSave={onSave} />
-      <EditProjectSection clerkId={clerkId} />
+      <EditProjectSection userId={userId} />
       {/* <div className="mt-4 flex flex-row-reverse">
         <Button
           className="ml-5 w-20 border border-gray-400 bg-profile_button_bg text-xs text-black hover:bg-primary_blue hover:text-white focus:bg-primary_blue  focus:text-white sm:w-20"

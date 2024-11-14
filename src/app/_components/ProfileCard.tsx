@@ -12,12 +12,12 @@ interface ProfileCardProps {
 
 // Separate the data fetching logic into a child component
 function ProfileCardContent({ id }: ProfileCardProps) {
-  const { data: user_profile, error } = trpc.profile.getProfile.useQuery({
-    clerkId: id,
+  const { data: user_profile, error } = trpc.profile.getPublicProfile.useQuery({
+    userId: id,
   });
 
   const { data: user_images } = trpc.images.getAllImages.useQuery({
-    clerkId: id,
+    userId: id,
   });
 
   if (error) {

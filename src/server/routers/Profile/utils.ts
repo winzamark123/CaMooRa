@@ -1,14 +1,14 @@
 import prisma from '@prisma/prisma';
 
 interface createProfileProp {
-  clerkId: string;
+  userId: string;
   userFirstName: string;
   userLastName: string;
   userProfilePicURL: string;
 }
 
 export async function createProfile({
-  clerkId,
+  userId,
   userFirstName,
   userLastName,
   userProfilePicURL,
@@ -17,15 +17,15 @@ export async function createProfile({
     //create profile pic
     const profilePicId = await prisma.images.create({
       data: {
-        clerkId: clerkId,
+        userId,
         url: userProfilePicURL,
-        key: `${clerkId}/clerkProfilePic`,
+        key: `${userId}/profilePic`,
       },
     });
     //create profile
     await prisma.profile.create({
       data: {
-        clerkId: clerkId,
+        userId,
         firstName: userFirstName,
         lastName: userLastName,
         profilePicId: profilePicId.id,

@@ -13,11 +13,15 @@ export const updateProfilePic = protectedProcedure
     })
   )
   .mutation(async ({ input, ctx }) => {
+    if (!ctx.user) {
+      throw new Error('Unauthorized');
+    }
+
     const { success, error } = await getPresignedURL({
       file_type: input.file_type,
       size: input.size,
       checksum: input.checksum,
-      clerkId: ctx.user.id,
+      userId: ctx.user.id,
     });
 
     if (error) {
@@ -26,7 +30,7 @@ export const updateProfilePic = protectedProcedure
 
     // Update the profile to remove the reference to the previous profile picture
     await prisma.profile.update({
-      where: { clerkId: ctx.user.id },
+      where: { userId: ctx.user.id },
       data: { profilePicId: success?.image_id },
     });
 
@@ -43,11 +47,15 @@ export const uploadImage = protectedProcedure
     })
   )
   .mutation(async ({ input, ctx }) => {
+    if (!ctx.user) {
+      throw new Error('Unauthorized');
+    }
+
     const { success, error } = await getPresignedURL({
       file_type: input.file_type,
       size: input.size,
       checksum: input.checksum,
-      clerkId: ctx.user.id,
+      userId: ctx.user.id,
       photoAlbumId: input.photoAlbumId,
     });
 
@@ -65,15 +73,26 @@ export const deleteImage = protectedProcedure
       where: { id: input.imageId },
     });
 
-    if (image?.clerkId !== ctx.user.id) {
+    if (!image) {
+      throw new Error('Image not found');
+    }
+
+    if (image.userId !== ctx.user.id) {
       throw new Error('Unauthorized');
     }
 
     const { success, error } = await deletePhotoCommand({
-      key: image?.key as string,
+      key: image.key,
     });
+
     if (error) {
       throw new Error(error);
     }
+
+    // Delete the image record from the database
+    await prisma.images.delete({
+      where: { id: input.imageId },
+    });
+
     return { success, error };
   });

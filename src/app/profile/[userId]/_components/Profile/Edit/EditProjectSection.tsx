@@ -13,11 +13,11 @@ import {
 import { Trash2, Pencil } from 'lucide-react';
 
 interface EditProjectSectionProps {
-  clerkId: string;
+  userId: string;
 }
 
 export default function EditProjectSection({
-  clerkId,
+  userId,
 }: EditProjectSectionProps) {
   // 1. TRPC Queries and Mutations
 
@@ -28,7 +28,7 @@ export default function EditProjectSection({
     data: photoAlbums,
     isLoading: isLoadingSections,
     refetch: refetchPhotoAlbums,
-  } = trpc.photoAlbum.getAllPhotoAlbums.useQuery({ clerkId });
+  } = trpc.photoAlbum.getAllPhotoAlbums.useQuery({ userId });
 
   const createPhotoAlbum = trpc.photoAlbum.createPhotoAlbum.useMutation({
     onSuccess: () => {
@@ -48,11 +48,11 @@ export default function EditProjectSection({
 
         // Save current albums state (backup)
         const previousAlbums = utils.photoAlbum.getAllPhotoAlbums.getData({
-          clerkId,
+          userId,
         });
 
         // Update UI immediately with new name
-        utils.photoAlbum.getAllPhotoAlbums.setData({ clerkId }, (old) => {
+        utils.photoAlbum.getAllPhotoAlbums.setData({ userId }, (old) => {
           if (!old) return previousAlbums;
           return old.map((album) =>
             album.id === updatedPhotoAlbumNameId
@@ -72,14 +72,14 @@ export default function EditProjectSection({
       onError: (err, newAlbum, context) => {
         console.error('Error updating Photo Album', err);
         utils.photoAlbum.getAllPhotoAlbums.setData(
-          { clerkId },
+          { userId },
           context?.previousAlbums
         );
       },
 
       onSettled: () => {
         // Ensure data is synced with server
-        utils.photoAlbum.getAllPhotoAlbums.invalidate({ clerkId });
+        utils.photoAlbum.getAllPhotoAlbums.invalidate({ userId });
         console.log(photoAlbums);
       },
     }
@@ -406,7 +406,7 @@ export default function EditProjectSection({
       {selectedPhotoAlbum && photoAlbums && (
         <PhotoAlbum
           photoAlbumId={selectedPhotoAlbum.photoAlbumId}
-          clerkId={clerkId}
+          userId={userId}
           isEditing={true}
         />
       )}
