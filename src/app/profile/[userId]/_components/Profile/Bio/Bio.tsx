@@ -20,7 +20,7 @@ const Bio: React.FC<BioProps> = ({
   const { user: currentUser } = useUser();
   return (
     <main className="flex w-full flex-col gap-4 p-4">
-      <div className="flex flex-col items-center space-y-2 md:flex-row md:items-start md:space-x-4 md:space-y-0">
+      <div className="flex flex-col items-center space-y-2 md:flex-row md:items-center md:-space-x-2 md:space-y-0">
         <h1 className="flex flex-col items-center text-base font-extrabold sm:text-lg md:flex-row lg:text-xl 2xl:text-2xl">
           <span>{usersFullName}</span>
           {additionalName && (
