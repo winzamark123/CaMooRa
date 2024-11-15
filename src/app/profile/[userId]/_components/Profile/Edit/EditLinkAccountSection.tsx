@@ -19,6 +19,7 @@ type EditLinkAccountSectionProps = Omit<
 export default function EditLinkAccountSection({
   form,
   onSave,
+  setIsEditing,
 }: EditLinkAccountSectionProps) {
   return (
     <div>
@@ -26,7 +27,10 @@ export default function EditLinkAccountSection({
       <div className="flex flex-row items-center justify-center ">
         <Form {...form}>
           <form
-            onSubmit={form.handleSubmit(onSave)}
+            onSubmit={form.handleSubmit((values) => {
+              onSave(values);
+              setIsEditing(false);
+            })}
             className="w-full basis-full sm:basis-11/12 md:space-y-3"
           >
             {/* First Row */}

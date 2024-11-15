@@ -39,6 +39,7 @@ export interface EditProfileSectionProps {
   onSave: (values: FormValues) => void;
   profileUrl: string | undefined;
   profilePicId: string;
+  setIsEditing: (value: boolean) => void;
 }
 
 export default function EditProfileSection({
@@ -46,6 +47,7 @@ export default function EditProfileSection({
   onSave,
   profileUrl,
   profilePicId,
+  setIsEditing,
 }: EditProfileSectionProps) {
   const [isModalOpen, setModalOpen] = useState(false);
 
@@ -88,7 +90,10 @@ export default function EditProfileSection({
         </div>
         <Form {...form}>
           <form
-            onSubmit={form.handleSubmit(onSave)}
+            onSubmit={form.handleSubmit((values) => {
+              onSave(values);
+              setIsEditing(false);
+            })}
             className="mt-5 basis-3/4 sm:mt-0 sm:basis-full sm:pl-10 md:space-y-8"
           >
             <div className="grid md:grid-cols-2 md:gap-16 lg:gap-32">
