@@ -16,13 +16,15 @@ export function PhotoSkeleton() {
 
 export function ProfileSkeleton() {
   return (
-    <div className="flex w-full space-y-3 rounded-xl p-4">
-      <Skeleton className="h-[200px] w-[250px] rounded-full" />
-      <div className="space-y-2">
+    <div className="flex w-full flex-col gap-4 space-y-3 rounded-xl p-4 md:flex-row md:space-y-0">
+      <div className="flex justify-center">
+        <Skeleton className="h-[200px] w-[250px] rounded-full" />
+      </div>
+      <div className="flex flex-col items-center justify-center space-y-2 md:items-end">
         <Skeleton className="h-4 w-[250px]" />
-        <Skeleton className="h-4 w-[200px]" />
         <Skeleton className="h-4 w-[250px]" />
-        <Skeleton className="h-4 w-[200px]" />
+        <Skeleton className="h-4 w-[250px]" />
+        <Skeleton className="h-4 w-[250px]" />
       </div>
     </div>
   );
