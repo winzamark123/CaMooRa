@@ -1,5 +1,5 @@
 import { trpc } from '@/lib/trpc/client';
-import { SetStateAction, useRef, useState } from 'react';
+import { SetStateAction } from 'react';
 import type { ProfileProps } from '../Profile';
 import type { Contact } from '../../../../../../server/routers/Contact';
 import { zodResolver } from '@hookform/resolvers/zod';
@@ -30,6 +30,8 @@ interface EditProfileProps {
   refetchProfile: () => void;
   refetchContact: () => void;
   setIsEditing: (value: SetStateAction<boolean>) => void;
+  setIsProfileUpdateSuccessful: (value: boolean) => void;
+  manageTimeout: () => void;
 }
 
 export default function EditProfile({
@@ -38,7 +40,9 @@ export default function EditProfile({
   userId,
   refetchProfile,
   refetchContact,
-  // setIsEditing,
+  setIsEditing,
+  setIsProfileUpdateSuccessful,
+  manageTimeout,
 }: EditProfileProps) {
   // Calling TRPC update procedures
   const updateProfile = trpc.profile.updateProfile.useMutation({
@@ -47,6 +51,7 @@ export default function EditProfile({
       refetchProfile();
       setIsProfileUpdateSuccessful(true);
       manageTimeout();
+      setIsEditing(false);
     },
     onError: (err) => {
       console.error('Error updating Profile fields ', err);
@@ -66,20 +71,6 @@ export default function EditProfile({
       setIsProfileUpdateSuccessful(false);
     },
   });
-
-  const [isProfileUpdateSuccessful, setIsProfileUpdateSuccessful] =
-    useState<boolean>(false);
-  const timeoutRef = useRef<NodeJS.Timeout | null>(null);
-
-  const manageTimeout = () => {
-    if (timeoutRef.current) {
-      clearTimeout(timeoutRef.current);
-    }
-    timeoutRef.current = setTimeout(() => {
-      setIsProfileUpdateSuccessful(false);
-    }, 5000);
-    window.scrollTo(0, 0);
-  };
 
   // Form validation
   const formSchema = z.object({
@@ -211,35 +202,19 @@ export default function EditProfile({
 
   return (
     <div className="xl-space-y-16 flex flex-col space-y-5 overflow-hidden p-4 sm:p-0 md:space-y-10">
-      {isProfileUpdateSuccessful && (
-        <div className="rounded-md bg-green-500 p-2 text-center text-white shadow">
-          Profile Updated Successfully!
-        </div>
-      )}
       <EditProfileSection
         form={form}
         onSave={onSave}
         profileUrl={profile?.profilePic.url}
         profilePicId={profile?.profilePic.id}
+        setIsEditing={setIsEditing}
       />
-      <EditLinkAccountSection form={form} onSave={onSave} />
+      <EditLinkAccountSection
+        form={form}
+        onSave={onSave}
+        setIsEditing={setIsEditing}
+      />
       <EditProjectSection userId={userId} />
-      {/* <div className="mt-4 flex flex-row-reverse">
-        <Button
-          className="ml-5 w-20 border border-gray-400 bg-profile_button_bg text-xs text-black hover:bg-primary_blue hover:text-white focus:bg-primary_blue  focus:text-white sm:w-20"
-          onClick={form.handleSubmit(onSave)}
-          aria-label="Save Profile edits"
-        >
-          Save
-        </Button>
-        <Button
-          className="w-20 border border-gray-400 bg-profile_button_bg text-xs text-black hover:bg-primary_blue hover:text-white focus:bg-primary_blue  focus:text-white sm:w-20"
-          onClick={() => setIsEditing(false)}
-          aria-label="Cancel Profile edits"
-        >
-          Cancel
-        </Button>
-      </div> */}
     </div>
   );
 }
