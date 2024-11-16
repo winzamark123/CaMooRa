@@ -20,12 +20,18 @@ export default function FilePondComponent({
   photoAlbumId,
   onUploadSuccess,
   allowMultiple = false,
+  onUploadComplete,
 }: {
   photoAlbumId: string;
   onUploadSuccess: (uploadedFiles: any) => void;
   allowMultiple?: boolean;
+  onUploadComplete?: () => void;
 }): JSX.Element {
-  const processFile = createProcessFile(photoAlbumId, onUploadSuccess);
+  const processFile = createProcessFile(
+    photoAlbumId,
+    onUploadSuccess,
+    onUploadComplete
+  );
 
   return (
     <div className="flex h-full w-full items-center justify-center overflow-hidden rounded-xl bg-stone-100 p-4">

@@ -3,7 +3,8 @@ import { trpc } from '@/lib/trpc/client';
 
 export const createProcessFile = (
   photoAlbumId: string,
-  onUploadSuccess?: (fileName: string) => void
+  onUploadSuccess?: (fileName: string) => void,
+  onUploadComplete?: () => void
 ) => {
   const signedURL = trpc.images.uploadImage.useMutation();
 
@@ -62,6 +63,9 @@ export const createProcessFile = (
             load(actualFile.name); // Notify FilePond that the upload has completed
             if (onUploadSuccess) {
               onUploadSuccess(actualFile.name);
+            }
+            if (onUploadComplete) {
+              onUploadComplete();
             }
           } else {
             error('Upload failed');

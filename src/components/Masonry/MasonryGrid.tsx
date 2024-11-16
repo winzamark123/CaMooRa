@@ -1,30 +1,90 @@
 'use client';
-import React from 'react';
+import React, { useEffect, useState } from 'react';
 import Masonry, { ResponsiveMasonry } from 'react-responsive-masonry';
 import { ImageProp } from '@/server/routers/Images';
 import { trpc } from '@/lib/trpc/client';
 import Image from 'next/image';
+import { AlbumPhotoSkeleton } from '../Loading/SkeletonCard';
 
 interface MasonryWrapperProps {
   images: ImageProp[];
   isEditing?: boolean;
+  isLoading?: boolean;
+  isFetching?: boolean;
 }
 
-// The number of columns change by resizing the window
+const MIN_LOADING_TIME = 200; // Minimum time to show loading state in milliseconds
+
 export default function MasonryWrapper({
   images,
   isEditing = false,
+  isLoading,
+  isFetching,
 }: MasonryWrapperProps) {
+  const [isImageLoading, setIsImageLoading] = useState(true);
+  const [loadingStartTime, setLoadingStartTime] = useState(0);
+  const [imagesReady, setImagesReady] = useState<string[]>([]);
+
   const utils = trpc.useUtils();
   const deleteImage = trpc.images.deleteImage.useMutation({
     onSuccess: () => {
       utils.images.getImagesByAlbumId.invalidate();
     },
   });
-
   const handleDeleteImage = async (imageId: string) => {
     await deleteImage.mutate({ imageId: imageId });
   };
+
+  useEffect(() => {
+    if (isLoading || isFetching) {
+      setLoadingStartTime(Date.now());
+      setIsImageLoading(true);
+    }
+  }, [isLoading, isFetching]);
+
+  useEffect(() => {
+    if (!isLoading && !isFetching && images) {
+      const timeElapsed = Date.now() - loadingStartTime;
+
+      // Reset imagesReady state
+      setImagesReady([]);
+
+      // Preload images individually
+      images.forEach((image) => {
+        const img = document.createElement('img') as HTMLImageElement;
+        img.src = image.url;
+        img.onload = () => {
+          setImagesReady((prev) => [...prev, image.id]);
+        };
+      });
+
+      // Only hide loading state when minimum time has passed AND all images are loaded
+      const checkAllImagesLoaded = setInterval(() => {
+        if (
+          timeElapsed >= MIN_LOADING_TIME &&
+          imagesReady.length === images.length
+        ) {
+          setIsImageLoading(false);
+          clearInterval(checkAllImagesLoaded);
+        }
+      }, 100);
+
+      return () => clearInterval(checkAllImagesLoaded);
+    }
+  }, [isLoading, isFetching, images, loadingStartTime, imagesReady.length]);
+
+  if (isImageLoading || imagesReady.length !== images.length) {
+    return (
+      <div className="flex flex-wrap justify-center gap-4">
+        <AlbumPhotoSkeleton />
+        <AlbumPhotoSkeleton />
+        <AlbumPhotoSkeleton />
+        <AlbumPhotoSkeleton />
+        <AlbumPhotoSkeleton />
+        <AlbumPhotoSkeleton />
+      </div>
+    );
+  }
 
   return (
     <ResponsiveMasonry
@@ -33,7 +93,6 @@ export default function MasonryWrapper({
       <Masonry gutter="10px">
         {images.map((image: ImageProp) => (
           <div key={image.id} className="group relative">
-            {/* {loadingImages.includes(image.id) && <SkeletonCard />} */}
             <Image
               className="rounded-sm"
               src={image.url}
