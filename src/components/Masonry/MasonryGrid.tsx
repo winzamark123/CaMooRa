@@ -1,11 +1,10 @@
 'use client';
 import Masonry, { ResponsiveMasonry } from 'react-responsive-masonry';
 import { ImageProp } from '@/server/routers/Images';
-import { trpc } from '@/lib/trpc/client';
 import Image from 'next/image';
 import { AlbumLongPhotoSkeleton } from '../Skeletons/AlbumSkeleton';
 import { useImageLoader } from './useImageLoader';
-import { useState } from 'react';
+import { useImageDeletion } from './useImageDeletion';
 
 interface MasonryWrapperProps {
   images: ImageProp[];
@@ -23,37 +22,9 @@ export default function MasonryWrapper({
   refetch,
 }: MasonryWrapperProps) {
   const { isImageReady } = useImageLoader(images, isLoading, isFetching);
-  const [deletingImages, setDeletingImages] = useState<Set<string>>(new Set());
+  const { handleDeleteImage, getVisibleImages } = useImageDeletion({ refetch });
 
-  const utils = trpc.useUtils();
-  const deleteImage = trpc.images.deleteImage.useMutation({
-    onSuccess: () => {
-      utils.images.getImagesByAlbumId.invalidate();
-      refetch?.();
-    },
-  });
-
-  const handleDeleteImage = async (imageId: string) => {
-    if (deletingImages.has(imageId)) return;
-
-    try {
-      setDeletingImages((prev) => {
-        const newSet = new Set(prev);
-        newSet.add(imageId);
-        return newSet;
-      });
-      await deleteImage.mutate({ imageId });
-    } catch (error) {
-      console.error('Failed to delete image:', error);
-      setDeletingImages((prev) => {
-        const newSet = new Set(prev);
-        newSet.delete(imageId);
-        return newSet;
-      });
-    }
-  };
-
-  const visibleImages = images.filter((image) => !deletingImages.has(image.id));
+  const visibleImages = getVisibleImages(images);
 
   return (
     <ResponsiveMasonry
