@@ -14,20 +14,6 @@ export function PhotoSkeleton() {
   );
 }
 
-export function AlbumPhotoSkeleton() {
-  return (
-    <div className="flex w-fit flex-col space-y-3 rounded-xl border border-black p-4">
-      <Skeleton className="h-[200px] w-[250px] rounded-xl border border-black" />
-      <div className="space-y-2">
-        <Skeleton className="h-4 w-[250px] border border-black" />
-        <Skeleton className="h-4 w-[200px] border border-black" />
-        <Skeleton className="h-4 w-[250px] border border-black" />
-        <Skeleton className="h-4 w-[200px] border border-black" />
-      </div>
-    </div>
-  );
-}
-
 export function ProfileSkeleton() {
   return (
     <div className="flex w-full flex-col gap-4 space-y-3 rounded-xl p-4 md:flex-row md:space-y-0">

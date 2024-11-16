@@ -4,7 +4,7 @@ import Masonry, { ResponsiveMasonry } from 'react-responsive-masonry';
 import { ImageProp } from '@/server/routers/Images';
 import { trpc } from '@/lib/trpc/client';
 import Image from 'next/image';
-import { AlbumPhotoSkeleton } from '../Loading/SkeletonCard';
+import { AlbumSkeleton } from '../Skeletons/AlbumSkeleton';
 
 interface MasonryWrapperProps {
   images: ImageProp[];
@@ -74,16 +74,7 @@ export default function MasonryWrapper({
   }, [isLoading, isFetching, images, loadingStartTime, imagesReady.length]);
 
   if (isImageLoading || imagesReady.length !== images.length) {
-    return (
-      <div className="flex flex-wrap justify-center gap-4">
-        <AlbumPhotoSkeleton />
-        <AlbumPhotoSkeleton />
-        <AlbumPhotoSkeleton />
-        <AlbumPhotoSkeleton />
-        <AlbumPhotoSkeleton />
-        <AlbumPhotoSkeleton />
-      </div>
-    );
+    return <AlbumSkeleton />;
   }
 
   return (
