@@ -214,7 +214,7 @@ export default function EditProfile({
         onSave={onSave}
         setIsEditing={setIsEditing}
       />
-      <EditProjectSection userId={userId} />
+      <EditProjectSection userId={userId} setIsEditing={setIsEditing} />
     </div>
   );
 }
