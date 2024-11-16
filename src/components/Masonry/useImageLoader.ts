@@ -3,53 +3,73 @@ import { ImageProp } from '@/server/routers/Images';
 
 const MIN_LOADING_TIME = 200;
 
+interface ImageDimensions {
+  width: number;
+  height: number;
+  aspectRatio: number;
+}
+
 export function useImageLoader(
   images: ImageProp[],
   isLoading?: boolean,
   isFetching?: boolean
 ) {
-  const [isImageLoading, setIsImageLoading] = useState(true);
   const [loadingStartTime, setLoadingStartTime] = useState(0);
-  const [imagesReady, setImagesReady] = useState<string[]>([]);
+  const [imagesReady, setImagesReady] = useState<Set<string>>(new Set());
+  const [imageDimensions, setImageDimensions] = useState<
+    Record<string, ImageDimensions>
+  >({});
 
   useEffect(() => {
     if (isLoading || isFetching) {
       setLoadingStartTime(Date.now());
-      setIsImageLoading(true);
+      setImagesReady(new Set());
+      setImageDimensions({});
     }
   }, [isLoading, isFetching]);
 
   useEffect(() => {
     if (!isLoading && !isFetching && images) {
-      const timeElapsed = Date.now() - loadingStartTime;
-
-      setImagesReady([]);
-
       images.forEach((image) => {
-        const img = document.createElement('img') as HTMLImageElement;
+        const img = new Image();
         img.src = image.url;
+
         img.onload = () => {
-          setImagesReady((prev) => [...prev, image.id]);
+          const dimensions: ImageDimensions = {
+            width: img.naturalWidth,
+            height: img.naturalHeight,
+            aspectRatio: img.naturalWidth / img.naturalHeight,
+          };
+
+          setImageDimensions((prev) => ({
+            ...prev,
+            [image.id]: dimensions,
+          }));
+
+          const timeElapsed = Date.now() - loadingStartTime;
+          if (timeElapsed >= MIN_LOADING_TIME) {
+            setImagesReady((prev) => {
+              const newSet = new Set(prev);
+              newSet.add(image.id);
+              return newSet;
+            });
+          } else {
+            setTimeout(() => {
+              setImagesReady((prev) => {
+                const newSet = new Set(prev);
+                newSet.add(image.id);
+                return newSet;
+              });
+            }, MIN_LOADING_TIME - timeElapsed);
+          }
         };
       });
-
-      const checkAllImagesLoaded = setInterval(() => {
-        if (
-          timeElapsed >= MIN_LOADING_TIME &&
-          imagesReady.length === images.length
-        ) {
-          setIsImageLoading(false);
-          clearInterval(checkAllImagesLoaded);
-        }
-      }, 100);
-
-      return () => clearInterval(checkAllImagesLoaded);
     }
-  }, [isLoading, isFetching, images, loadingStartTime, imagesReady.length]);
+  }, [isLoading, isFetching, images, loadingStartTime]);
 
   return {
-    isImageLoading,
-    imagesReady,
-    allImagesLoaded: imagesReady.length === images.length,
+    isImageReady: (imageId: string) => imagesReady.has(imageId),
+    getImageDimensions: (imageId: string) => imageDimensions[imageId],
+    allImagesLoaded: imagesReady.size === images.length,
   };
 }

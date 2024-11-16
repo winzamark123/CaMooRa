@@ -24,7 +24,7 @@ export function AlbumSkeleton() {
   );
 }
 
-function AlbumLongPhotoSkeleton() {
+export function AlbumLongPhotoSkeleton() {
   return (
     <div className="flex h-fit w-fit flex-col space-y-3 rounded-xl border border-black p-4">
       <Skeleton className="h-[200px] w-[250px] rounded-xl border border-black" />

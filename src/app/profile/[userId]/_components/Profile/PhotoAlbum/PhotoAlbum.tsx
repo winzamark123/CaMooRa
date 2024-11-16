@@ -18,6 +18,7 @@ export default function PhotoAlbum({
     data: user_images,
     isLoading,
     isFetching,
+    refetch,
     error,
   } = trpc.images.getImagesByAlbumId.useQuery({
     userId: userId,
@@ -55,6 +56,7 @@ export default function PhotoAlbum({
           isEditing={isEditing}
           isLoading={isLoading}
           isFetching={isFetching}
+          refetch={refetch}
         />
       )}
     </main>
