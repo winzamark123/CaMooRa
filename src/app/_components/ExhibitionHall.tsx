@@ -4,7 +4,7 @@ import { useState } from 'react';
 import { trpc } from '@/lib/trpc/client';
 import { HoverEffect } from '../../components/ui/card-hover-effect';
 import { useUser } from '@clerk/nextjs';
-import { PhotoSkeleton } from '@/components/Loading/SkeletonCard';
+import { PhotoSkeleton } from '@/components/Skeletons/SkeletonCard';
 import {
   DropdownMenu,
   DropdownMenuContent,

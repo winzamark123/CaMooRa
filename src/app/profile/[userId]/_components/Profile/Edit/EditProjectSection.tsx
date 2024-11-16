@@ -365,7 +365,7 @@ export default function EditProjectSection({
               <input
                 ref={createInputRef}
                 id="add-photo-album-name"
-                className="rounded-full border-2 border-blue-700 bg-profile_button_bg text-center text-xs placeholder-slate-400"
+                className="h-9 rounded-full border-2 border-blue-700 bg-profile_button_bg text-center text-xs placeholder-slate-400"
                 type="text"
                 placeholder="Enter Album Name"
                 title="Please enter a name for you new photo album"

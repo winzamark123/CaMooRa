@@ -3,7 +3,7 @@
 import React, { Suspense } from 'react';
 import { Card } from '@/components/ui/card';
 import { trpc } from '@/lib/trpc/client';
-import { PhotoSkeleton } from '@/components/Loading/SkeletonCard';
+import { PhotoSkeleton } from '@/components/Skeletons/SkeletonCard';
 import Image from 'next/image';
 
 interface ProfileCardProps {

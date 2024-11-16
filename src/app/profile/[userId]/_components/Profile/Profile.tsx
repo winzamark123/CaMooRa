@@ -10,7 +10,7 @@ import type { Contact } from '@/server/routers/Contact/index';
 import type { Profile } from '@/server/routers/Profile/index';
 import ProfilePic from './ProfilePic/ProfilePic';
 import Contacts from './Contacts/Contacts';
-import { ProfileSkeleton } from '@/components/Loading/SkeletonCard';
+import { ProfileSkeleton } from '@/components/Skeletons/SkeletonCard';
 
 interface IProfilePic {
   id: string;

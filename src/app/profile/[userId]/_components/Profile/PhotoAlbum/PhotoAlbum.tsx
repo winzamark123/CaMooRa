@@ -1,7 +1,6 @@
 import React from 'react';
 import MasonryWrapper from '@/components/Masonry/MasonryGrid';
 import { trpc } from '@/lib/trpc/client';
-import { PhotoSkeleton } from '@/components/Loading/SkeletonCard';
 import CreatePostForm from '../UploadImage/CreatePostForm';
 
 interface PhotoAlbumProps {
@@ -18,22 +17,13 @@ export default function PhotoAlbum({
   const {
     data: user_images,
     isLoading,
+    isFetching,
+    refetch,
     error,
   } = trpc.images.getImagesByAlbumId.useQuery({
     userId: userId,
     photoAlbumId: photoAlbumId,
   });
-
-  if (isLoading) {
-    return (
-      <div className="flex flex-wrap justify-center gap-4 p-4">
-        <PhotoSkeleton />
-        <PhotoSkeleton />
-        <PhotoSkeleton />
-        <PhotoSkeleton />
-      </div>
-    );
-  }
 
   if (error) {
     return <div>Error: {error.message}</div>;
@@ -57,11 +47,17 @@ export default function PhotoAlbum({
     >
       {isEditing && (
         <div className="h-half-screen overflow-y-auto border-b-2">
-          <CreatePostForm photoAlbumId={photoAlbumId} />
+          <CreatePostForm photoAlbumId={photoAlbumId} userId={userId} />
         </div>
       )}
       {user_images && (
-        <MasonryWrapper images={user_images} isEditing={isEditing} />
+        <MasonryWrapper
+          images={user_images}
+          isEditing={isEditing}
+          isLoading={isLoading}
+          isFetching={isFetching}
+          refetch={refetch}
+        />
       )}
     </main>
   );

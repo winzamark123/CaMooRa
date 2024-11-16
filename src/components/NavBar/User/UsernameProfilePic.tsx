@@ -2,7 +2,7 @@
 import Image from 'next/image';
 import React from 'react';
 import { trpc } from '@/lib/trpc/client';
-import { DropDownSkeleton } from '@/components/Loading/SkeletonCard';
+import { DropDownSkeleton } from '@/components/Skeletons/SkeletonCard';
 
 interface UsernameProfilePicProps {
   id: string;
