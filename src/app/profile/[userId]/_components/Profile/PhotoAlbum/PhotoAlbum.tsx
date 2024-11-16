@@ -2,17 +2,20 @@ import React from 'react';
 import MasonryWrapper from '@/components/Masonry/MasonryGrid';
 import { trpc } from '@/lib/trpc/client';
 import CreatePostForm from '../UploadImage/CreatePostForm';
+import { Button } from '@/components/ui/button';
 
 interface PhotoAlbumProps {
   userId: string;
   photoAlbumId: string;
   isEditing?: boolean;
+  setIsEditing?: (isEditing: boolean) => void;
 }
 
 export default function PhotoAlbum({
   userId,
   photoAlbumId,
   isEditing = false,
+  setIsEditing,
 }: PhotoAlbumProps) {
   const {
     data: user_images,
@@ -45,9 +48,14 @@ export default function PhotoAlbum({
       className="flex flex-col gap-4 rounded-b-xl rounded-tr-xl p-10"
       style={{ backgroundColor: '#F7F5EF' }}
     >
-      {isEditing && (
-        <div className="h-half-screen overflow-y-auto border-b-2">
-          <CreatePostForm photoAlbumId={photoAlbumId} userId={userId} />
+      {isEditing && setIsEditing && (
+        <div className="flex flex-col">
+          <div className="flex justify-end">
+            <Button onClick={() => setIsEditing(false)}>Preview</Button>
+          </div>
+          <div className="h-half-screen overflow-y-auto border-b-2">
+            <CreatePostForm photoAlbumId={photoAlbumId} userId={userId} />
+          </div>
         </div>
       )}
       {user_images && (

@@ -14,14 +14,13 @@ import { Trash2, Pencil } from 'lucide-react';
 
 interface EditProjectSectionProps {
   userId: string;
+  setIsEditing: (isEditing: boolean) => void;
 }
 
 export default function EditProjectSection({
   userId,
+  setIsEditing,
 }: EditProjectSectionProps) {
-  // 1. TRPC Queries and Mutations
-
-  // tRPC utils provide methods to: Manage query cache, Handle data mutations, Control data fetching
   const utils = trpc.useUtils();
 
   const {
@@ -408,6 +407,7 @@ export default function EditProjectSection({
           photoAlbumId={selectedPhotoAlbum.photoAlbumId}
           userId={userId}
           isEditing={true}
+          setIsEditing={setIsEditing}
         />
       )}
       {!selectedPhotoAlbum && <div>No Photo Albums Available</div>}
