@@ -36,4 +36,3 @@ jobs:
           --prod
           --yes
           --scope ${{ secrets.VERCEL_ORG_ID }}
-          --project ${{ secrets.VERCEL_PROJECT_ID }}
