@@ -26,6 +26,8 @@ jobs:
 
       - name: Build Application
         run: npm run build:ci
+        env:
+          DATABASE_URL: ${{ secrets.DATABASE_URL }}
 
       - name: Deploy to Vercel
         run: >
