@@ -7,7 +7,7 @@ import { useForm } from 'react-hook-form';
 import { z } from 'zod';
 import EditProfileSection from './EditProfileSection';
 import EditLinkAccountSection from './EditLinkAccountSection';
-import EditProjectSection from './EditProjectSection';
+import EditPhotoAlbumSection from './EditPhotoAlbumSection';
 
 interface UpdateProfileVariableType
   extends Omit<ProfileProps, 'firstName' | 'lastName' | 'profilePic'> {
@@ -214,7 +214,7 @@ export default function EditProfile({
         onSave={onSave}
         setIsEditing={setIsEditing}
       />
-      <EditProjectSection userId={userId} setIsEditing={setIsEditing} />
+      <EditPhotoAlbumSection userId={userId} setIsEditing={setIsEditing} />
     </div>
   );
 }
