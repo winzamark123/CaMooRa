@@ -13,29 +13,30 @@ import { Button } from '@/components/ui/button';
 import { useEffect, useRef, useState } from 'react';
 import { Input } from '@/components/ui/input';
 import { validateAlbumName } from '@/server/routers/PhotoAlbum/utils';
+import { useAlbumUpdate } from './useAlbumUpdate';
 
 interface UpdateAlbumNameModalProps {
   photoAlbumName: string;
   photoAlbumId: string;
-  setUpdatedPhotoAlbumNameId: (id: string) => void;
-  mutateAlbumName: (params: {
-    newPhotoAlbumName: string;
-    oldPhotoAlbumName: string;
-  }) => void;
+  userId: string;
 }
 
 export default function UpdateAlbumNameModal({
   photoAlbumName,
   photoAlbumId,
-  setUpdatedPhotoAlbumNameId,
-  mutateAlbumName,
+  userId,
 }: UpdateAlbumNameModalProps) {
   const updateInputRef = useRef<HTMLInputElement>(null);
   const [isError, setIsError] = useState(false);
   const [error, setError] = useState('');
-  const [updatedPhotoAlbumName, setUpdatedPhotoAlbumName] = useState('');
   const [showCharCount, setShowCharCount] = useState(true);
   const [open, setOpen] = useState(false);
+  const [updatedPhotoAlbumName, setUpdatedPhotoAlbumName] = useState('');
+
+  // TRPC Hook for Updating Photo Album Name
+  const { mutateAlbumName, setUpdatedPhotoAlbumNameId } = useAlbumUpdate({
+    userId,
+  });
 
   // Focus on Input Field (when modal opens)
   useEffect(() => {
@@ -55,7 +56,7 @@ export default function UpdateAlbumNameModal({
     }
   };
 
-  // Handle Input Change (Immediate UI Update)
+  // Handle Input Change (Immediate UI validation)
   const handleInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const value = e.target.value;
     setUpdatedPhotoAlbumName(value);
@@ -73,6 +74,7 @@ export default function UpdateAlbumNameModal({
       oldPhotoAlbumName
     );
 
+    // If Validation Fails, show error
     if (!validation.isValid) {
       setIsError(true);
       setError(validation.error);
@@ -130,11 +132,19 @@ export default function UpdateAlbumNameModal({
         </DialogHeader>
         {/* Input Field & Close & Save Buttons */}
         <div className="my-auto mt-8 flex flex-col gap-x-2 gap-y-4 self-center sm:mt-auto sm:flex-row sm:gap-y-0">
-          {/* Photo Album Name Input Field */}
-          <div className="relative flex flex-col">
+          <div className="relative flex flex-col space-y-1">
+            <span
+              className={`text-xs ${
+                isError ? 'text-red-500' : 'text-gray-500'
+              } w-[240px] break-words`}
+            >
+              {showCharCount
+                ? `${updatedPhotoAlbumName.length}/25 characters`
+                : error}
+            </span>
             <Input
               ref={updateInputRef}
-              className={`h-9 w-full rounded-lg border ${
+              className={`h-9 w-[240px] rounded-lg border ${
                 isError ? 'border-red-500' : 'border-gray-400'
               } bg-profile_button_bg px-2 text-left text-xs placeholder-slate-400`}
               type="text"
@@ -148,24 +158,15 @@ export default function UpdateAlbumNameModal({
                 setUpdatedPhotoAlbumName(e.target.value);
               }}
             />
-            <span
-              className={`absolute -top-5 text-xs sm:-bottom-5 sm:top-auto ${
-                isError ? 'text-red-500' : 'text-gray-500'
-              }`}
-            >
-              {showCharCount
-                ? `${updatedPhotoAlbumName.length}/25 characters`
-                : error}
-            </span>
           </div>
 
-          {/* Close & Save Buttons */}
           <DialogClose asChild>
             <Button
               type="button"
               variant="secondary"
               onClick={resetUpdatingState}
               aria-label="Close the modal without saving"
+              className="h-9 sm:self-end "
             >
               Close
             </Button>
@@ -176,6 +177,7 @@ export default function UpdateAlbumNameModal({
             type="button"
             variant={'outline'}
             aria-label="Save the new photo album name"
+            className="h-9 sm:self-end"
           >
             Save
           </Button>

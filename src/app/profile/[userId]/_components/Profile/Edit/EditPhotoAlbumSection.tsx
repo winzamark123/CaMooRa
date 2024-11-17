@@ -4,7 +4,7 @@ import { trpc } from '@/lib/trpc/client';
 import { useEffect, useState, useRef } from 'react';
 import { SelectedPhotoAlbumProps } from '../Projects';
 import PhotoAlbumButton from '../PhotoAlbum/PhotoAlbumButton';
-import CreateAlbumModal from '../PhotoAlbum/CreateAlbumModal';
+import CreateAlbumModal from '../PhotoAlbum/Create/CreateAlbumModal';
 
 interface EditPhotoAlbumSectionProps {
   userId: string;
@@ -15,106 +15,22 @@ export default function EditPhotoAlbumSection({
   userId,
   setIsEditing,
 }: EditPhotoAlbumSectionProps) {
-  const utils = trpc.useUtils();
-
+  // Get all Photo Albums for the User
   const {
     data: photoAlbums,
     isLoading: isLoadingSections,
     refetch: refetchPhotoAlbums,
   } = trpc.photoAlbum.getAllPhotoAlbums.useQuery({ userId });
 
-  const createPhotoAlbum = trpc.photoAlbum.createPhotoAlbum.useMutation({
-    onSuccess: () => {
-      console.log('Photo Album created successfully');
-      refetchPhotoAlbums();
-    },
-    onError: (err) => {
-      console.error('Error creating Photo Album', err);
-    },
-  });
-
-  const updatePhotoAlbumName = trpc.photoAlbum.updatePhotoAlbumName.useMutation(
-    {
-      onMutate: async (newAlbum) => {
-        // Cancel any outgoing fetches
-        await utils.photoAlbum.getAllPhotoAlbums.cancel();
-
-        // Save current albums state (backup)
-        const previousAlbums = utils.photoAlbum.getAllPhotoAlbums.getData({
-          userId,
-        });
-
-        // Update UI immediately with new name
-        utils.photoAlbum.getAllPhotoAlbums.setData({ userId }, (old) => {
-          if (!old) return previousAlbums;
-          return old.map((album) =>
-            album.id === updatedPhotoAlbumNameId
-              ? { ...album, photoAlbumName: newAlbum.newPhotoAlbumName }
-              : album
-          );
-        });
-
-        return { previousAlbums };
-      },
-
-      onSuccess: () => {
-        console.log('Photo Album updated successfully');
-      },
-
-      // If Server Update fails, revert back to old names
-      onError: (err, newAlbum, context) => {
-        console.error('Error updating Photo Album', err);
-        utils.photoAlbum.getAllPhotoAlbums.setData(
-          { userId },
-          context?.previousAlbums
-        );
-      },
-
-      onSettled: () => {
-        // Ensure data is synced with server
-        utils.photoAlbum.getAllPhotoAlbums.invalidate({ userId });
-        console.log(photoAlbums);
-      },
-    }
-  );
-
-  const deletePhotoAlbum = trpc.photoAlbum.deletePhotoAlbum.useMutation({
-    onSuccess: () => {
-      console.log('Photo Album deleted successfully');
-      refetchPhotoAlbums().then((refetchedData) => {
-        if (
-          selectedPhotoAlbum &&
-          refetchedData.data &&
-          refetchedData.data.length > 0
-        ) {
-          const newIndex =
-            selectedPhotoAlbum.photoAlbumIndex > 0
-              ? selectedPhotoAlbum.photoAlbumIndex - 1
-              : 0;
-          setSelectedPhotoAlbum({
-            photoAlbumId: refetchedData.data[newIndex].id,
-            photoAlbumIndex: newIndex,
-          });
-        } else {
-          resetSelectedAlbum();
-        }
-      });
-    },
-    onError: (err) => {
-      console.error('Error deleting Photo Album', err);
-    },
-  });
-
-  // Update Photo Album Id (needed for optimistic update)
-  const [updatedPhotoAlbumNameId, setUpdatedPhotoAlbumNameId] = useState('');
-
   // Selected Album State and Refs
+
+  const defaultSelectedAlbum = { photoAlbumId: '', photoAlbumIndex: 0 };
   const [selectedPhotoAlbum, setSelectedPhotoAlbum] =
-    useState<SelectedPhotoAlbumProps>();
+    useState<SelectedPhotoAlbumProps>(defaultSelectedAlbum);
   const hasSetSelectedAlbumRef = useRef(false);
 
+  // When Photo Albums are loaded for the first time
   useEffect(() => {
-    // When Photo Albums are loaded for the first time
     if (photoAlbums?.length === 0) {
       resetSelectedAlbum();
     } else if (!hasSetSelectedAlbumRef.current && photoAlbums) {
@@ -124,11 +40,12 @@ export default function EditPhotoAlbumSection({
       });
       hasSetSelectedAlbumRef.current = true;
     }
+    console.log('Selected Album', selectedPhotoAlbum);
   }, [photoAlbums]);
 
   const resetSelectedAlbum = () => {
     hasSetSelectedAlbumRef.current = false;
-    setSelectedPhotoAlbum(undefined);
+    setSelectedPhotoAlbum(defaultSelectedAlbum);
   };
 
   if (isLoadingSections) {
@@ -147,10 +64,11 @@ export default function EditPhotoAlbumSection({
         Upload your photos. The first image will be used as the cover photo on
         feeds.
       </p>
-      {/* TODO: Allow user to update their Photo Album names */}
+
+      {/* Display Photo Albums */}
       <div className="mb-5 overflow-hidden">
         <div className="mb-2 flex justify-end">
-          <CreateAlbumModal createPhotoAlbum={createPhotoAlbum.mutate} />
+          <CreateAlbumModal refetchPhotoAlbums={refetchPhotoAlbums} />
         </div>
         <div className="flex-1 overflow-hidden">
           <div className="flex flex-nowrap gap-x-4 overflow-x-auto py-1">
@@ -158,14 +76,16 @@ export default function EditPhotoAlbumSection({
             {photoAlbums &&
               photoAlbums.map((photoAlbum, index) => (
                 <PhotoAlbumButton
-                  key={index}
+                  key={photoAlbum.id}
                   photoAlbum={photoAlbum}
                   index={index}
-                  selectedPhotoAlbumId={selectedPhotoAlbum?.photoAlbumId}
+                  selectedPhotoAlbum={
+                    selectedPhotoAlbum as SelectedPhotoAlbumProps
+                  }
                   setSelectedPhotoAlbum={setSelectedPhotoAlbum}
-                  setUpdatedPhotoAlbumNameId={setUpdatedPhotoAlbumNameId}
-                  deletePhotoAlbum={deletePhotoAlbum.mutate}
-                  mutateAlbumName={updatePhotoAlbumName.mutate}
+                  userId={userId}
+                  refetchPhotoAlbums={refetchPhotoAlbums}
+                  resetSelectedAlbum={resetSelectedAlbum}
                 />
               ))}
           </div>
