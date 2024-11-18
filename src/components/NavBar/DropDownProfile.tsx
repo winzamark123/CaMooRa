@@ -12,7 +12,7 @@ import {
 } from '@/components/ui/dropdown-menu';
 import UsernameProfilePic from './User/UsernameProfilePic';
 import Link from 'next/link';
-import SettingsModal from '../SettingsModal/SettingsModal';
+// import SettingsModal from '../SettingsModal/SettingsModal';
 import { LogOut } from 'lucide-react';
 import { User } from 'lucide-react';
 export function DropDownProfile({ userId }: { userId: string }) {
@@ -31,9 +31,9 @@ export function DropDownProfile({ userId }: { userId: string }) {
               Profile
             </DropdownMenuItem>
           </Link>
-          <DropdownMenuItem onSelect={(e) => e.preventDefault()}>
+          {/* <DropdownMenuItem onSelect={(e) => e.preventDefault()}>
             <SettingsModal />
-          </DropdownMenuItem>
+          </DropdownMenuItem> */}
           <SignOutButton>
             <DropdownMenuItem className="flex bg-red-700 text-white hover:bg-red-800">
               <LogOut className="mr-2 h-4 w-4" />
