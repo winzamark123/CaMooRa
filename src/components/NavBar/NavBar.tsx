@@ -9,6 +9,7 @@ import LogoBlack from '@public/logo_black.svg';
 import LogoWhite from '@public/logo_white.svg';
 import Image from 'next/image';
 import { trpc } from '@/lib/trpc/client';
+import { ModeToggle } from '../Theme/mode-toggle';
 
 export default function NavBar() {
   const [showSignInPopUp, setShowSignInPopUp] = useState(false);
@@ -29,6 +30,7 @@ export default function NavBar() {
       >
         Feedback
       </a>
+      <ModeToggle />
       <SignedIn>
         {my_user && <DropDownProfile userId={my_user.userId} />}
       </SignedIn>
