@@ -92,7 +92,7 @@ export default function EditProfile({
     discord: z.string().optional(),
     instagramTitle: z
       .string()
-      .max(15, 'Instagram Title must be 15 characters or less')
+      .max(30, 'Instagram Title must be 30 characters or less')
       .optional(),
     instagramLink: z.string().optional(),
     phone: z.string().optional(),
