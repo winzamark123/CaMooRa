@@ -6,7 +6,14 @@ import { deletePhotoCommand } from '../Images/s3-delete';
 
 // TODO: Add limit to the amount of characters in the photo album name (Both create and update for backend and frontend)
 export const createPhotoAlbum = protectedProcedure
-  .input(z.object({ photoAlbumName: z.string() }))
+  .input(
+    z.object({
+      photoAlbumName: z
+        .string()
+        .min(1, { message: 'Album Name required' })
+        .max(25, { message: 'Album Name must be less than 25 characters' }),
+    })
+  )
   .mutation(async ({ input, ctx }) => {
     // checking if the photo album exists (if it does, throw an error)
     const existingPhotoAlbum = await prisma.photoAlbum.findUnique({
@@ -32,7 +39,10 @@ export const createPhotoAlbum = protectedProcedure
 export const updatePhotoAlbumName = protectedProcedure
   .input(
     z.object({
-      newPhotoAlbumName: z.string(),
+      newPhotoAlbumName: z
+        .string()
+        .min(1, { message: 'Album Name required' })
+        .max(25, { message: 'Album Name must be less than 25 characters' }),
       oldPhotoAlbumName: z.string(),
     })
   )

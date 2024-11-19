@@ -10,17 +10,35 @@ import { Trash2 } from 'lucide-react';
 import { DropdownMenuItem } from '@/components/ui/dropdown-menu';
 import { Button } from '@/components/ui/button';
 import { useState } from 'react';
+import { SelectedPhotoAlbumProps } from '../../Projects';
+import { useAlbumDelete } from './useAlbumDelete';
 
 interface DeleteAlbumModalProps {
   photoAlbumName: string;
-  deletePhotoAlbum: (params: { photoAlbumName: string }) => void;
+  // deletePhotoAlbum: (params: { photoAlbumName: string }) => void;
+  refetchPhotoAlbums: () => Promise<{ data: any[] }>;
+  resetSelectedAlbum: () => void;
+  setSelectedPhotoAlbum: (props: SelectedPhotoAlbumProps) => void;
+  selectedPhotoAlbum: SelectedPhotoAlbumProps;
 }
 
 export default function DeleteAlbumModal({
   photoAlbumName,
-  deletePhotoAlbum,
+  refetchPhotoAlbums,
+  resetSelectedAlbum,
+  setSelectedPhotoAlbum,
+  selectedPhotoAlbum,
+  // deletePhotoAlbum,
 }: DeleteAlbumModalProps) {
   const [open, setOpen] = useState(false);
+
+  // TRPC Mutation Hook
+  const { deletePhotoAlbum } = useAlbumDelete({
+    refetchPhotoAlbums,
+    resetSelectedAlbum,
+    setSelectedPhotoAlbum,
+    selectedPhotoAlbum,
+  });
 
   const handleDeletePhotoAlbum = (photoAlbumName: string) => {
     deletePhotoAlbum({ photoAlbumName });
@@ -54,8 +72,8 @@ export default function DeleteAlbumModal({
             Are you sure you want to delete the {photoAlbumName} Album?
           </DialogTitle>
         </DialogHeader>
-        {/* Close & Save Buttons */}
 
+        {/* Close & Save Buttons */}
         <div className="my-auto mt-8 flex flex-col gap-x-2 gap-y-4 self-center sm:mt-auto sm:flex-row sm:gap-y-0">
           <DialogClose asChild>
             <Button
@@ -78,15 +96,6 @@ export default function DeleteAlbumModal({
           >
             Delete
           </Button>
-        </div>
-        {/* Add your settings content here */}
-        <div className="flex justify-between">
-          {/* <Button
-                className="bg-rose-500 hover:bg-rose-600"
-                onClick={() => deleteUser()}
-              >
-                Delete Account
-              </Button> */}
         </div>
       </DialogContent>
     </Dialog>

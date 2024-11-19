@@ -11,13 +11,14 @@ import { Button } from '@/components/ui/button';
 import { useEffect, useRef, useState } from 'react';
 import { Input } from '@/components/ui/input';
 import { validateAlbumName } from '@/server/routers/PhotoAlbum/utils';
+import { useAlbumCreate } from './useAlbumCreate';
 
 interface CreateAlbumModalProps {
-  createPhotoAlbum: (params: { photoAlbumName: string }) => void;
+  refetchPhotoAlbums: () => void;
 }
 
 export default function CreateAlbumModal({
-  createPhotoAlbum,
+  refetchPhotoAlbums,
 }: CreateAlbumModalProps) {
   const [newPhotoAlbumName, setNewPhotoAlbumName] = useState('');
   const createInputRef = useRef<HTMLInputElement>(null);
@@ -25,6 +26,9 @@ export default function CreateAlbumModal({
   const [error, setError] = useState('');
   const [showCharCount, setShowCharCount] = useState(true);
   const [open, setOpen] = useState(false);
+
+  // TRPC Mutation Hook
+  const { createPhotoAlbum } = useAlbumCreate({ refetchPhotoAlbums });
 
   // Focus on input when creating a new photo album (Accessibility)
   useEffect(() => {
@@ -160,35 +164,4 @@ export default function CreateAlbumModal({
       </DialogContent>
     </Dialog>
   );
-}
-{
-  /* <div className="shrink-0">
-  <input
-    ref={createInputRef}
-    id="add-photo-album-name"
-    className="h-9 rounded-full border-2 border-blue-700 bg-profile_button_bg text-center text-xs placeholder-slate-400"
-    type="text"
-    placeholder="Enter Album Name"
-    title="Please enter a name for you new photo album"
-    onKeyDown={handleCreateAlbumKeyDown}
-    value={newPhotoAlbumName}
-    onChange={(e) => setNewPhotoAlbumName(e.target.value)}
-  />
-  <Button
-    className="h-9 w-9 rounded-lg border border-gray-400"
-    onClick={resetCreatingState}
-    title="Cancel"
-    aria-label="Cancel creating a new photo album"
-  >
-    ✕
-  </Button>
-  <Button
-    className="h-9 w-9 rounded-lg bg-primary_blue text-white"
-    onClick={handleCreateNewAlbum}
-    title="Save"
-    aria-label="Save the new photo album with the name entered in the input field"
-  >
-    ✓
-  </Button>
-</div>; */
 }
