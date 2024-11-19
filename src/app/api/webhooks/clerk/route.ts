@@ -54,13 +54,27 @@ export async function POST(req: Request) {
 
   // Create User in the db
   if (evt.type === 'user.created') {
-    const { id, first_name, last_name, image_url } = evt.data;
-    const primary_email = evt.data.email_addresses[0].email_address;
+    const { id, email_addresses } = evt.data;
+    const first_name = evt.data.first_name || '';
+    const last_name = evt.data.last_name || '';
+    const image_url = evt.data.image_url || '';
 
-    if (!first_name || !last_name || !primary_email) {
-      throw new Error(
-        'Invalid data: first_name, last_name, or primary_email is null'
-      );
+    // Check if there are any email addresses
+    if (!email_addresses || email_addresses.length === 0) {
+      console.error('No email addresses found in webhook data');
+      return new Response('Invalid user data: no email address', {
+        status: 400,
+      });
+    }
+
+    const primary_email = email_addresses[0].email_address;
+
+    // Validate required fields
+    if (!id || !primary_email) {
+      console.error('Missing required fields:', { id, primary_email });
+      return new Response('Invalid user data: missing required fields', {
+        status: 400,
+      });
     }
 
     try {

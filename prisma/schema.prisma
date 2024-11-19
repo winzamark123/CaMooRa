@@ -43,7 +43,7 @@ model Profile {
   // Personal Information
   additionalName String?
   firstName      String
-  lastName       String
+  lastName       String?
   bio            String?
 
   // Media

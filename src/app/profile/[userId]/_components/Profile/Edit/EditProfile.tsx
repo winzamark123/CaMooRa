@@ -83,7 +83,7 @@ export default function EditProfile({
       .optional(),
     lastName: z
       .string()
-      .min(1, { message: 'Last Name required' })
+      // .min(1, { message: 'Last Name required' })
       .refine((value) => /^[a-zA-Z\s]*$/.test(value), {
         message: 'Last Name should not contain numbers or punctuation',
       })
