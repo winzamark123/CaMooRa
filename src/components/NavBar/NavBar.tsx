@@ -4,12 +4,13 @@ import { SignedIn, SignedOut, useUser } from '@clerk/nextjs';
 import Link from 'next/link';
 import { DropDownProfile } from './DropDownProfile';
 import { Button } from '../ui/button';
-import SignInPopUp from '../Popups/SignInPopUp';
+import SignInPopUp from '../Popups/SignIn/SignInPopUp';
 import LogoBlack from '@public/logo_black.svg';
 import LogoWhite from '@public/logo_white.svg';
 import Image from 'next/image';
 import { trpc } from '@/lib/trpc/client';
 import { ModeToggle } from '../Theme/mode-toggle';
+// import DemoPopUp from '../Popups/SignUp/DemoPopUp';
 
 export default function NavBar() {
   const [showSignInPopUp, setShowSignInPopUp] = useState(false);
@@ -101,6 +102,7 @@ export default function NavBar() {
       )}
 
       {showSignInPopUp && <SignInPopUp onToggle={toggleSignInPopUp} />}
+      {/* {showSignInPopUp && <DemoPopUp onToggle={toggleSignInPopUp} />} */}
     </main>
   );
 }
