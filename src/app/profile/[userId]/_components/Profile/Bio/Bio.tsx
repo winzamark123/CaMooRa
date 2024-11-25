@@ -29,7 +29,7 @@ const Bio: React.FC<BioProps> = ({
         </h1>
         {currentUser && (
           <div className="md:ml-auto">
-            <FavPhotographer userId={currentUser.id} photographerId={userId} />
+            <FavPhotographer photographerId={userId} />
           </div>
         )}
       </div>

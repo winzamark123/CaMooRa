@@ -3,13 +3,20 @@ import { z } from 'zod';
 import prisma from '@prisma/prisma';
 
 export const saveFavorite = protectedProcedure
-  .input(z.object({ userId: z.string(), photographerId: z.string() }))
-  .mutation(async ({ input }) => {
-    // Check if the favorite photographer already exists
+  .input(z.object({ photographerId: z.string() }))
+  .mutation(async ({ ctx, input }) => {
+    const user = await prisma.user.findUnique({
+      where: { clerkId: ctx.user.clerk.id },
+    });
+
+    if (!user) {
+      throw new Error('User not found');
+    }
+
     const existingFavorite = await prisma.favorites.findUnique({
       where: {
         userId_photographerId: {
-          userId: input.userId,
+          userId: user.id,
           photographerId: input.photographerId,
         },
       },
@@ -19,7 +26,7 @@ export const saveFavorite = protectedProcedure
     }
     await prisma.favorites.create({
       data: {
-        userId: input.userId,
+        userId: user.id,
         photographerId: input.photographerId,
       },
     });
@@ -27,13 +34,20 @@ export const saveFavorite = protectedProcedure
   });
 
 export const removeFavorite = protectedProcedure
-  .input(z.object({ userId: z.string(), photographerId: z.string() }))
-  .mutation(async ({ input }) => {
-    // Check if the favorite photographer already exists
+  .input(z.object({ photographerId: z.string() }))
+  .mutation(async ({ ctx, input }) => {
+    const user = await prisma.user.findUnique({
+      where: { clerkId: ctx.user.clerk.id },
+    });
+
+    if (!user) {
+      throw new Error('User not found');
+    }
+
     const existingFavorite = await prisma.favorites.findUnique({
       where: {
         userId_photographerId: {
-          userId: input.userId,
+          userId: user.id,
           photographerId: input.photographerId,
         },
       },
@@ -43,7 +57,7 @@ export const removeFavorite = protectedProcedure
       await prisma.favorites.delete({
         where: {
           userId_photographerId: {
-            userId: input.userId,
+            userId: user.id,
             photographerId: input.photographerId,
           },
         },

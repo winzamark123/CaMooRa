@@ -37,12 +37,9 @@ export default function ExhibitionHall() {
     data: fav_users,
     isLoading: fav_users_loading,
     error: fav_users_error,
-  } = trpc.favorites.getFavorite.useQuery(
-    { userId: user?.id as string },
-    {
-      enabled: !!user, // only fetch if the user is logged in
-    }
-  );
+  } = trpc.favorites.getFavorite.useQuery(undefined, {
+    enabled: !!user, // only fetch if the user is logged in
+  });
 
   if (error) {
     return <div>Error: {error.message}</div>;

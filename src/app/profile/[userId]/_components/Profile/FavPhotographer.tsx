@@ -6,16 +6,13 @@ import { Star } from 'lucide-react';
 import { Skeleton } from '@/components/ui/skeleton';
 
 interface FavPhotographerProps {
-  userId: string;
   photographerId: string;
 }
 
 export default function FavPhotographer({
-  userId,
   photographerId,
 }: FavPhotographerProps) {
   const isFavoriteQuery = trpc.favorites.isFavorite.useQuery({
-    userId: userId,
     favoriteUserId: photographerId,
   });
 
@@ -31,7 +28,6 @@ export default function FavPhotographer({
 
   const save_mutation = trpc.favorites.saveFavorite.useMutation({
     onSuccess: () => {
-      console.log('Favorite Photographer saved successfully');
       setIsFavorite(true);
     },
     onError: (err) => {
@@ -56,12 +52,10 @@ export default function FavPhotographer({
   function toggleFavorite() {
     if (isFavorite) {
       remove_mutation.mutate({
-        userId: userId,
         photographerId: photographerId,
       });
     } else {
       save_mutation.mutate({
-        userId: userId,
         photographerId: photographerId,
       });
     }
