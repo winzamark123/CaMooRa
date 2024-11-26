@@ -5,6 +5,7 @@ import NavBar from '../components/NavBar/NavBar';
 import Footer from '../components/Footer/Footer';
 import { ThemeProvider } from '@/components/Theme/theme-provider';
 import Provider from '@/lib/trpc/Provider';
+import { WelcomeDemoPopup } from '@/components/Popups/SignUp/WelcomeDemoPopUp';
 
 export const metadata: Metadata = {
   title: 'CaMOOra',
@@ -51,6 +52,7 @@ export default function RootLayout({
               <div className="flex flex-col items-center justify-center">
                 {children}
               </div>
+              <WelcomeDemoPopup />
               <Footer />
             </ThemeProvider>
           </Provider>

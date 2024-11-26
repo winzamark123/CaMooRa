@@ -2,6 +2,7 @@ import prisma from '@prisma/prisma';
 import { createContact } from '../Contact/utils';
 import { createProfile } from '../Profile/utils';
 import { createPhotoAlbum } from '../PhotoAlbum/utils';
+import { eventEmitter } from '@/lib/eventEmitter';
 
 interface createUserProp {
   clerkId: string;
@@ -56,6 +57,9 @@ export async function createUser({
       userId: newUser.id,
       photoAlbumName: 'Untitled Album',
     });
+
+    // emit event to update user count
+    eventEmitter.emit('newUserCreated', newUser.id);
   } catch (err) {
     console.error('ERROR CREATING USER' + err);
     throw new Error('ERROR CREATING USER');

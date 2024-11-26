@@ -1,5 +1,3 @@
-import Image from 'next/image';
-import PopupSVG from '@public/fo-moo-pop-up.svg';
 import PopUp from '../PopUp';
 
 export default function DemoPopUp({ onToggle }: { onToggle: () => void }) {
@@ -39,12 +37,17 @@ export default function DemoPopUp({ onToggle }: { onToggle: () => void }) {
           </div>
         </div>
 
-        <div className="flex w-1/2 items-end justify-end bg-white p-8">
-          <Image
-            src={PopupSVG}
-            alt="caMOOra Pop Up"
-            className="h-auto w-full object-contain"
-          />
+        <div className="relative flex w-1/2 items-end justify-end bg-white">
+          <video
+            autoPlay
+            loop
+            muted
+            playsInline
+            className="h-full w-full object-cover"
+          >
+            <source src="@public/demo/WelcomeDemo.mp4" type="video/mp4" />
+            Your browser does not support the video tag.
+          </video>
         </div>
       </div>
     </PopUp>
