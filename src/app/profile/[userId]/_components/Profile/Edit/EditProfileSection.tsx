@@ -1,6 +1,5 @@
 import React from 'react';
-import { useState } from 'react';
-import SimpleModal from '../ProfilePicPopUp';
+import EditProfilePic from './EditProfilePic';
 import {
   Form,
   FormControl,
@@ -11,48 +10,117 @@ import {
 } from '@/components/ui/form';
 import { Input } from '@/components/ui/input';
 import { Switch } from '@/components/ui/switch';
-import { UseFormReturn } from 'react-hook-form';
+import { Control, useForm } from 'react-hook-form';
 import { Textarea } from '@/components/ui/textarea';
-import UpdateProfilePicForm from '../UpdateProfilePicForm';
 import { Button } from '@/components/ui/button';
-import Image from 'next/image';
+import { trpc } from '@/lib/trpc/client';
+import { profileEditSchema } from '@/server/routers/Schemas/schema';
+import { zodResolver } from '@hookform/resolvers/zod';
+import { ProfileEditForm } from '@/server/routers/Schemas/schema';
 
-interface FormValues {
-  email?: string;
-  discord?: string;
-  instagramTitle?: string;
-  instagramLink?: string;
-  phone?: string;
-  whatsApp?: string;
-  portfolioTitle?: string;
-  portfolioLink?: string;
-  isContactPublic?: boolean;
-  isPhotographer?: boolean;
-  firstName?: string;
-  lastName?: string;
-  additionalName?: string;
-  equipment?: string;
-  bio?: string;
-}
 export interface EditProfileSectionProps {
-  form: UseFormReturn<FormValues, any, undefined>;
-  onSave: (values: FormValues) => void;
-  profileUrl: string | undefined;
-  profilePicId: string;
+  userId: string;
   setIsEditing: (value: boolean) => void;
 }
 
+interface ProfileFieldProps {
+  name: keyof ProfileEditForm;
+  label?: string;
+  control: Control<ProfileEditForm>;
+  required?: boolean;
+  isTextArea?: boolean;
+  isSwitch?: boolean;
+  helpText?: string;
+}
+
+function ProfileField({
+  name,
+  label,
+  control,
+  required,
+  isTextArea,
+  isSwitch,
+  helpText,
+}: ProfileFieldProps) {
+  return (
+    <FormField
+      control={control}
+      name={name}
+      render={({ field }) => (
+        <FormItem
+          className={`mb-4 ${isSwitch ? 'flex flex-col space-y-3' : ''}`}
+        >
+          <FormLabel>
+            {label} {required && <span>*</span>}
+          </FormLabel>
+          <FormControl>
+            {isTextArea ? (
+              <Textarea
+                placeholder={`Your ${label}`}
+                className="resize-none border-black"
+                {...field}
+                value={field.value?.toString() ?? ''}
+                onChange={(e) => {
+                  const value = e.target.value;
+                  field.onChange(value || null);
+                }}
+              />
+            ) : isSwitch ? (
+              <Switch
+                checked={!!field.value}
+                onCheckedChange={field.onChange}
+              />
+            ) : (
+              <Input
+                className="border-black"
+                {...field}
+                value={field.value?.toString() ?? ''}
+                onChange={(e) => {
+                  const value = e.target.value;
+                  field.onChange(value || null);
+                }}
+              />
+            )}
+          </FormControl>
+          {helpText && (
+            <small className="text-xs text-gray-400">{helpText}</small>
+          )}
+          <FormMessage />
+        </FormItem>
+      )}
+    />
+  );
+}
+
 export default function EditProfileSection({
-  form,
-  onSave,
-  profileUrl,
-  profilePicId,
+  userId,
   setIsEditing,
 }: EditProfileSectionProps) {
-  const [isModalOpen, setModalOpen] = useState(false);
+  const { data: profile } = trpc.profile.getPublicProfile.useQuery({ userId });
 
-  const handleOpenModal = () => setModalOpen(true);
-  const handleCloseModal = () => setModalOpen(false);
+  const form = useForm<ProfileEditForm>({
+    resolver: zodResolver(profileEditSchema),
+    defaultValues: {
+      firstName: profile?.firstName ?? '',
+      lastName: profile?.lastName ?? '',
+      additionalName: profile?.additionalName ?? '',
+      bio: profile?.bio ?? '',
+      equipment: profile?.equipment ?? '',
+      isContactPublic: profile?.isContactPublic ?? false,
+      isPhotographer: profile?.isPhotographer ?? false,
+    },
+  });
+
+  const updateProfile = trpc.profile.updateProfile.useMutation({
+    onSuccess: () => {
+      setIsEditing(false);
+    },
+  });
+
+  const onSubmit = (values: ProfileEditForm) => {
+    updateProfile.mutate({ ...values });
+  };
+
   return (
     <div>
       <h4 className="border-b-2 pb-4 font-bold">Profile</h4>
@@ -60,186 +128,66 @@ export default function EditProfileSection({
         <small className="text-xs">*Indicates Required</small>
       </div>
       <div className="mx-auto sm:mx-0 sm:flex">
-        <div className="flex basis-1/4 flex-col items-center sm:items-start">
-          <SimpleModal isOpen={isModalOpen} onClose={handleCloseModal}>
-            <UpdateProfilePicForm
-              profilePicUrl={profileUrl}
-              profilePicId={profilePicId}
-              closeModal={handleCloseModal}
-            />
-          </SimpleModal>
-          <div className="relative mt-2 h-36 w-28 sm:h-40 sm:w-32 md:h-44 md:w-36 lg:h-48 lg:w-40 xl:h-52 xl:w-44">
-            <Image
-              src={profileUrl ?? ''}
-              alt={`Profile Picture`}
-              objectFit="cover"
-              layout="fill"
-              className="rounded-sm border border-black"
-            />
-          </div>
-          <div className="mt-2 flex flex-col gap-2">
-            <span className="text-xs">Upload your Profile Picture</span>
-            <Button
-              className="w-full border  border-gray-400 bg-profile_button_bg text-xs text-black hover:bg-primary_blue hover:text-white focus:bg-primary_blue  focus:text-white sm:w-20"
-              onClick={handleOpenModal}
-              aria-label="Upload Profile Picture"
-            >
-              Upload
-            </Button>
-          </div>
-        </div>
+        <EditProfilePic
+          profileUrl={profile?.profilePic?.url ?? ''}
+          profilePicId={profile?.profilePic?.id ?? ''}
+        />
         <Form {...form}>
           <form
-            onSubmit={form.handleSubmit((values) => {
-              onSave(values);
-              setIsEditing(false);
-            })}
+            onSubmit={form.handleSubmit(onSubmit)}
             className="mt-5 basis-3/4 sm:mt-0 sm:basis-full sm:pl-10 md:space-y-8"
           >
             <div className="grid md:grid-cols-2 md:gap-16 lg:gap-32">
-              <div className="group relative z-0 w-full">
-                <FormField
-                  control={form.control}
-                  name="firstName"
-                  render={({ field }) => (
-                    <FormItem className="mb-4 md:mb-0">
-                      <FormLabel>
-                        First Name <span>*</span>
-                      </FormLabel>
-                      <FormControl>
-                        <Input className="border-black" {...field} />
-                      </FormControl>
-                      <FormMessage />
-                    </FormItem>
-                  )}
-                />
-              </div>
-              <div className="group relative z-0 w-full">
-                <FormField
-                  control={form.control}
-                  name="phone"
-                  render={({ field }) => (
-                    <FormItem className="mb-4 md:mb-0">
-                      <FormLabel>Phone</FormLabel>
-                      <FormControl>
-                        <Input className="border-black" {...field} />
-                      </FormControl>
-                      <FormMessage />
-                    </FormItem>
-                  )}
-                />
-              </div>
+              <ProfileField
+                control={form.control}
+                name="firstName"
+                label="First Name"
+                required
+              />
+              <ProfileField
+                control={form.control}
+                name="lastName"
+                label="Last Name"
+                required
+              />
             </div>
             <div className="grid md:grid-cols-2 md:gap-16 lg:gap-32">
               <div className="group relative z-0 flex w-full flex-col justify-between md:space-y-8">
-                <FormField
-                  control={form.control}
-                  name="lastName"
-                  render={({ field }) => (
-                    <FormItem className="mb-4 md:mb-0">
-                      <FormLabel>
-                        Last Name <span>*</span>
-                      </FormLabel>
-                      <FormControl>
-                        <Input className="border-black" {...field} />
-                      </FormControl>
-                      <FormMessage />
-                    </FormItem>
-                  )}
-                />
-                <FormField
+                <ProfileField
                   control={form.control}
                   name="additionalName"
-                  render={({ field }) => (
-                    <FormItem className="mb-4 md:mb-0">
-                      <FormLabel>Additional Name</FormLabel>
-                      <FormControl>
-                        <Input className=" border-black " {...field} />
-                      </FormControl>
-                      <FormMessage />
-                    </FormItem>
-                  )}
+                  label="Additional Name"
                 />
-              </div>
-              <div className="group relative z-0 w-full">
-                <FormField
+                <ProfileField
                   control={form.control}
                   name="bio"
-                  render={({ field }) => (
-                    <FormItem className="mb-4 md:mb-0">
-                      <FormLabel>Bio (Please include...)</FormLabel>
-                      <FormControl>
-                        <Textarea
-                          placeholder="Your Bio"
-                          className="resize-none border-black"
-                          {...field}
-                        />
-                      </FormControl>
-                      <FormMessage />
-                    </FormItem>
-                  )}
+                  label="Bio (Please include...)"
+                  isTextArea
                 />
               </div>
             </div>
             <div className="grid md:grid-cols-2 md:gap-16 lg:gap-32">
-              <div className="group relative z-0 w-full">
-                <FormField
-                  control={form.control}
-                  name="equipment"
-                  render={({ field }) => (
-                    <FormItem className="mb-4 md:mb-0">
-                      <FormLabel>Equipment</FormLabel>
-                      <FormControl>
-                        <Input className="border-black" {...field} />
-                      </FormControl>
-                      <FormMessage />
-                    </FormItem>
-                  )}
-                />
-              </div>
+              <ProfileField
+                control={form.control}
+                name="equipment"
+                label="Equipment"
+              />
             </div>
             <div className="grid md:grid-cols-2 md:gap-16 lg:gap-32">
-              <div className="group relative z-0 w-full">
-                <FormField
-                  control={form.control}
-                  name="isContactPublic"
-                  render={({ field }) => (
-                    <FormItem className="mb-4 flex flex-col space-y-3">
-                      <FormLabel>Personal Information Public</FormLabel>
-                      <FormControl>
-                        <Switch
-                          checked={field.value}
-                          onCheckedChange={field.onChange}
-                        />
-                      </FormControl>
-                      <small className="text-xs text-gray-400">
-                        By clicking this your information will not be restricted
-                        for only UC Davis Student.
-                      </small>
-                    </FormItem>
-                  )}
-                />
-              </div>
-              <div className="group relative z-0 w-full">
-                <FormField
-                  control={form.control}
-                  name="isPhotographer"
-                  render={({ field }) => (
-                    <FormItem className="mb-4 flex flex-col space-y-3">
-                      <FormLabel>Activate Photographer's Account</FormLabel>
-                      <FormControl>
-                        <Switch
-                          checked={field.value}
-                          onCheckedChange={field.onChange}
-                        />
-                      </FormControl>
-                      <small className="text-xs text-gray-400">
-                        Deactivate to return to student account.
-                      </small>
-                    </FormItem>
-                  )}
-                />
-              </div>
+              <ProfileField
+                control={form.control}
+                name="isContactPublic"
+                label="Personal Information Public"
+                isSwitch
+                helpText="By clicking this your information will not be restricted for only UC Davis Student."
+              />
+              <ProfileField
+                control={form.control}
+                name="isPhotographer"
+                label="Activate Photographer's Account"
+                isSwitch
+                helpText="Deactivate to return to student account."
+              />
             </div>
             <div className="flex justify-end pr-12">
               <Button

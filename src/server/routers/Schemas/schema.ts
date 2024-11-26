@@ -7,12 +7,14 @@ const profileSchema = z.object({
   firstName: z
     .string()
     .min(1, { message: 'First Name required' })
+    .transform((value) => value.trim())
     .refine((value) => /^[a-zA-Z\s]*$/.test(value), {
       message: 'First Name should not contain numbers or punctuation',
     }),
   lastName: z
     .string()
     .min(1, { message: 'Last Name required' })
+    .transform((value) => value.trim())
     .refine((value) => /^[a-zA-Z\s]*$/.test(value), {
       message: 'Last Name should not contain numbers or punctuation',
     })
@@ -42,12 +44,16 @@ const profileSchema = z.object({
 const contactSchema = z.object({
   userId: z.string(),
   email: z.string().email(),
-  discord: z.string().nullable(),
+  discord: z
+    .string()
+    .nullable()
+    .transform((value) => (value ? value.trim() : null)),
   phone: z.string().nullable(),
   whatsApp: z.string().nullable(),
   instagramTitle: z
     .string()
     .max(30, 'Instagram Title must be 30 characters or less')
+    .transform((value) => (value ? value.trim() : null))
     .nullable(),
   instagramLink: z.string().url('Must be a valid URL').nullable(),
   portfolioTitle: z
