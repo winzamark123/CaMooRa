@@ -1,6 +1,6 @@
 'use client';
 import { useState } from 'react';
-import { SignedIn, SignedOut, useUser } from '@clerk/nextjs';
+import { SignedIn, SignedOut } from '@clerk/nextjs';
 import Link from 'next/link';
 import { DropDownProfile } from './DropDownProfile';
 import { Button } from '../ui/button';
@@ -16,10 +16,7 @@ import SignInPopUp from '../Popups/SignIn/SignInPopUp';
 export default function NavBar() {
   const [showSignInPopUp, setShowSignInPopUp] = useState(false);
   const [isOpen, setIsOpen] = useState(false);
-  const { user } = useUser();
-  const { data: my_user } = trpc.profile.getMyProfile.useQuery({
-    clerkId: user?.id || '',
-  });
+  const { data: my_user } = trpc.profile.getMyProfile.useQuery();
 
   const toggleMenu = () => setIsOpen(!isOpen);
   const toggleSignInPopUp = () => setShowSignInPopUp(!showSignInPopUp);

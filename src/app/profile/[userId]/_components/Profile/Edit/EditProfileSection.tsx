@@ -1,4 +1,4 @@
-import React from 'react';
+import { useToast } from '@/hooks/use-toast';
 import EditProfilePic from './EditProfilePic';
 import {
   Form,
@@ -13,10 +13,10 @@ import { Switch } from '@/components/ui/switch';
 import { Control, useForm } from 'react-hook-form';
 import { Textarea } from '@/components/ui/textarea';
 import { Button } from '@/components/ui/button';
-import { trpc } from '@/lib/trpc/client';
 import { profileEditSchema } from '@/server/routers/Schemas/schema';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { ProfileEditForm } from '@/server/routers/Schemas/schema';
+import { trpc } from '@/lib/trpc/client';
 
 export interface EditProfileSectionProps {
   userId: string;
@@ -96,6 +96,9 @@ export default function EditProfileSection({
   userId,
   setIsEditing,
 }: EditProfileSectionProps) {
+  const { toast } = useToast();
+  const utils = trpc.useUtils();
+
   const { data: profile } = trpc.profile.getPublicProfile.useQuery({ userId });
 
   const form = useForm<ProfileEditForm>({
@@ -114,6 +117,17 @@ export default function EditProfileSection({
   const updateProfile = trpc.profile.updateProfile.useMutation({
     onSuccess: () => {
       setIsEditing(false);
+      toast({
+        title: 'Profile Updated',
+        description: 'Your profile has been updated successfully',
+      });
+      utils.profile.getPublicProfile.invalidate();
+    },
+    onError: () => {
+      toast({
+        title: 'Error',
+        description: 'An error occurred while updating your profile',
+      });
     },
   });
 

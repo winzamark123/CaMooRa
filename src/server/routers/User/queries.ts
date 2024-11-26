@@ -6,7 +6,7 @@ import type { User } from '@prisma/client';
 export const getAllPhotographers = publicProcedure.query(async () => {
   return await prisma.user.findMany({
     where: {
-      contact: {
+      profile: {
         isPhotographer: true,
       },
     },
