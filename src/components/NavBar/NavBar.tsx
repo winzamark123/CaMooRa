@@ -10,8 +10,8 @@ import LogoWhite from '@public/logo_white.svg';
 import Image from 'next/image';
 import { trpc } from '@/lib/trpc/client';
 import { ModeToggle } from '../Theme/mode-toggle';
-// import DemoPopUp from '../Popups/SignUp/DemoPopUp';
-import SignInPopUp from '../Popups/SignIn/SignInPopUp';
+import DemoPopUp from '../Popups/SignUp/DemoPopUp';
+// import SignInPopUp from '../Popups/SignIn/SignInPopUp';
 
 export default function NavBar() {
   const [showSignInPopUp, setShowSignInPopUp] = useState(false);
@@ -102,8 +102,8 @@ export default function NavBar() {
         </div>
       )}
 
-      {showSignInPopUp && <SignInPopUp onToggle={toggleSignInPopUp} />}
-      {/* {showSignInPopUp && <DemoPopUp onToggle={toggleSignInPopUp} />} */}
+      {/* {showSignInPopUp && <SignInPopUp onToggle={toggleSignInPopUp} />} */}
+      {showSignInPopUp && <DemoPopUp onToggle={toggleSignInPopUp} />}
     </main>
   );
 }
