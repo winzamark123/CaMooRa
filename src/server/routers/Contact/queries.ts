@@ -19,8 +19,6 @@ export const getContact = publicProcedure
         whatsApp: true,
         portfolioTitle: true,
         portfolioLink: true,
-        isContactPublic: true,
-        isPhotographer: true,
       },
     });
   });

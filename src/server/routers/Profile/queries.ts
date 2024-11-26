@@ -27,6 +27,8 @@ export const getMyProfile = protectedProcedure
         additionalName: true,
         equipment: true,
         bio: true,
+        isContactPublic: true,
+        isPhotographer: true,
       },
     });
   });
@@ -46,6 +48,8 @@ export const getPublicProfile = publicProcedure
         additionalName: true,
         equipment: true,
         bio: true,
+        isContactPublic: true,
+        isPhotographer: true,
       },
     });
   });

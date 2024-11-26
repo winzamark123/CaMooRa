@@ -17,7 +17,7 @@ model User {
   id      String @id @default(cuid())
   clerkId String @unique
 
-  isNewUser    Boolean     @default(false)
+  isNewUser    Boolean      @default(false)
   profile      Profile?
   contact      Contact?
   photoAlbums  PhotoAlbum[]
@@ -51,6 +51,10 @@ model Profile {
   equipment    String?
   profilePic   Images? @relation(fields: [profilePicId], references: [id])
   profilePicId String
+
+  // Preferences
+  isContactPublic Boolean @default(false)
+  isPhotographer  Boolean @default(false)
 }
 
 model Contact {
@@ -68,10 +72,6 @@ model Contact {
   instagramLink  String?
   portfolioTitle String?
   portfolioLink  String?
-
-  // Preferences
-  isContactPublic Boolean @default(false)
-  isPhotographer  Boolean @default(false)
 }
 
 model PhotoAlbum {

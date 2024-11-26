@@ -1,57 +1,72 @@
 // Create a new file for shared schemas
 import { z } from 'zod';
+import type { Profile, Contact } from '@prisma/client';
 
-export const profileSchema = z.object({
+const profileSchema = z.object({
   userId: z.string(),
   firstName: z
     .string()
     .min(1, { message: 'First Name required' })
     .refine((value) => /^[a-zA-Z\s]*$/.test(value), {
       message: 'First Name should not contain numbers or punctuation',
-    })
-    .optional(),
+    }),
   lastName: z
     .string()
     .min(1, { message: 'Last Name required' })
     .refine((value) => /^[a-zA-Z\s]*$/.test(value), {
       message: 'Last Name should not contain numbers or punctuation',
     })
-    .optional(),
+    .nullable(),
   additionalName: z
     .string()
     .max(10, { message: 'Additional Name must be 10 characters or less' })
-    .optional(),
-  profilePicId: z.string().optional(),
+    .nullable(),
+  profilePicId: z.string(),
   equipment: z
     .string()
     .max(60, { message: 'Equipment must be 60 characters or less' })
-    .optional(),
+    .nullable(),
   bio: z
     .string()
     .max(150, { message: 'Bio must be 150 characters or less' })
-    .optional(),
-});
+    .nullable(),
+  isContactPublic: z.boolean({
+    invalid_type_error: 'isContactPublic must be a boolean',
+  }),
+  isPhotographer: z.boolean({
+    invalid_type_error: 'isPhotographer must be a boolean',
+  }),
+}) satisfies z.ZodType<Profile>;
 
-export const contactSchema = z.object({
+// Base contact schema (for full type)
+const contactSchema = z.object({
   userId: z.string(),
-  email: z.string().optional(),
-  discord: z.string().optional(),
+  email: z.string().email(),
+  discord: z.string().nullable(),
+  phone: z.string().nullable(),
+  whatsApp: z.string().nullable(),
   instagramTitle: z
     .string()
     .max(30, 'Instagram Title must be 30 characters or less')
-    .optional(),
-  instagramLink: z.string().optional(),
-  phone: z.string().optional(),
-  whatsApp: z.string().optional(),
+    .nullable(),
+  instagramLink: z.string().url('Must be a valid URL').nullable(),
   portfolioTitle: z
     .string()
-    .max(15, 'Portfolio Title must be 15 characters or less')
-    .optional(),
-  portfolioLink: z.string().optional(),
-  isContactPublic: z
-    .boolean({ invalid_type_error: 'isContactPublic must be a boolean' })
-    .optional(),
-  isPhotographer: z
-    .boolean({ invalid_type_error: 'isPhotographer must be a boolean' })
-    .optional(),
+    .max(30, 'Portfolio Title must be 30 characters or less')
+    .nullable(),
+  portfolioLink: z.string().url('Must be a valid URL').nullable(),
+}) satisfies z.ZodType<Contact>;
+
+// Edit schema (for updates)
+export const contactEditSchema = contactSchema.omit({
+  userId: true,
+  email: true,
 });
+
+export const profileEditSchema = profileSchema.omit({
+  userId: true,
+});
+
+// Type for the edit form
+export type ContactEditForm = z.infer<typeof contactEditSchema>;
+export type ProfileEditForm = z.infer<typeof profileEditSchema>;

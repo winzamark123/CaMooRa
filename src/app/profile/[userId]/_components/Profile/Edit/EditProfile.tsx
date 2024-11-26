@@ -206,11 +206,7 @@ export default function EditProfile({
         profilePicId={profile?.profilePic.id}
         setIsEditing={setIsEditing}
       />
-      <EditLinkAccountSection
-        form={form}
-        onSave={onSave}
-        setIsEditing={setIsEditing}
-      />
+      <EditLinkAccountSection userId={userId} setIsEditing={setIsEditing} />
       <EditPhotoAlbumSection userId={userId} setIsEditing={setIsEditing} />
     </div>
   );
