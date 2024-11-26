@@ -1,4 +1,6 @@
+import Video from 'next-video';
 import PopUp from '../PopUp';
+import DemoVideo from '@videos/WelcomeDemo.mp4';
 
 export default function DemoPopUp({ onToggle }: { onToggle: () => void }) {
   return (
@@ -38,16 +40,10 @@ export default function DemoPopUp({ onToggle }: { onToggle: () => void }) {
         </div>
 
         <div className="relative flex w-1/2 items-end justify-end bg-white">
-          <video
-            autoPlay
-            loop
-            muted
-            playsInline
-            className="h-full w-full object-cover"
-          >
-            <source src="@public/demo/WelcomeDemo.mp4" type="video/mp4" />
-            Your browser does not support the video tag.
-          </video>
+          <Video
+            src={DemoVideo}
+            className="absolute inset-0 top-0 h-full w-full object-cover"
+          />
         </div>
       </div>
     </PopUp>
