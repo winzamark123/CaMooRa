@@ -11,10 +11,8 @@ interface PopUpProps {
 
 export default function PopUp({ onToggle, children, title }: PopUpProps) {
   useEffect(() => {
-    // Prevent background scrolling
     document.body.style.overflow = 'hidden';
     return () => {
-      // Re-enable background scrolling when the pop-up is closed
       document.body.style.overflow = 'auto';
     };
   }, []);
@@ -28,8 +26,7 @@ export default function PopUp({ onToggle, children, title }: PopUpProps) {
   return (
     <FocusTrap>
       <main
-        className="fixed left-0 top-0 z-[999] flex h-full 
-        w-full items-center justify-center bg-black bg-opacity-50"
+        className="fixed left-0 top-0 z-[999] flex h-full w-full items-center justify-center bg-black bg-opacity-50"
         onClick={onToggle}
         aria-modal="true"
         aria-label={title}
@@ -43,13 +40,13 @@ export default function PopUp({ onToggle, children, title }: PopUpProps) {
             damping: 15,
             duration: 0.5,
           }}
-          className="left-0 top-1/3 z-30 h-fit px-16 xs:px-0"
+          className="relative flex w-11/12 max-w-4xl items-center justify-center xs:w-9/12"
           onClick={(event) => event.stopPropagation()}
         >
           {children}
           <button
             onClick={onToggle}
-            className="z-60 absolute right-4 top-4 p-3 text-white"
+            className="absolute right-4 top-4 p-3 text-white"
             aria-label="Close"
           >
             <span className="sm:hidden">X</span>

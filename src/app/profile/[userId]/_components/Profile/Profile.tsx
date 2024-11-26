@@ -1,7 +1,7 @@
 'use client';
 import { useState, useRef } from 'react';
 import EditProfile from '@/app/profile/[userId]/_components/Profile/Edit/EditProfile';
-import SignInPopUp from '@/components/Popups/SignInPopUp';
+import SignInPopUp from '@/components/Popups/SignIn/SignInPopUp';
 import { trpc } from '@/lib/trpc/client';
 import { usePathname } from 'next/navigation';
 import Bio from './Bio/Bio';
