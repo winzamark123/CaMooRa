@@ -40,7 +40,7 @@ export default function FilePondComponent({
           className="h-fit w-full overflow-hidden"
           filePosterMaxHeight={256}
           acceptedFileTypes={['image/*']}
-          instantUpload={false}
+          instantUpload={true}
           allowMultiple={allowMultiple}
           server={{
             process: processFile,

@@ -17,6 +17,7 @@ model User {
   id      String @id @default(cuid())
   clerkId String @unique
 
+  isNewUser    Boolean     @default(false)
   profile      Profile?
   contact      Contact?
   photoAlbums  PhotoAlbum[]
@@ -37,8 +38,8 @@ model Favorites {
 
 model Profile {
   // Identifiers
-  user    User   @relation(fields: [userId], references: [id], onDelete: Cascade)
-  userId  String @unique
+  user   User   @relation(fields: [userId], references: [id], onDelete: Cascade)
+  userId String @unique
 
   // Personal Information
   additionalName String?
@@ -54,8 +55,8 @@ model Profile {
 
 model Contact {
   // Identifiers
-  user    User   @relation(fields: [userId], references: [id], onDelete: Cascade)
-  userId  String @unique
+  user   User   @relation(fields: [userId], references: [id], onDelete: Cascade)
+  userId String @unique
 
   // Contact Information
   email    String  @unique

@@ -1,16 +1,14 @@
 import { trpc } from '@/lib/trpc/client';
 import { SetStateAction } from 'react';
-import type { ProfileProps } from '../Profile';
-import type { Contact } from '../../../../../../server/routers/Contact';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { useForm } from 'react-hook-form';
 import { z } from 'zod';
 import EditProfileSection from './EditProfileSection';
 import EditLinkAccountSection from './EditLinkAccountSection';
 import EditPhotoAlbumSection from './EditPhotoAlbumSection';
-
+import type { Profile, Contact } from '@prisma/client';
 interface UpdateProfileVariableType
-  extends Omit<ProfileProps, 'firstName' | 'lastName' | 'profilePic'> {
+  extends Omit<Profile, 'firstName' | 'lastName' | 'profilePic'> {
   // Todo: Append profilePic to this type
   firstName?: string;
   lastName?: string;
@@ -24,7 +22,7 @@ interface UpdateContactVariableType
 }
 
 interface EditProfileProps {
-  profile: ProfileProps;
+  profile: Profile;
   contact: Contact;
   userId: string;
   refetchProfile: () => void;
@@ -124,8 +122,8 @@ export default function EditProfile({
   const form = useForm<z.infer<typeof formSchema>>({
     resolver: zodResolver(formSchema),
     defaultValues: {
-      firstName: profile.firstName,
-      lastName: profile.lastName,
+      firstName: profile.firstName ?? '',
+      lastName: profile.lastName ?? '',
       email: contact.email,
       phone: contact.phone || '',
       whatsApp: contact.whatsApp || '',

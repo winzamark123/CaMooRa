@@ -6,8 +6,7 @@ import { trpc } from '@/lib/trpc/client';
 import { usePathname } from 'next/navigation';
 import Bio from './Bio/Bio';
 import Projects from './Projects';
-import type { Contact } from '@/server/routers/Contact/index';
-import type { Profile } from '@/server/routers/Profile/index';
+import type { Profile, Contact } from '@prisma/client';
 import ProfilePic from './ProfilePic/ProfilePic';
 import Contacts from './Contacts/Contacts';
 import { ProfileSkeleton } from '@/components/Skeletons/SkeletonCard';
@@ -83,7 +82,7 @@ export default function Profile() {
       {isEditing ? (
         <EditProfile
           contact={contact as Contact}
-          profile={profile as ProfileProps}
+          profile={profile as Profile}
           userId={userId}
           refetchProfile={refetchProfile}
           refetchContact={refetchContact}
