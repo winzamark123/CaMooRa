@@ -13,7 +13,7 @@ ADD COLUMN "isPhotographer" BOOLEAN NOT NULL DEFAULT false;
 -- Then copy the existing data from Contact to Profile
 UPDATE "Profile" p
 SET 
-    "isContactPublic" = c."isContactPublic",
+    "isContactPublic" = false,
     "isPhotographer" = c."isPhotographer"
 FROM "Contact" c
 WHERE p."userId" = c."userId";
