@@ -36,10 +36,9 @@ export default function EditBio({ userId, setIsEditing }: EditBioProps) {
     onSuccess: () => {
       setIsEditing(false);
       toast({
-        title: 'Profile Updated',
+        title: 'Profile Updated!',
         description: 'Your profile has been updated successfully',
       });
-      // utils.profile.getPublicProfile.invalidate({ userId });
     },
     onError: () => {
       toast({
@@ -84,12 +83,21 @@ export default function EditBio({ userId, setIsEditing }: EditBioProps) {
               />
             </div>
             <div className="grid md:grid-cols-2 md:gap-16 lg:gap-32">
+              <ProfileField
+                control={form.control}
+                name="additionalName"
+                label="Additional Name"
+              />
               <div className="group relative z-0 flex w-full flex-col justify-between md:space-y-8">
                 <ProfileField
                   control={form.control}
-                  name="additionalName"
-                  label="Additional Name"
+                  name="equipment"
+                  label="Equipment"
                 />
+              </div>
+            </div>
+            <div className="grid md:grid-cols-2 md:gap-16 lg:gap-32">
+              <div className="group relative z-0 flex w-full flex-col justify-between md:space-y-8">
                 <ProfileField
                   control={form.control}
                   name="bio"
@@ -99,20 +107,6 @@ export default function EditBio({ userId, setIsEditing }: EditBioProps) {
               </div>
             </div>
             <div className="grid md:grid-cols-2 md:gap-16 lg:gap-32">
-              <ProfileField
-                control={form.control}
-                name="equipment"
-                label="Equipment"
-              />
-            </div>
-            <div className="grid md:grid-cols-2 md:gap-16 lg:gap-32">
-              <ProfileField
-                control={form.control}
-                name="isContactPublic"
-                label="Personal Information Public"
-                isSwitch
-                helpText="By clicking this your information will not be restricted for only UC Davis Student."
-              />
               <ProfileField
                 control={form.control}
                 name="isPhotographer"

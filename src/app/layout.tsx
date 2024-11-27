@@ -1,3 +1,4 @@
+import { Toaster } from '@/components/ui/toaster';
 import type { Metadata } from 'next';
 import './globals.css';
 import { ClerkProvider } from '@clerk/nextjs';
@@ -52,6 +53,7 @@ export default function RootLayout({
               <div className="flex flex-col items-center justify-center">
                 {children}
               </div>
+              <Toaster />
               <WelcomeDemoPopup />
               <Footer />
             </ThemeProvider>

@@ -40,10 +40,9 @@ export default function EditContacts({
     onSuccess: () => {
       setIsEditing(false);
       toast({
-        title: 'Contact Updated',
+        title: 'Contact Updated!',
         description: 'Your contact has been updated successfully',
       });
-      // utils.profile.getPublicProfile.invalidate({ userId });
     },
     onError: () => {
       toast({
