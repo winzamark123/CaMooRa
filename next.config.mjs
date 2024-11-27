@@ -1,3 +1,4 @@
+import { withNextVideo } from 'next-video/process';
 /** @type {import('next').NextConfig} */
 const nextConfig = {
   images: {
@@ -19,4 +20,4 @@ const nextConfig = {
   transpilePackages: ['@pqina/pintura', '@pqina/react-pintura'],
 };
 
-export default nextConfig;
+export default withNextVideo(nextConfig);

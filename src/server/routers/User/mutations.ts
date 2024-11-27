@@ -35,3 +35,12 @@ export const deleteUser = protectedProcedure.mutation(async ({ ctx }) => {
     });
   }
 });
+
+export const updateUser = protectedProcedure.mutation(async ({ ctx }) => {
+  const updatedUser = await prisma.user.update({
+    where: { clerkId: ctx.user.clerk.id },
+    data: { isNewUser: false },
+    select: { isNewUser: true },
+  });
+  return updatedUser;
+});

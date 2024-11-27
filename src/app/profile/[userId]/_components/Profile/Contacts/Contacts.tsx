@@ -15,7 +15,7 @@ export default function Contacts({
   toggleEditing,
 }: ContactsProps) {
   const { isSignedIn } = useUser();
-  const { data: current_user } = trpc.user.getCurrentUser.useQuery();
+  const { data: profile } = trpc.profile.getMyProfile.useQuery();
   const {
     data: contact,
     isLoading: isContactLoading,
@@ -49,7 +49,7 @@ export default function Contacts({
 
   return (
     <div className="flex flex-grow flex-col">
-      {(isSignedIn || contact?.isContactPublic) && (
+      {(isSignedIn || profile?.isContactPublic) && (
         <div className="flex w-full p-4 sm:justify-end">
           <div className="flex w-full flex-col space-y-4 xl:space-y-6">
             <h2 className="text-sm font-semibold lg:text-lg 2xl:text-xl">
@@ -105,7 +105,7 @@ export default function Contacts({
         </div>
       )}
       <div className="mt-auto flex items-end justify-end p-4">
-        {current_user?.id === userId && (
+        {profile?.userId === userId && (
           <Button
             className="w-full border border-gray-400 bg-profile_button_bg text-xs text-black hover:bg-primary_blue hover:text-white focus:bg-primary_blue focus:text-white sm:w-20"
             aria-label="Edit your Profile"
@@ -114,7 +114,7 @@ export default function Contacts({
             Edit
           </Button>
         )}
-        {!contact?.isContactPublic && (
+        {!profile?.isContactPublic && (
           <SignedOut>
             <Button
               onClick={() => toggleSignInPopUp(true)}

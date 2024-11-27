@@ -1,18 +1,12 @@
 import { protectedProcedure, publicProcedure } from '@/lib/trpc/trpc';
 import { z } from 'zod';
 import prisma from '@prisma/prisma';
-import type { Profile } from '../Profile/index';
-import type { Contact } from '../Contact/index';
+import type { User } from '@prisma/client';
 
-interface User {
-  clerkId: string;
-  profile?: Profile;
-  contact?: Contact;
-}
 export const getAllPhotographers = publicProcedure.query(async () => {
   return await prisma.user.findMany({
     where: {
-      contact: {
+      profile: {
         isPhotographer: true,
       },
     },
@@ -41,6 +35,18 @@ export const getCurrentUser = protectedProcedure.query(async ({ ctx }) => {
   const user = await prisma.user.findUnique({
     where: {
       clerkId: ctx.user.clerk.id,
+    },
+  });
+  return user;
+});
+
+export const getIsNewUser = protectedProcedure.query(async ({ ctx }) => {
+  const user = await prisma.user.findUnique({
+    where: {
+      clerkId: ctx.user.clerk.id,
+    },
+    select: {
+      isNewUser: true,
     },
   });
   return user;
