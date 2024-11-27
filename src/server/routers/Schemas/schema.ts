@@ -71,6 +71,7 @@ export const contactEditSchema = contactSchema.omit({
 
 export const profileEditSchema = profileSchema.omit({
   userId: true,
+  profilePicId: true,
 });
 
 // Type for the edit form

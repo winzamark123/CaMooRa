@@ -1,114 +1,32 @@
 import { useToast } from '@/hooks/use-toast';
 import EditProfilePic from './EditProfilePic';
-import {
-  Form,
-  FormControl,
-  FormField,
-  FormItem,
-  FormLabel,
-  FormMessage,
-} from '@/components/ui/form';
-import { Input } from '@/components/ui/input';
-import { Switch } from '@/components/ui/switch';
-import { Control, useForm } from 'react-hook-form';
-import { Textarea } from '@/components/ui/textarea';
+import ProfileField from './ProfileField';
 import { Button } from '@/components/ui/button';
 import { profileEditSchema } from '@/server/routers/Schemas/schema';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { ProfileEditForm } from '@/server/routers/Schemas/schema';
 import { trpc } from '@/lib/trpc/client';
+import { FormProvider, useForm } from 'react-hook-form';
 
-export interface EditProfileSectionProps {
+export interface EditBioProps {
   userId: string;
   setIsEditing: (value: boolean) => void;
 }
 
-interface ProfileFieldProps {
-  name: keyof ProfileEditForm;
-  label?: string;
-  control: Control<ProfileEditForm>;
-  required?: boolean;
-  isTextArea?: boolean;
-  isSwitch?: boolean;
-  helpText?: string;
-}
-
-function ProfileField({
-  name,
-  label,
-  control,
-  required,
-  isTextArea,
-  isSwitch,
-  helpText,
-}: ProfileFieldProps) {
-  return (
-    <FormField
-      control={control}
-      name={name}
-      render={({ field }) => (
-        <FormItem
-          className={`mb-4 ${isSwitch ? 'flex flex-col space-y-3' : ''}`}
-        >
-          <FormLabel>
-            {label} {required && <span>*</span>}
-          </FormLabel>
-          <FormControl>
-            {isTextArea ? (
-              <Textarea
-                placeholder={`Your ${label}`}
-                className="resize-none border-black"
-                {...field}
-                value={field.value?.toString() ?? ''}
-                onChange={(e) => {
-                  const value = e.target.value;
-                  field.onChange(value || null);
-                }}
-              />
-            ) : isSwitch ? (
-              <Switch
-                checked={!!field.value}
-                onCheckedChange={field.onChange}
-              />
-            ) : (
-              <Input
-                className="border-black"
-                {...field}
-                value={field.value?.toString() ?? ''}
-                onChange={(e) => {
-                  const value = e.target.value;
-                  field.onChange(value || null);
-                }}
-              />
-            )}
-          </FormControl>
-          {helpText && (
-            <small className="text-xs text-gray-400">{helpText}</small>
-          )}
-          <FormMessage />
-        </FormItem>
-      )}
-    />
-  );
-}
-
-export default function EditProfileSection({
-  userId,
-  setIsEditing,
-}: EditProfileSectionProps) {
+export default function EditBio({ userId, setIsEditing }: EditBioProps) {
   const { toast } = useToast();
-  const utils = trpc.useUtils();
+  // const utils = trpc.useUtils();
 
   const { data: profile } = trpc.profile.getPublicProfile.useQuery({ userId });
 
   const form = useForm<ProfileEditForm>({
     resolver: zodResolver(profileEditSchema),
     defaultValues: {
-      firstName: profile?.firstName ?? '',
-      lastName: profile?.lastName ?? '',
-      additionalName: profile?.additionalName ?? '',
-      bio: profile?.bio ?? '',
-      equipment: profile?.equipment ?? '',
+      firstName: profile?.firstName,
+      lastName: profile?.lastName ?? null,
+      additionalName: profile?.additionalName ?? null,
+      bio: profile?.bio ?? null,
+      equipment: profile?.equipment ?? null,
       isContactPublic: profile?.isContactPublic ?? false,
       isPhotographer: profile?.isPhotographer ?? false,
     },
@@ -121,7 +39,7 @@ export default function EditProfileSection({
         title: 'Profile Updated',
         description: 'Your profile has been updated successfully',
       });
-      utils.profile.getPublicProfile.invalidate();
+      // utils.profile.getPublicProfile.invalidate({ userId });
     },
     onError: () => {
       toast({
@@ -146,7 +64,7 @@ export default function EditProfileSection({
           profileUrl={profile?.profilePic?.url ?? ''}
           profilePicId={profile?.profilePic?.id ?? ''}
         />
-        <Form {...form}>
+        <FormProvider {...form}>
           <form
             onSubmit={form.handleSubmit(onSubmit)}
             className="mt-5 basis-3/4 sm:mt-0 sm:basis-full sm:pl-10 md:space-y-8"
@@ -213,7 +131,7 @@ export default function EditProfileSection({
               </Button>
             </div>
           </form>
-        </Form>
+        </FormProvider>
       </div>
     </div>
   );

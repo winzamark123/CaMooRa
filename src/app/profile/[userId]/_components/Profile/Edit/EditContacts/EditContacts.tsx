@@ -1,76 +1,27 @@
+import { useToast } from '@/hooks/use-toast';
 import React from 'react';
 import { trpc } from '@/lib/trpc/client';
-import {
-  Form,
-  FormControl,
-  FormField,
-  FormItem,
-  FormLabel,
-  FormMessage,
-} from '@/components/ui/form';
+import SocialMediaField from './SocialMediaField';
 import { Input } from '@/components/ui/input';
 import { Button } from '@/components/ui/button';
-import { Control, useForm } from 'react-hook-form';
+import { FormProvider, useForm } from 'react-hook-form';
 import { zodResolver } from '@hookform/resolvers/zod';
 import {
   contactEditSchema,
   ContactEditForm,
 } from '@/server/routers/Schemas/schema';
 
-interface EditLinkAccountSectionProps {
+interface EditContactsProps {
   setIsEditing: (value: boolean) => void;
   userId: string;
 }
 
-interface SocialMediaFieldProps {
-  name: keyof ContactEditForm;
-  label?: string;
-  placeholder?: string;
-  control: Control<ContactEditForm>;
-  hideLabel?: boolean;
-  className?: string;
-}
-
-function SocialMediaField({
-  name,
-  label,
-  placeholder,
-  control,
-  hideLabel,
-  className,
-}: SocialMediaFieldProps) {
-  return (
-    <FormField
-      control={control}
-      name={name}
-      render={({ field }) => (
-        <FormItem className="mb-4 flex-grow">
-          {!hideLabel && label && <FormLabel>{label}</FormLabel>}
-          {hideLabel && <div className="h-6" />}
-          <FormControl>
-            <Input
-              className={`border-black ${className || ''}`}
-              placeholder={placeholder}
-              {...field}
-              value={field.value ?? ''}
-              onChange={(e) => {
-                const value = e.target.value;
-                field.onChange(value || null);
-              }}
-            />
-          </FormControl>
-          <FormMessage />
-        </FormItem>
-      )}
-    />
-  );
-}
-
-export default function EditLinkAccountSection({
+export default function EditContacts({
   setIsEditing,
   userId,
-}: EditLinkAccountSectionProps) {
+}: EditContactsProps) {
   const { data: contact } = trpc.contact.getContact.useQuery({ userId });
+  const { toast } = useToast();
 
   const form = useForm<ContactEditForm>({
     resolver: zodResolver(contactEditSchema),
@@ -88,6 +39,17 @@ export default function EditLinkAccountSection({
   const updateContactMutation = trpc.contact.updateContact.useMutation({
     onSuccess: () => {
       setIsEditing(false);
+      toast({
+        title: 'Contact Updated',
+        description: 'Your contact has been updated successfully',
+      });
+      // utils.profile.getPublicProfile.invalidate({ userId });
+    },
+    onError: () => {
+      toast({
+        title: 'Error',
+        description: 'An error occurred while updating your contact',
+      });
     },
   });
 
@@ -99,7 +61,7 @@ export default function EditLinkAccountSection({
     <div>
       <h4 className="mb-5 border-b-2 pb-4 font-bold">Link Account</h4>
       <div className="flex flex-row items-center justify-center">
-        <Form {...form}>
+        <FormProvider {...form}>
           <form
             onSubmit={form.handleSubmit(onSubmit)}
             className="w-full basis-full sm:basis-11/12 md:space-y-3"
@@ -181,7 +143,7 @@ export default function EditLinkAccountSection({
               </Button>
             </div>
           </form>
-        </Form>
+        </FormProvider>
       </div>
     </div>
   );

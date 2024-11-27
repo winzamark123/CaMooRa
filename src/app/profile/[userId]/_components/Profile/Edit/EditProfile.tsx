@@ -1,6 +1,6 @@
 import { SetStateAction } from 'react';
-import EditProfileSection from './EditProfileSection';
-import EditLinkAccountSection from './EditLinkAccountSection';
+import EditBio from './EditBio/EditBio';
+import EditContacts from './EditContacts/EditContacts';
 import EditPhotoAlbumSection from './EditPhotoAlbumSection';
 
 interface EditProfileProps {
@@ -14,8 +14,8 @@ export default function EditProfile({
 }: EditProfileProps) {
   return (
     <div className="xl-space-y-16 flex flex-col space-y-5 overflow-hidden p-4 sm:p-0 md:space-y-10">
-      <EditProfileSection userId={userId} setIsEditing={setIsEditing} />
-      <EditLinkAccountSection userId={userId} setIsEditing={setIsEditing} />
+      <EditBio userId={userId} setIsEditing={setIsEditing} />
+      <EditContacts userId={userId} setIsEditing={setIsEditing} />
       <EditPhotoAlbumSection userId={userId} setIsEditing={setIsEditing} />
     </div>
   );

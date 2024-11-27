@@ -1,6 +1,6 @@
 import { Button } from '@/components/ui/button';
-import SimpleModal from '../ProfilePicPopUp';
-import UpdateProfilePicForm from '../UpdateProfilePicForm';
+import SimpleModal from '../../ProfilePicPopUp';
+import UpdateProfilePicForm from '../../UpdateProfilePicForm';
 import { useState } from 'react';
 import Image from 'next/image';
 

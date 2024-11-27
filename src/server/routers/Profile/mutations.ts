@@ -12,10 +12,11 @@ export const updateProfile = protectedProcedure
       data: {
         firstName: input.firstName,
         lastName: input.lastName,
-        profilePicId: input.profilePicId,
         additionalName: input.additionalName,
         equipment: input.equipment,
         bio: input.bio,
+        isContactPublic: input.isContactPublic,
+        isPhotographer: input.isPhotographer,
       },
     });
   });

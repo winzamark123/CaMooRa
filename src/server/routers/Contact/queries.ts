@@ -4,8 +4,7 @@ import prisma from '@prisma/prisma';
 
 export const getContact = publicProcedure
   .input(z.object({ userId: z.string() }))
-  .query(async ({ input, ctx }) => {
-    console.log(ctx.user?.id);
+  .query(async ({ input }) => {
     return await prisma.contact.findUnique({
       where: {
         userId: input.userId,

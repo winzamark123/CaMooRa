@@ -82,12 +82,16 @@ export default function ExhibitionHall() {
         <div className="w-full">
           {dropdownText === options[1] && user && fav_users && (
             <HoverEffect
-              items={fav_users.map((user) => ({ userId: user.id }))}
+              items={[...fav_users]
+                .sort(() => Math.random() - 0.5)
+                .map((user) => ({ userId: user.id }))}
             />
           )}
           {dropdownText === options[0] && all_users && (
             <HoverEffect
-              items={all_users.map((user) => ({ userId: user.id }))}
+              items={[...all_users]
+                .sort(() => Math.random() - 0.5)
+                .map((user) => ({ userId: user.id }))}
             />
           )}
         </div>
