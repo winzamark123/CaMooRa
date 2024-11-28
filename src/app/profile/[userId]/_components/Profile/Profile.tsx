@@ -1,13 +1,12 @@
 'use client';
-import { useState, useRef } from 'react';
+import { useState } from 'react';
 import EditProfile from '@/app/profile/[userId]/_components/Profile/Edit/EditProfile';
-import SignInPopUp from '@/components/Popups/SignInPopUp';
+import SignInPopUp from '@/components/Popups/SignIn/SignInPopUp';
 import { trpc } from '@/lib/trpc/client';
 import { usePathname } from 'next/navigation';
 import Bio from './Bio/Bio';
 import Projects from './Projects';
-import type { Contact } from '@/server/routers/Contact/index';
-import type { Profile } from '@/server/routers/Profile/index';
+import type { Profile } from '@prisma/client';
 import ProfilePic from './ProfilePic/ProfilePic';
 import Contacts from './Contacts/Contacts';
 import { ProfileSkeleton } from '@/components/Skeletons/SkeletonCard';
@@ -23,9 +22,6 @@ export interface ProfileProps extends Profile {
 
 export default function Profile() {
   const [isEditing, setIsEditing] = useState(false);
-  const [isProfileUpdateSuccessful, setIsProfileUpdateSuccessful] =
-    useState(false);
-  const timeoutRef = useRef<NodeJS.Timeout | null>(null);
   const pathname = usePathname();
   const userId = pathname.split('/').pop() || '';
   const [showSignInPopUp, setShowSignInPopUp] = useState(false);
@@ -34,21 +30,13 @@ export default function Profile() {
     data: profile,
     isLoading: isProfileLoading,
     error: profileError,
-    refetch: refetchProfile,
   } = trpc.profile.getFullProfile.useQuery({ userId });
 
-  const {
-    data: contact,
-    isLoading: isContactLoading,
-    error: contactError,
-    refetch: refetchContact,
-  } = trpc.contact.getContact.useQuery({ userId });
-
-  if (isProfileLoading || isContactLoading) {
+  if (isProfileLoading) {
     return <ProfileSkeleton />;
   }
 
-  if (profileError || contactError) {
+  if (profileError) {
     return <div>Error occurred</div>;
   }
 
@@ -61,36 +49,10 @@ export default function Profile() {
 
   const usersFullName = `${profile?.firstName} ${profile?.lastName}`;
 
-  const manageTimeout = () => {
-    if (timeoutRef.current) {
-      clearTimeout(timeoutRef.current);
-    }
-    timeoutRef.current = setTimeout(() => {
-      setIsProfileUpdateSuccessful(false);
-    }, 5000);
-    window.scrollTo(0, 0);
-  };
-
   return (
     <div className="flex flex-col">
-      {isProfileUpdateSuccessful && (
-        <div className="py-4">
-          <div className="rounded-md bg-green-500 p-2 text-center text-white shadow">
-            Profile Updated Successfully!
-          </div>
-        </div>
-      )}
       {isEditing ? (
-        <EditProfile
-          contact={contact as Contact}
-          profile={profile as ProfileProps}
-          userId={userId}
-          refetchProfile={refetchProfile}
-          refetchContact={refetchContact}
-          setIsEditing={setIsEditing}
-          setIsProfileUpdateSuccessful={setIsProfileUpdateSuccessful}
-          manageTimeout={manageTimeout}
-        />
+        <EditProfile userId={userId} setIsEditing={setIsEditing} />
       ) : (
         <>
           <div className="w-full px-4 md:px-8 lg:px-12">

@@ -64,6 +64,8 @@ export const getFullProfile = publicProcedure
         additionalName: true,
         equipment: true,
         bio: true,
+        isContactPublic: true,
+        isPhotographer: true,
       },
     });
   });

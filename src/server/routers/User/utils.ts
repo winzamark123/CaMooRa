@@ -34,6 +34,7 @@ export async function createUser({
     const newUser = await prisma.user.create({
       data: {
         clerkId,
+        isNewUser: true,
       },
     });
 

@@ -25,7 +25,7 @@ const s3 = new S3Client({
 
 const generateFileName = (bytes = 32) =>
   crypto.randomBytes(bytes).toString('hex');
-const maxFileSize = 1024 * 1024 * 10; // 10MB
+const maxFileSize = 1024 * 1024 * 40; // 40MB
 const acceptedTypes = ['image/jpeg', 'image/png', 'image/jpg', 'image/svg+xml'];
 
 export async function getPresignedURL({

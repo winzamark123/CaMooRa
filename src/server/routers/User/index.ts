@@ -7,6 +7,8 @@ export const user_router = router({
   getUser: queries.getUser,
   getCurrentUser: queries.getCurrentUser,
   deleteUser: mutations.deleteUser,
+  updateUser: mutations.updateUser,
+  getIsNewUser: queries.getIsNewUser,
 });
 
 export type UserRouter = typeof user_router;

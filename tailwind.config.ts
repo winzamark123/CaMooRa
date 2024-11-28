@@ -84,6 +84,7 @@ const config: Config = {
         profile_button_bg: '#FBFCF8',
         primary_blue: '#013C5A',
         theme_grey: '#282830',
+        theme_yellow: '#FFD38C',
       },
       borderRadius: {
         lg: 'var(--radius)',
