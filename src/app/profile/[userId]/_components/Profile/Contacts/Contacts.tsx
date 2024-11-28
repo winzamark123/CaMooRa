@@ -23,6 +23,7 @@ export default function Contacts({
     error: contactError,
   } = trpc.contact.getContact.useQuery(
     { userId },
+    // Doesn't fetch if not signed in
     {
       enabled: !!isSignedIn,
     }
@@ -110,7 +111,7 @@ export default function Contacts({
         </div>
       )}
       <div className="mt-auto flex items-end justify-end p-4">
-        {profile?.userId === userId && (
+        {isSignedIn && profile?.userId === userId && (
           <Button
             className="w-full border border-gray-400 bg-profile_button_bg text-xs text-black hover:bg-primary_blue hover:text-white focus:bg-primary_blue focus:text-white sm:w-20"
             aria-label="Edit your Profile"
@@ -129,7 +130,6 @@ export default function Contacts({
             Contact
           </Button>
         </SignedOut>
-        {/* )} */}
       </div>
     </div>
   );
