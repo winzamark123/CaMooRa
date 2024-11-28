@@ -1,17 +1,18 @@
 import { useUser } from '@clerk/nextjs';
+import { SignedOut } from '@clerk/nextjs';
 import { trpc } from '@/lib/trpc/client';
 import { Button } from '@/components/ui/button';
 import IconComponents from '../IconComponents';
 
 interface ContactsProps {
   userId: string;
-  // toggleSignInPopUp: React.Dispatch<React.SetStateAction<boolean>>;
+  toggleSignInPopUp: React.Dispatch<React.SetStateAction<boolean>>;
   toggleEditing: React.Dispatch<React.SetStateAction<boolean>>;
 }
 
 export default function Contacts({
   userId,
-  // toggleSignInPopUp,
+  toggleSignInPopUp,
   toggleEditing,
 }: ContactsProps) {
   const { isSignedIn } = useUser();
@@ -20,8 +21,12 @@ export default function Contacts({
     data: contact,
     isLoading: isContactLoading,
     error: contactError,
-    // refetch: refetchContact,
-  } = trpc.contact.getContact.useQuery({ userId });
+  } = trpc.contact.getContact.useQuery(
+    { userId },
+    {
+      enabled: !!isSignedIn,
+    }
+  );
 
   if (isContactLoading) return <div className="">Contact Loading</div>;
   if (contactError) return <div className="">{contactError.message}</div>;
@@ -115,17 +120,16 @@ export default function Contacts({
           </Button>
         )}
         {/* TODO: Add the SignedOut at the HOME PAGE level*/}
-        {/* {!profile?.isContactPublic && (
-          <SignedOut>
-            <Button
-              onClick={() => toggleSignInPopUp(true)}
-              className="w-full border border-gray-400 bg-profile_button_bg text-xs text-black hover:bg-primary_blue hover:text-white focus:bg-primary_blue focus:text-white sm:w-20"
-              aria-label={`Contact`}
-            >
-              Contacts
-            </Button>
-          </SignedOut>
-        )} */}
+        <SignedOut>
+          <Button
+            onClick={() => toggleSignInPopUp(true)}
+            className="w-full border border-gray-400 bg-profile_button_bg text-xs text-black hover:bg-primary_blue hover:text-white focus:bg-primary_blue focus:text-white sm:w-20"
+            aria-label={`Contact`}
+          >
+            Contact
+          </Button>
+        </SignedOut>
+        {/* )} */}
       </div>
     </div>
   );

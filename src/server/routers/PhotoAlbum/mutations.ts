@@ -4,7 +4,6 @@ import prisma from '@prisma/prisma';
 import { createPhotoAlbum as create } from './utils';
 import { deletePhotoCommand } from '../Images/s3-delete';
 
-// TODO: Add limit to the amount of characters in the photo album name (Both create and update for backend and frontend)
 export const createPhotoAlbum = protectedProcedure
   .input(
     z.object({
