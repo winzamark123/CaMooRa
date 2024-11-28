@@ -1,3 +1,4 @@
+'use client';
 import { cn } from '@/lib/utils';
 import { AnimatePresence, motion } from 'framer-motion';
 import Link from 'next/link';
@@ -51,7 +52,7 @@ export const HoverEffect = ({
             )}
           </AnimatePresence>
           <div className="relative z-10">
-            <ProfileCard id={item.userId} />
+            <ProfileCard userId={item.userId} />
           </div>
         </Link>
       ))}

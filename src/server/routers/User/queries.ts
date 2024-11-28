@@ -10,6 +10,9 @@ export const getAllPhotographers = publicProcedure.query(async () => {
         isPhotographer: true,
       },
     },
+    select: {
+      id: true,
+    },
   });
 });
 export const getAllUsers = publicProcedure.query(async () => {

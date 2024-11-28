@@ -1,17 +1,17 @@
-import { useUser, SignedOut } from '@clerk/nextjs';
+import { useUser } from '@clerk/nextjs';
 import { trpc } from '@/lib/trpc/client';
 import { Button } from '@/components/ui/button';
 import IconComponents from '../IconComponents';
 
 interface ContactsProps {
   userId: string;
-  toggleSignInPopUp: React.Dispatch<React.SetStateAction<boolean>>;
+  // toggleSignInPopUp: React.Dispatch<React.SetStateAction<boolean>>;
   toggleEditing: React.Dispatch<React.SetStateAction<boolean>>;
 }
 
 export default function Contacts({
   userId,
-  toggleSignInPopUp,
+  // toggleSignInPopUp,
   toggleEditing,
 }: ContactsProps) {
   const { isSignedIn } = useUser();
@@ -49,7 +49,7 @@ export default function Contacts({
 
   return (
     <div className="flex flex-grow flex-col">
-      {(isSignedIn || profile?.isContactPublic) && (
+      {isSignedIn && (
         <div className="flex w-full p-4 sm:justify-end">
           <div className="flex w-full flex-col space-y-4 xl:space-y-6">
             <h2 className="text-sm font-semibold lg:text-lg 2xl:text-xl">
@@ -114,7 +114,8 @@ export default function Contacts({
             Edit
           </Button>
         )}
-        {!profile?.isContactPublic && (
+        {/* TODO: Add the SignedOut at the HOME PAGE level*/}
+        {/* {!profile?.isContactPublic && (
           <SignedOut>
             <Button
               onClick={() => toggleSignInPopUp(true)}
@@ -124,7 +125,7 @@ export default function Contacts({
               Contacts
             </Button>
           </SignedOut>
-        )}
+        )} */}
       </div>
     </div>
   );

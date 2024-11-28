@@ -5,7 +5,7 @@ import { ClerkProvider } from '@clerk/nextjs';
 import NavBar from '../components/NavBar/NavBar';
 import Footer from '../components/Footer/Footer';
 import { ThemeProvider } from '@/components/Theme/theme-provider';
-import Provider from '@/lib/trpc/Provider';
+import TRPCProvider from '@/lib/trpc/Provider';
 import { WelcomeDemoPopup } from '@/components/Popups/SignUp/WelcomeDemoPopUp';
 
 export const metadata: Metadata = {
@@ -22,27 +22,27 @@ export default function RootLayout({
   children: React.ReactNode;
 }>) {
   return (
-    <ClerkProvider>
-      <html lang="en">
-        <head>
-          <link
-            rel="icon"
-            type="image/png"
-            href="/favicon/favicon-48x48.png"
-            sizes="48x48"
-          />
-          <link rel="icon" type="image/svg+xml" href="/favicon.favicon.svg" />
-          <link rel="shortcut icon" href="/favicon/favicon.ico" />
-          <link
-            rel="apple-touch-icon"
-            sizes="180x180"
-            href="/favicon/apple-touch-icon.png"
-          />
-          <meta name="apple-mobile-web-app-title" content="caMOOra" />
-          <link rel="manifest" href="/favicon/site.webmanifest" />
-        </head>
-        <body className="flex min-h-screen flex-col">
-          <Provider>
+    <html lang="en">
+      <head>
+        <link
+          rel="icon"
+          type="image/png"
+          href="/favicon/favicon-48x48.png"
+          sizes="48x48"
+        />
+        <link rel="icon" type="image/svg+xml" href="/favicon.favicon.svg" />
+        <link rel="shortcut icon" href="/favicon/favicon.ico" />
+        <link
+          rel="apple-touch-icon"
+          sizes="180x180"
+          href="/favicon/apple-touch-icon.png"
+        />
+        <meta name="apple-mobile-web-app-title" content="caMOOra" />
+        <link rel="manifest" href="/favicon/site.webmanifest" />
+      </head>
+      <body className="flex min-h-screen flex-col">
+        <ClerkProvider>
+          <TRPCProvider>
             <ThemeProvider
               attribute="class"
               defaultTheme="light"
@@ -57,9 +57,9 @@ export default function RootLayout({
               <WelcomeDemoPopup />
               <Footer />
             </ThemeProvider>
-          </Provider>
-        </body>
-      </html>
-    </ClerkProvider>
+          </TRPCProvider>
+        </ClerkProvider>
+      </body>
+    </html>
   );
 }

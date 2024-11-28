@@ -1,7 +1,7 @@
 'use client';
 import { useState } from 'react';
 import EditProfile from '@/app/profile/[userId]/_components/Profile/Edit/EditProfile';
-import SignInPopUp from '@/components/Popups/SignIn/SignInPopUp';
+// import SignInPopUp from '@/components/Popups/SignIn/SignInPopUp';
 import { trpc } from '@/lib/trpc/client';
 import { usePathname } from 'next/navigation';
 import Bio from './Bio/Bio';
@@ -24,13 +24,13 @@ export default function Profile() {
   const [isEditing, setIsEditing] = useState(false);
   const pathname = usePathname();
   const userId = pathname.split('/').pop() || '';
-  const [showSignInPopUp, setShowSignInPopUp] = useState(false);
+  // const [showSignInPopUp, setShowSignInPopUp] = useState(false);
 
   const {
     data: profile,
     isLoading: isProfileLoading,
     error: profileError,
-  } = trpc.profile.getPublicProfile.useQuery({ userId });
+  } = trpc.profile.getFullProfile.useQuery({ userId });
 
   if (isProfileLoading) {
     return <ProfileSkeleton />;
@@ -43,9 +43,9 @@ export default function Profile() {
   const toggleEditing = () => {
     setIsEditing(!isEditing);
   };
-  const toggleSignInPopUp = () => {
-    setShowSignInPopUp(!showSignInPopUp);
-  };
+  // const toggleSignInPopUp = () => {
+  //   setShowSignInPopUp(!showSignInPopUp);
+  // };
 
   const usersFullName = `${profile?.firstName} ${profile?.lastName}`;
 
@@ -82,7 +82,7 @@ export default function Profile() {
               <div className="w-full md:w-auto">
                 <Contacts
                   userId={userId}
-                  toggleSignInPopUp={toggleSignInPopUp}
+                  // toggleSignInPopUp={toggleSignInPopUp}
                   toggleEditing={toggleEditing}
                 />
               </div>
@@ -96,7 +96,7 @@ export default function Profile() {
         </>
       )}
 
-      {showSignInPopUp && <SignInPopUp onToggle={toggleSignInPopUp} />}
+      {/* {showSignInPopUp && <SignInPopUp onToggle={toggleSignInPopUp} />} */}
     </div>
   );
 }

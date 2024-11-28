@@ -4,6 +4,7 @@ import * as mutations from './mutations';
 
 export const profileRouter = router({
   getMyProfile: queries.getMyProfile,
-  getPublicProfile: queries.getPublicProfile,
+  getFullProfile: queries.getFullProfile,
+  getProfileBasics: queries.getProfileBasics,
   updateProfile: mutations.updateProfile,
 });

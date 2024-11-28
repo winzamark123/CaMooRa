@@ -1,7 +1,4 @@
-'use client';
-
 import * as React from 'react';
-
 import { SignOutButton } from '@clerk/nextjs';
 import { Button } from '@/components/ui/button';
 import {

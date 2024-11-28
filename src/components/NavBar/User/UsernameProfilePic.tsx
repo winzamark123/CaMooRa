@@ -13,7 +13,9 @@ export default function UsernameProfilePic({ id }: UsernameProfilePicProps) {
     data: user_profile,
     isLoading,
     error,
-  } = trpc.profile.getPublicProfile.useQuery({ userId: id });
+  } = trpc.profile.getProfileBasics.useQuery({ userId: id });
+
+  console.log(user_profile);
 
   if (isLoading) {
     return <DropDownSkeleton />;

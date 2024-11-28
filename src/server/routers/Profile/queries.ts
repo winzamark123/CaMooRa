@@ -9,19 +9,30 @@ export const getMyProfile = protectedProcedure.query(async ({ ctx }) => {
     },
     select: {
       userId: true,
-      firstName: true,
-      lastName: true,
-      profilePic: true,
-      additionalName: true,
-      equipment: true,
-      bio: true,
-      isContactPublic: true,
-      isPhotographer: true,
     },
   });
 });
 
-export const getPublicProfile = publicProcedure
+export const getProfileBasics = publicProcedure
+  .input(z.object({ userId: z.string() }))
+  .query(async ({ input }) => {
+    return await prisma.profile.findUnique({
+      where: {
+        userId: input.userId,
+      },
+      select: {
+        firstName: true,
+        lastName: true,
+        profilePic: {
+          select: {
+            url: true,
+          },
+        },
+      },
+    });
+  });
+
+export const getFullProfile = publicProcedure
   .input(z.object({ userId: z.string() }))
   .query(async ({ input }) => {
     return await prisma.profile.findUnique({
