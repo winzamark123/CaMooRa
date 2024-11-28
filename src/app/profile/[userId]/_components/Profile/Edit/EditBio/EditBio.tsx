@@ -17,7 +17,8 @@ export default function EditBio({ userId, setIsEditing }: EditBioProps) {
   const { toast } = useToast();
   // const utils = trpc.useUtils();
 
-  const { data: profile } = trpc.profile.getFullProfile.useQuery({ userId });
+  const { data: profile, refetch: refetchProfile } =
+    trpc.profile.getFullProfile.useQuery({ userId });
 
   const form = useForm<ProfileEditForm>({
     resolver: zodResolver(profileEditSchema),
@@ -39,6 +40,7 @@ export default function EditBio({ userId, setIsEditing }: EditBioProps) {
         title: 'Profile Updated!',
         description: 'Your profile has been updated successfully',
       });
+      refetchProfile();
     },
     onError: () => {
       toast({

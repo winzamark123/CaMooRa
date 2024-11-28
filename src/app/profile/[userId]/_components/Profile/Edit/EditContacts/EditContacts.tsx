@@ -20,7 +20,8 @@ export default function EditContacts({
   setIsEditing,
   userId,
 }: EditContactsProps) {
-  const { data: contact } = trpc.contact.getContact.useQuery({ userId });
+  const { data: contact, refetch: refetchContact } =
+    trpc.contact.getContact.useQuery({ userId });
   const { toast } = useToast();
 
   const form = useForm<ContactEditForm>({
@@ -43,6 +44,7 @@ export default function EditContacts({
         title: 'Contact Updated!',
         description: 'Your contact has been updated successfully',
       });
+      refetchContact();
     },
     onError: () => {
       toast({
