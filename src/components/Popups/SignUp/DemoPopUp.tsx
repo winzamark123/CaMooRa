@@ -2,7 +2,7 @@ import Video from 'next-video';
 import PopUp from '../PopUp';
 import DemoVideoMp4 from '@videos/PhotographerWelcomeDemo.mp4';
 import Image from 'next/image';
-import Confetti from '@public/demo/confetti.svg';
+import Confetti from '@public/demo/Confetti.svg';
 
 export default function DemoPopUp({ onToggle }: { onToggle: () => void }) {
   return (
