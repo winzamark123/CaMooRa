@@ -1,6 +1,6 @@
 import Video from 'next-video';
 import PopUp from '../PopUp';
-import DemoVideo from '@videos/WelcomeDemo.mp4';
+import DemoVideoMp4 from '@videos/PhotographerWelcomeDemo.mp4';
 
 export default function DemoPopUp({ onToggle }: { onToggle: () => void }) {
   return (
@@ -41,7 +41,7 @@ export default function DemoPopUp({ onToggle }: { onToggle: () => void }) {
 
         <div className="relative flex w-1/2 items-end justify-end bg-white">
           <Video
-            src={DemoVideo}
+            src={DemoVideoMp4}
             className="absolute inset-0 top-0 h-full w-full object-cover"
           />
         </div>
