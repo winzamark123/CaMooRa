@@ -13,6 +13,7 @@ export interface Profile {
 }
 export const profileRouter = router({
   getMyProfile: queries.getMyProfile,
-  getPublicProfile: queries.getPublicProfile,
+  getFullProfile: queries.getFullProfile,
+  getProfileBasics: queries.getProfileBasics,
   updateProfile: mutations.updateProfile,
 });

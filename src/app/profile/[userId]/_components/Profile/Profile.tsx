@@ -35,7 +35,7 @@ export default function Profile() {
     isLoading: isProfileLoading,
     error: profileError,
     refetch: refetchProfile,
-  } = trpc.profile.getPublicProfile.useQuery({ userId });
+  } = trpc.profile.getFullProfile.useQuery({ userId });
 
   const {
     data: contact,

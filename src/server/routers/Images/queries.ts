@@ -22,6 +22,25 @@ export const getAllImages = publicProcedure
     return imageDetails;
   });
 
+export const getUserHomePageImage = publicProcedure
+  .input(z.object({ userId: z.string() }))
+  .query(async ({ input }) => {
+    const homePageImage = await prisma.images.findFirst({
+      where: {
+        userId: input.userId,
+
+        Profile: {
+          none: {},
+        },
+      },
+      select: {
+        url: true,
+      },
+    });
+
+    return homePageImage;
+  });
+
 export const getImagesByAlbumId = publicProcedure
   .input(z.object({ userId: z.string(), photoAlbumId: z.string() }))
   .query(async ({ input }) => {

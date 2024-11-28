@@ -10,6 +10,7 @@ export interface ImageProp {
 export const images_router = router({
   getAllImages: queries.getAllImages,
   getImagesByAlbumId: queries.getImagesByAlbumId,
+  getUserHomePageImage: queries.getUserHomePageImage,
   updateProfilePic: mutations.updateProfilePic,
   uploadImage: mutations.uploadImage,
   deleteImage: mutations.deleteImage,

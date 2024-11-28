@@ -1,30 +1,28 @@
-'use client';
-
 import React, { Suspense } from 'react';
 import { Card } from '@/components/ui/card';
-import { trpc } from '@/lib/trpc/client';
 import { PhotoSkeleton } from '@/components/Skeletons/SkeletonCard';
 import Image from 'next/image';
+import useFetchProfileInfo from './useFetchProfileInfo';
 
 interface ProfileCardProps {
-  id: string;
+  userId: string;
 }
 
 // Separate the data fetching logic into a child component
-function ProfileCardContent({ id }: ProfileCardProps) {
-  const { data: user_profile, error } = trpc.profile.getPublicProfile.useQuery({
-    userId: id,
-  });
+function ProfileCardContent({ userId }: ProfileCardProps) {
+  const { userProfile, userImage, userProfileError, userImageError } =
+    useFetchProfileInfo({ userId });
 
-  const { data: user_images } = trpc.images.getAllImages.useQuery({
-    userId: id,
-  });
-
-  if (error) {
-    return <div>Error: {error.message}</div>;
+  if (userImageError || userProfileError) {
+    return (
+      <div>
+        Error: {userProfileError?.message}
+        {userImageError?.message}
+      </div>
+    );
   }
 
-  if (!user_profile) {
+  if (!userProfile) {
     return <div>No Profile Available for this User</div>;
   }
 
@@ -33,10 +31,9 @@ function ProfileCardContent({ id }: ProfileCardProps) {
       className="relative flex aspect-portrait h-full w-full flex-col 
     justify-end overflow-hidden p-2 sm:rounded-2xl sm:border-slate-400"
     >
-      {user_images && user_images.length > 0 && (
-        // <PhotoImage src={user_images[0].url} alt="profile" />
+      {userImage && (
         <Image
-          src={user_images[0].url}
+          src={userImage.url}
           alt="profile"
           fill
           objectFit="cover"
@@ -49,24 +46,24 @@ function ProfileCardContent({ id }: ProfileCardProps) {
       >
         <div className="relative h-8 w-8 overflow-hidden rounded-full">
           <Image
-            src={user_profile.profilePic?.url || '/default-profile.jpg'}
+            src={userProfile?.profilePic?.url || '/default-profile.jpg'}
             alt="profile"
             fill
             className="object-cover"
           />
         </div>
-        <p>{user_profile.firstName}</p>
-        <p>{user_profile.lastName}</p>
+        <p>{userProfile?.firstName}</p>
+        <p>{userProfile?.lastName}</p>
       </div>
     </Card>
   );
 }
 
 // Main component just handles the Suspense wrapper
-export default function ProfileCard({ id }: ProfileCardProps) {
+export default function ProfileCard({ userId }: ProfileCardProps) {
   return (
     <Suspense fallback={<PhotoSkeleton />}>
-      <ProfileCardContent id={id} />
+      <ProfileCardContent userId={userId} />
     </Suspense>
   );
 }
