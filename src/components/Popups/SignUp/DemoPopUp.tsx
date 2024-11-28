@@ -1,6 +1,6 @@
 import Video from 'next-video';
 import PopUp from '../PopUp';
-import DemoVideoMp4 from '@videos/PhotographerDemo.mp4';
+import DemoVideoMp4 from '@videos/PhotographerWelcomeDemo.mp4';
 
 export default function DemoPopUp({ onToggle }: { onToggle: () => void }) {
   return (
