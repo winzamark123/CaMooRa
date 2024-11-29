@@ -1,4 +1,3 @@
-'use client';
 import Masonry, { ResponsiveMasonry } from 'react-responsive-masonry';
 import { ImageProp } from '@/server/routers/Images';
 import Image from 'next/image';
