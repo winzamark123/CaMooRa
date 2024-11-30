@@ -52,6 +52,7 @@
     "react-filepond": "^7.1.2",
     "react-hook-form": "^7.52.0",
     "react-responsive-masonry": "^2.4.1",
+    "sharp": "^0.33.5",
     "svix": "^1.24.0",
     "tailwind-merge": "^2.3.0",
     "tailwindcss-animate": "^1.0.7",
