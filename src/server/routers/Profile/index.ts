@@ -6,5 +6,8 @@ export const profileRouter = router({
   getMyProfile: queries.getMyProfile,
   getFullProfile: queries.getFullProfile,
   getProfileBasics: queries.getProfileBasics,
+  getProfileCoverImage: queries.getProfileCoverImage,
   updateProfile: mutations.updateProfile,
+  updateProfileCoverImage: mutations.updateProfileCoverImage,
+  getMyProfileCoverImage: queries.getMyProfileCoverImage,
 });

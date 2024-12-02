@@ -51,6 +51,8 @@ model Profile {
   equipment    String?
   profilePic   Images? @relation(fields: [profilePicId], references: [id])
   profilePicId String
+  coverImage   Images? @relation("coverImage", fields: [coverImageId], references: [id])
+  coverImageId String? @unique
 
   // Preferences
   isContactPublic Boolean @default(false)
@@ -94,8 +96,9 @@ model Images {
   userId       String
 
   // Image Information
-  key       String
-  url       String
-  createdAt DateTime  @default(now())
-  Profile   Profile[]
+  key        String
+  url        String
+  createdAt  DateTime  @default(now())
+  Profile    Profile[]
+  CoverImage Profile?  @relation("coverImage")
 }

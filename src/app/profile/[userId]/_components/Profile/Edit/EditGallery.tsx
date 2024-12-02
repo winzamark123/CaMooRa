@@ -6,15 +6,15 @@ import { SelectedPhotoAlbumProps } from '../Projects';
 import PhotoAlbumButton from '../PhotoAlbum/PhotoAlbumButton';
 import CreateAlbumModal from '../PhotoAlbum/Create/CreateAlbumModal';
 
-interface EditPhotoAlbumSectionProps {
+interface EditGalleryProps {
   userId: string;
   setIsEditing: (isEditing: boolean) => void;
 }
 
-export default function EditPhotoAlbumSection({
+export default function EditGallery({
   userId,
   setIsEditing,
-}: EditPhotoAlbumSectionProps) {
+}: EditGalleryProps) {
   // Get all Photo Albums for the User
   const {
     data: photoAlbums,
@@ -40,7 +40,6 @@ export default function EditPhotoAlbumSection({
       });
       hasSetSelectedAlbumRef.current = true;
     }
-    console.log('Selected Album', selectedPhotoAlbum);
   }, [photoAlbums]);
 
   const resetSelectedAlbum = () => {

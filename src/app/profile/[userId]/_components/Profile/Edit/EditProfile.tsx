@@ -1,7 +1,7 @@
 import { SetStateAction } from 'react';
 import EditBio from './EditBio/EditBio';
 import EditContacts from './EditContacts/EditContacts';
-import EditPhotoAlbumSection from './EditPhotoAlbumSection';
+import EditGallery from './EditGallery';
 
 interface EditProfileProps {
   userId: string;
@@ -16,7 +16,7 @@ export default function EditProfile({
     <div className="xl-space-y-16 flex flex-col space-y-5 overflow-hidden p-4 sm:p-0 md:space-y-10">
       <EditBio userId={userId} setIsEditing={setIsEditing} />
       <EditContacts userId={userId} setIsEditing={setIsEditing} />
-      <EditPhotoAlbumSection userId={userId} setIsEditing={setIsEditing} />
+      <EditGallery userId={userId} setIsEditing={setIsEditing} />
     </div>
   );
 }
