@@ -22,10 +22,6 @@ function ProfileCardContent({ userId }: ProfileCardProps) {
     );
   }
 
-  if (!userProfile) {
-    return <div>No Profile Available for this User</div>;
-  }
-
   return (
     <Card
       className="relative flex aspect-portrait h-full w-full flex-col 
