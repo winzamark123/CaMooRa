@@ -7,8 +7,12 @@ export default function useFetchProfileInfo({ userId }: { userId: string }) {
       userId,
     });
 
+  // const { data: userImage, error: userImageError } =
+  //   trpc.images.getUserHomePageImage.useQuery({
+  //     userId,
+  //   });
   const { data: userImage, error: userImageError } =
-    trpc.images.getUserHomePageImage.useQuery({
+    trpc.profile.getProfileCoverImage.useQuery({
       userId,
     });
 

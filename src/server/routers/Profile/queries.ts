@@ -52,3 +52,52 @@ export const getFullProfile = publicProcedure
       },
     });
   });
+
+export const getMyProfileCoverImage = protectedProcedure.query(
+  async ({ ctx }) => {
+    return await prisma.profile.findUnique({
+      where: {
+        userId: ctx.user.id,
+      },
+      select: {
+        coverImageId: true,
+      },
+    });
+  }
+);
+
+export const getProfileCoverImage = publicProcedure
+  .input(z.object({ userId: z.string() }))
+  .query(async ({ input }) => {
+    const coverImage = await prisma.profile.findUnique({
+      where: {
+        userId: input.userId,
+      },
+      select: {
+        coverImage: {
+          select: {
+            url: true,
+          },
+        },
+      },
+    });
+
+    if (coverImage?.coverImage) {
+      return coverImage.coverImage;
+    }
+
+    // If no cover image set, get first image from user's images
+    const firstImage = await prisma.images.findFirst({
+      where: {
+        userId: input.userId,
+        Profile: {
+          none: {}, // Exclude profile pictures
+        },
+      },
+      select: {
+        url: true,
+      },
+    });
+
+    return firstImage;
+  });

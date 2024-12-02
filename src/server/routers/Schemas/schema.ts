@@ -38,6 +38,7 @@ const profileSchema = z.object({
   isPhotographer: z.boolean({
     invalid_type_error: 'isPhotographer must be a boolean',
   }),
+  coverImageId: z.string().nullable(),
 }) satisfies z.ZodType<Profile>;
 
 // Base contact schema (for full type)
@@ -72,6 +73,7 @@ export const contactEditSchema = contactSchema.omit({
 export const profileEditSchema = profileSchema.omit({
   userId: true,
   profilePicId: true,
+  coverImageId: true,
 });
 
 // Type for the edit form
