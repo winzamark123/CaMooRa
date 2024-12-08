@@ -15,6 +15,12 @@ const nextConfig = {
         port: '',
         pathname: '/**', // Match all paths within the domain
       },
+      {
+        protocol: 'https',
+        hostname: 'd2w4poctavf8a6.cloudfront.net',
+        port: '',
+        pathname: '/**', // Match all paths within the domain
+      },
     ],
   },
   transpilePackages: ['@pqina/pintura', '@pqina/react-pintura'],

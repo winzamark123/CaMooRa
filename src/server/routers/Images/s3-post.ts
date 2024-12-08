@@ -69,7 +69,7 @@ export async function getPresignedURL({
   try {
     const imageData: any = {
       userId: userId,
-      url: signedURL.split('?')[0],
+      url: `${process.env.AWS_CLOUDFRONT_URL}/${userId}/${generatedFileName}`,
       key: `${userId}/${generatedFileName}`,
     };
 
