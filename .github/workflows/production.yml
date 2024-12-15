@@ -24,6 +24,9 @@ jobs:
       - name: Install dependencies
         run: npm install
 
+      - name: Install Vercel CLI
+        run: npm install -g vercel
+
       - name: Build Application
         run: npm run build:ci
         env:
