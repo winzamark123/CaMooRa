@@ -16,8 +16,16 @@ const nextConfig = {
         pathname: '/**', // Match all paths within the domain
       },
       {
+        // Staging CDN
         protocol: 'https',
         hostname: 'd2w4poctavf8a6.cloudfront.net',
+        port: '',
+        pathname: '/**', // Match all paths within the domain
+      },
+      {
+        // Production CDN
+        protocol: 'https',
+        hostname: 'dmmuvefqy6r0i.cloudfront.net',
         port: '',
         pathname: '/**', // Match all paths within the domain
       },
